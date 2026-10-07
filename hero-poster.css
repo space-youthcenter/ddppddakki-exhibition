@@ -1,0 +1,155 @@
+/* First-screen poster only. All selectors are scoped; other sections and functions are unchanged. */
+.exhibit-poster {
+  position:relative;
+  isolation:isolate;
+  height:570px;
+  margin-top:20px;
+  background:#142c42;
+  color:#f7f3e9;
+  overflow:hidden;
+}
+.exhibit-poster::after {
+  content:'';
+  position:absolute;
+  inset:12px;
+  border:1px solid #e9e2ce40;
+  pointer-events:none;
+  z-index:5;
+}
+.exhibit-poster .poster-rails { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
+.exhibit-poster .poster-masthead { position:absolute; top:27px; left:44px; right:44px; display:flex; align-items:center; justify-content:space-between; font:700 13px/1.4 ui-monospace,monospace; letter-spacing:.15em; }
+.exhibit-poster .poster-masthead>span:first-child { display:flex; align-items:center; gap:19px; }
+.exhibit-poster .poster-masthead b { font-size:34px; line-height:1; letter-spacing:-.03em; }
+.exhibit-poster .poster-masthead>span:first-child>span { color:#ebbf62; border-left:1px solid #f7f3e970; padding-left:19px; }
+.exhibit-poster .poster-masthead>span:last-child { padding:4px 8px; background:#142c42; }
+.exhibit-poster .poster-masthead i { font-style:normal; font-size:22px; margin-left:12px; }
+.exhibit-poster .poster-title { position:absolute; top:80px; left:37px; font-size:clamp(112px,13.2vw,180px); font-weight:900; letter-spacing:-.085em; line-height:.98; }
+.exhibit-poster .poster-title>span { display:block; width:fit-content; }
+.exhibit-poster .poster-title>span:last-child { margin-left:152px; }
+.exhibit-poster .poster-title i { display:inline-block; margin-left:12px; color:#ebbf62; font-style:normal; font-size:.64em; font-weight:500; vertical-align:14%; }
+.exhibit-poster .poster-dates { position:absolute; top:106px; right:46px; padding:0 12px 7px; background:#142c42; }
+.exhibit-poster .poster-date-label { font:700 10px/1.4 ui-monospace,monospace; letter-spacing:.13em; color:#b7c6cf; }
+.exhibit-poster .poster-dates p { display:flex; align-items:center; justify-content:flex-end; gap:13px; }
+.exhibit-poster .poster-dates time { font:700 64px/1.15 ui-monospace,monospace; letter-spacing:-.08em; }
+.exhibit-poster .poster-dates p>span { font:600 11px/1.5 system-ui,sans-serif; color:#d2dae0; }
+.exhibit-poster .poster-dates i { font:400 33px/1 ui-monospace,monospace; color:#ebbf62; }
+.exhibit-poster .poster-departure { position:absolute; top:287px; right:66px; display:flex; gap:12px; align-items:center; padding:8px 0; background:#142c42; }
+.exhibit-poster .poster-departure>span { display:grid; place-items:center; width:38px; height:38px; flex-shrink:0; border:2px solid #f7f3e9; border-radius:50%; font:700 15px/1 ui-monospace,monospace; }
+.exhibit-poster .poster-departure strong { display:block; font-size:16px; }
+.exhibit-poster .poster-departure small { display:block; font-size:11px; color:#bdcbd1; }
+.exhibit-poster .poster-caption { position:absolute; left:43px; bottom:27px; width:290px; padding-right:8px; background:#142c42; }
+.exhibit-poster .poster-caption>p { font-size:19px; line-height:1.4; font-weight:750; color:#ebbf62; }
+.exhibit-poster .poster-caption>span { display:block; font-size:11px; line-height:1.7; color:#c6d0d6; margin-block:7px; }
+.exhibit-poster .poster-caption>a { display:inline-flex; align-items:center; gap:26px; font-size:12px; font-weight:750; border-bottom:1px solid #bac4c9; padding-bottom:2px; }
+.exhibit-poster .poster-stamp { position:absolute; right:340px; bottom:151px; z-index:3; display:grid; place-content:center; width:91px; height:91px; border:4px double #e9bf6b; border-radius:50%; color:#e9bf6b; background:#142c42; text-align:center; transform:rotate(13deg); }
+.exhibit-poster .poster-stamp strong { font:850 17px/1 ui-monospace,monospace; margin-block:4px; }
+.exhibit-poster .poster-stamp small { font:700 7px/1.5 ui-monospace,monospace; letter-spacing:.08em; }
+.exhibit-poster .poster-ticket { position:absolute; z-index:2; left:32%; right:-5px; bottom:36px; display:grid; grid-template-columns:minmax(0,1fr) 235px 40px; align-items:stretch; min-height:116px; color:#142c42; background:#f8eed5; transform:rotate(-3deg); box-shadow:0 5px 0 #081a29; clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 59%,1.2% 54%,1.2% 46%,0 41%); }
+.exhibit-poster .poster-ticket-copy { display:flex; flex-direction:column; justify-content:center; gap:3px; padding:16px 26px; }
+.exhibit-poster .poster-ticket-copy>small { display:flex; justify-content:space-between; gap:10px; font:750 10px/1.4 ui-monospace,monospace; letter-spacing:.1em; }
+.exhibit-poster .poster-ticket-copy i { font-style:normal; color:#6b716a; font-size:9px; }
+.exhibit-poster .poster-ticket-copy>strong { font-size:25px; line-height:1.5; letter-spacing:-.04em; }
+.exhibit-poster .poster-ticket-copy>span { font-size:12px; font-weight:600; }
+.exhibit-poster .poster-ticket-action { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 24px; border-left:1px dashed #6f796e; font-size:19px; font-weight:850; }
+.exhibit-poster .poster-ticket-action b { font-size:35px; font-weight:500; }
+.exhibit-poster .poster-ticket-stub { display:flex; align-items:center; justify-content:center; writing-mode:vertical-rl; background:#d5dccb; border-left:1px dashed #6f796e; font:700 9px/1 ui-monospace,monospace; letter-spacing:.09em; }
+.exhibit-poster .poster-ticket:hover { background:#fff8e7; }
+.exhibit-poster .poster-ticket:focus-visible { outline:4px solid #e9bf6b; outline-offset:-5px; }
+
+@media (max-width:1150px) and (min-width:701px) {
+  .exhibit-poster { height:530px; }
+  .exhibit-poster .poster-title { top:92px; font-size:clamp(106px,13.6vw,154px); left:30px; }
+  .exhibit-poster .poster-title>span:last-child { margin-left:90px; }
+  .exhibit-poster .poster-title i { font-size:.52em; margin-left:5px; }
+  .exhibit-poster .poster-masthead { left:32px; right:30px; }
+  .exhibit-poster .poster-dates { right:30px; top:100px; padding-inline:6px; }
+  .exhibit-poster .poster-dates time { font-size:clamp(36px,5vw,55px); }
+  .exhibit-poster .poster-dates p { gap:8px; }
+  .exhibit-poster .poster-dates i { font-size:23px; }
+  .exhibit-poster .poster-departure { right:37px; top:261px; }
+  .exhibit-poster .poster-departure strong { font-size:14px; }
+  .exhibit-poster .poster-departure small { font-size:10px; }
+  .exhibit-poster .poster-caption { left:32px; width:252px; bottom:23px; }
+  .exhibit-poster .poster-caption>p { font-size:18px; }
+  .exhibit-poster .poster-caption>span { font-size:10px; }
+  .exhibit-poster .poster-ticket { left:34%; grid-template-columns:minmax(0,1fr) 194px 28px; bottom:38px; }
+  .exhibit-poster .poster-ticket-copy { padding:14px 20px; }
+  .exhibit-poster .poster-ticket-copy>span { font-size:11px; }
+  .exhibit-poster .poster-ticket-copy i { display:none; }
+  .exhibit-poster .poster-ticket-action { font-size:16px; padding:18px; }
+  .exhibit-poster .poster-stamp { right:220px; bottom:117px; width:78px; height:78px; }
+  .exhibit-poster .poster-stamp strong { font-size:15px; }
+}
+@media (min-width:701px) and (max-width:900px) {
+  .exhibit-poster .poster-title { font-size:clamp(108px,15.6vw,140px); top:100px; }
+  .exhibit-poster .poster-title>span:last-child { margin-left:45px; }
+  .exhibit-poster .poster-title i { display:none; }
+  .exhibit-poster .poster-departure { right:31px; top:243px; }
+  .exhibit-poster .poster-departure>span { width:30px; height:30px; font-size:12px; }
+  .exhibit-poster .poster-departure small { max-width:150px; }
+  .exhibit-poster .poster-caption { width:210px; }
+  .exhibit-poster .poster-caption>span br { display:none; }
+  .exhibit-poster .poster-ticket { left:36%; grid-template-columns:minmax(0,1fr) 168px 20px; }
+  .exhibit-poster .poster-ticket-copy { padding:12px 16px; }
+  .exhibit-poster .poster-ticket-copy>strong { font-size:21px; }
+  .exhibit-poster .poster-ticket-action { padding:15px 12px; font-size:15px; gap:4px; }
+  .exhibit-poster .poster-ticket-action b { font-size:27px; }
+  .exhibit-poster .poster-stamp { right:168px; }
+}
+@media (max-width:700px) {
+  .exhibit-poster { height:auto; display:grid; grid-template-columns:minmax(0,1fr); padding:22px 22px 27px; margin-top:16px; }
+  .exhibit-poster::after { inset:8px; }
+  .exhibit-poster .poster-rails { opacity:.7; }
+  .exhibit-poster .poster-masthead { position:relative; inset:auto; font-size:9px; letter-spacing:.08em; }
+  .exhibit-poster .poster-masthead>span:first-child { gap:10px; }
+  .exhibit-poster .poster-masthead b { font-size:25px; }
+  .exhibit-poster .poster-masthead>span:first-child>span { padding-left:10px; }
+  .exhibit-poster .poster-masthead>span:last-child { padding:0; }
+  .exhibit-poster .poster-masthead i { display:none; }
+  .exhibit-poster .poster-title { position:relative; inset:auto; font-size:clamp(76px,22vw,142px); margin-block:25px 16px; line-height:.97; }
+  .exhibit-poster .poster-title>span:last-child { margin-left:14%; }
+  .exhibit-poster .poster-title i { font-size:.46em; margin-left:5px; vertical-align:25%; }
+  .exhibit-poster .poster-dates { position:relative; inset:auto; width:fit-content; display:flex; gap:12px; align-items:center; padding:9px 6px 9px 0; margin-block:4px 12px; border-block:1px solid #f7f3e955; }
+  .exhibit-poster .poster-date-label { display:none; }
+  .exhibit-poster .poster-dates p { gap:7px; }
+  .exhibit-poster .poster-dates time { font-size:clamp(30px,8vw,48px); letter-spacing:-.08em; }
+  .exhibit-poster .poster-dates p>span { font-size:9px; }
+  .exhibit-poster .poster-dates i { font-size:17px; }
+  .exhibit-poster .poster-departure { position:relative; inset:auto; width:fit-content; gap:9px; padding:2px 8px 2px 0; }
+  .exhibit-poster .poster-departure>span { width:30px; height:30px; font-size:12px; }
+  .exhibit-poster .poster-departure strong { font-size:14px; }
+  .exhibit-poster .poster-departure small { font-size:10px; }
+  .exhibit-poster .poster-caption { position:relative; inset:auto; width:auto; background:transparent; margin-block:14px 18px; }
+  .exhibit-poster .poster-caption>p { font-size:17px; }
+  .exhibit-poster .poster-caption>p br { display:none; }
+  .exhibit-poster .poster-caption>span { font-size:12px; max-width:370px; background:#142c42; }
+  .exhibit-poster .poster-caption>span br { display:none; }
+  .exhibit-poster .poster-caption>a { font-size:12px; gap:12px; }
+  .exhibit-poster .poster-stamp { display:none; }
+  .exhibit-poster .poster-ticket { position:relative; inset:auto; width:calc(100% + 16px); margin-inline:-8px; transform:rotate(-2deg); grid-template-columns:minmax(0,1fr) 28px; min-height:0; }
+  .exhibit-poster .poster-ticket-copy { padding:13px 17px 10px; grid-column:1; }
+  .exhibit-poster .poster-ticket-copy>small { font-size:9px; }
+  .exhibit-poster .poster-ticket-copy>strong { font-size:22px; }
+  .exhibit-poster .poster-ticket-copy>span { font-size:11px; }
+  .exhibit-poster .poster-ticket-action { grid-column:1; justify-content:space-between; border-left:0; border-top:1px dashed #6f796e; padding:8px 17px; font-size:16px; }
+  .exhibit-poster .poster-ticket-action b { font-size:26px; }
+  .exhibit-poster .poster-ticket-stub { grid-column:2; grid-row:1/3; font-size:8px; }
+}
+@media (max-width:360px) {
+  .exhibit-poster { padding-inline:18px; }
+  .exhibit-poster .poster-title { font-size:72px; }
+  .exhibit-poster .poster-title>span:last-child { margin-left:10%; }
+  .exhibit-poster .poster-title i { font-size:.4em; margin-left:2px; }
+  .exhibit-poster .poster-masthead { font-size:8px; }
+  .exhibit-poster .poster-masthead b { font-size:22px; }
+  .exhibit-poster .poster-masthead>span:first-child { gap:7px; }
+  .exhibit-poster .poster-masthead>span:first-child>span { padding-left:7px; }
+  .exhibit-poster .poster-dates { gap:8px; }
+  .exhibit-poster .poster-dates time { font-size:28px; }
+  .exhibit-poster .poster-dates p { gap:5px; }
+  .exhibit-poster .poster-dates p>span { font-size:8px; }
+  .exhibit-poster .poster-ticket-copy i { display:none; }
+}
+@media print {
+  .exhibit-poster { print-color-adjust:exact; -webkit-print-color-adjust:exact; break-inside:avoid; }
+}

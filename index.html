@@ -1,232 +1,133 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>2026 뚝딱이 전시회 | NEXT STOP, IDEA STATION</title>
-  <meta name="description" content="2026 뚝딱이 전시회 안내와 프로그램 예약, 개인 승차권 발급 사이트." />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="청소년의 상상이 머무는 뚝딱이 전시역. 출발역 메인 전시와 MAKE·TAKE·WAKE 체험 안내, 1시간 단위 방문 시간대 예약.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="hero-poster.css">
   <script defer src="js/config.js"></script>
   <script defer src="js/review-links.js"></script>
 </head>
-<body>
+<body class="exhibition-home" id="top">
   <a class="skip-link" href="#main">본문으로 바로가기</a>
-  <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="2026 뚝딱이 전시회 홈">
-      <img class="site-logo" src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소 로고">
-      <span>
-        <strong>2026 뚝딱이 전시회</strong>
-        <small>NEXT STOP, IDEA STATION</small>
-      </span>
+  <header class="home-header">
+    <a class="home-brand" href="#top" aria-label="2026 뚝딱이 전시회 홈">
+      <img src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소 로고" width="46" height="46">
+      <span><strong>2026 뚝딱이 전시회</strong><small>NEXT STOP, IDEA STATION</small></span>
     </a>
-    <nav class="top-nav" aria-label="주요 메뉴">
-      <a href="index.html">홈</a>
-      <a href="#route">전시 노선도</a>
-      <a href="#stations">강당 체험역</a>
-      <a href="#programs">예약 안내</a>
-      <a href="#makers">후기청소년 FabLab</a>
-      <a href="my-ticket.html">내 승차권 확인</a>
+    <nav class="home-nav" aria-label="주요 메뉴">
+      <a href="#route">전시 노선도</a><a href="#departure-exhibit">메인 전시</a><a href="#stations">강당 체험역</a><a href="#makers">후기청소년 FabLab</a><a href="#visit">관람 안내</a>
     </nav>
+    <a class="home-header-ticket" href="my-ticket.html">내 승차권 확인 <span aria-hidden="true">↗</span></a>
   </header>
-
   <main id="main">
-    <section class="hero section-pad">
-      <div class="hero-copy">
-        <img class="hero-logo" src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소" />
-        <span class="eyebrow">청소년이 직접 만들고 함께 꾸린 아이디어 정거장</span>
-        <h1>상상이 출발하고,<br />아이디어가 다음 역으로 이어지는 곳</h1>
-        <p class="event-date"><strong>2026.11.19.(목) ~ 11.22.(일)</strong></p>
-        <p>
-          안내데스크 앞 <strong>출발역</strong>에서는 청소년들이 올해 직접 만든 메이커 작품을 가장 먼저 만날 수 있습니다.
-          작품을 천천히 둘러본 뒤 강당 안 <strong>공방역 MAKE · 장면역 TAKE · 미래역 WAKE</strong>을 자유롭게 둘러보며
-          손으로 만들고, 장면을 기록하고, 새로운 기술을 직접 경험해보세요.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="#route">전시 노선도 보기</a>
-          <a class="button ghost" href="reserve.html">승차권 예약하기</a>
-        </div>
+    <!-- Poster composition only. Booking continues to the existing reserve.html. -->
+    <section class="exhibit-poster home-wrap" aria-labelledby="hero-title">
+      <svg class="poster-rails" viewBox="0 0 1280 570" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <g fill="none" stroke-width="9">
+          <path stroke="#54906c" d="M-20 392H106Q140 392 164 416L218 470Q242 494 276 494H1020Q1074 494 1074 440V82Q1074 48 1108 48H1300"/>
+          <path stroke="#dd8853" d="M-20 416H92Q126 416 150 440L204 494Q228 518 262 518H1044Q1098 518 1098 464V106Q1098 72 1132 72H1300"/>
+          <path stroke="#6895bf" d="M-20 440H78Q112 440 136 464L190 518Q214 542 248 542H1068Q1122 542 1122 488V130Q1122 96 1156 96H1300"/>
+        </g>
+        <circle cx="110" cy="416" r="12" fill="#142c42" stroke="#f7f3e9" stroke-width="4"/>
+      </svg>
+      <div class="poster-masthead"><span><b>2026</b> <span>NEXT STOP</span></span><span>IDEA STATION <i aria-hidden="true">↗</i></span></div>
+      <h1 class="poster-title" id="hero-title" aria-label="2026 뚝딱이 전시회"><span>뚝딱이</span><span>전시회<i aria-hidden="true">↗</i></span></h1>
+      <div class="poster-dates" aria-label="2026년 11월 19일 목요일부터 11월 22일 일요일까지">
+        <span class="poster-date-label">EXHIBITION DATES / 2026</span>
+        <p><time datetime="2026-11-19">11.19</time><span>목요일<br>THU</span></p>
+        <p><i aria-hidden="true">—</i><time datetime="2026-11-22">11.22</time><span>일요일<br>SUN</span></p>
       </div>
-      <div class="ticket-card" aria-label="전시회 승차권 형태 요약 카드">
-        <div class="ticket-top">
-          <span class="ticket-brand"><img src="assets/ddookddakki-logo-2026.png" alt="" />BOARDING PASS</span>
-          <strong>뚝딱이 아이디어선</strong>
-        </div>
-        <div class="ticket-body">
-          <div>
-            <small>FROM</small>
-            <b>출발역</b>
-          </div>
-          <div>
-            <small>VIA</small>
-            <b>공방 · 장면 · 미래</b>
-          </div>
-          <div>
-            <small>TO</small>
-            <b>다음 아이디어</b>
-          </div>
-        </div>
-        <div class="ticket-stamp" aria-hidden="true">2026<br>출발!</div>
-        <div class="barcode" aria-hidden="true"></div>
+      <div class="poster-departure"><span aria-hidden="true">00</span><p><strong>출발역 · 메인 전시</strong><small>안내데스크 앞에서 시작하는 전시 여행</small></p></div>
+      <div class="poster-caption"><p>청소년의 상상이 <br>머무는 특별한 역.</p><span>안내데스크 앞 메이커 작품에서 시작해, <br>강당 안 MAKE · TAKE · WAKE를 자유롭게 만나보세요.</span><a href="#route">전시 노선도 보기 <b aria-hidden="true">↓</b></a></div>
+      <span class="poster-stamp" aria-hidden="true"><small>IDEA STATION</small><strong>ALL<br>ABOARD!</strong><small>2026 · 11</small></span>
+      <a class="poster-ticket" href="reserve.html" aria-label="승차권 예약하기">
+        <span class="poster-ticket-copy"><small>VISIT TICKET <i>EXH. 2026</i></small><strong>방문 승차권</strong><span>1시간 단위 방문 예약 · 여러 시간대 선택 가능</span></span>
+        <span class="poster-ticket-action">승차권 예약하기 <b aria-hidden="true">↗</b></span>
+        <span class="poster-ticket-stub" aria-hidden="true">MAKE / TAKE / WAKE</span>
+      </a>
+    </section>
+
+    <section class="home-route home-wrap" id="route" aria-labelledby="route-title">
+      <div class="home-section-head"><div><span class="home-kicker">EXHIBITION ROUTE</span><h2 id="route-title">전시 노선도</h2></div><p>출발역에서 메인 전시를 관람한 뒤, 강당 안 세 개의 체험역을 자유롭게 둘러보세요.</p></div>
+      <!-- 노선도는 이동 흐름만 안내합니다. 프로그램은 #stations에만 추가합니다. -->
+      <div class="home-route-map" aria-label="출발역 메인 전시에서 강당으로 이동하여 세 체험역을 자유롭게 선택하고 하차 후기를 남기는 동선">
+        <a class="home-route-end home-route-start" href="#departure-exhibit"><span class="home-route-dot" aria-hidden="true"></span><strong>출발역</strong><span>안내데스크 앞 · 메인 전시</span></a>
+        <div class="home-route-hall"><div class="home-route-hall-title"><strong>강당 체험역</strong><span>세 역 중 자유롭게 선택</span></div><div class="home-route-branches"><a class="home-route-branch home-make" href="#make"><span><i aria-hidden="true">01</i><strong>공방역 MAKE</strong><small>만들기 체험</small></span></a><a class="home-route-branch home-take" href="#take"><span><i aria-hidden="true">02</i><strong>장면역 TAKE</strong><small>사진·이미지 체험</small></span></a><a class="home-route-branch home-wake" href="#wake"><span><i aria-hidden="true">03</i><strong>미래역 WAKE</strong><small>AI·AR 체험</small></span></a></div></div>
+        <a class="home-route-end" href="#review"><span class="home-route-dot" aria-hidden="true"></span><strong>하차 후기</strong><span>오늘의 전시 여행 기록</span></a>
       </div>
     </section>
 
-    <section class="notice-strip" aria-label="운영 정보 요약">
-      <div><b>장소</b><span>안내데스크 앞 + 강당</span></div>
-      <div><b>강당</b><span>공방역 · 장면역 · 미래역 체험부스</span></div>
-      <div><b>참여</b><span>상시 체험 + 시간대별 예약 프로그램</span></div>
-    </section>
-    <div class="track-divider" aria-hidden="true"><span></span></div>
-
-    <section class="section-pad compact-route-section" id="route">
-      <div class="section-title">
-        <span class="eyebrow">EXHIBITION ROUTE</span>
-        <h2>전시 노선도</h2>
-        <p>출발역에서 메인 전시를 관람한 뒤, 강당 안 세 개의 체험역을 자유롭게 둘러보세요.</p>
-      </div>
-
-      <div class="compact-route" aria-label="출발역에서 강당 체험역을 자유롭게 둘러본 뒤 하차 후기로 이어지는 전시 동선">
-        <article class="compact-route-stop start"><span>01</span><div><h3>출발역</h3><p>메인 전시</p></div></article>
-        <div class="compact-route-arrow" aria-hidden="true">↓</div>
-        <section class="auditorium-route-group">
-          <header><span>02</span><div><h3>강당 체험역</h3><p>원하는 체험역을 자유롭게 선택하세요.</p></div></header>
-          <div class="auditorium-route-options">
-            <article class="make"><h4>공방역 <small>MAKE</small></h4><p>만들기 체험</p></article>
-            <article class="take"><h4>장면역 <small>TAKE</small></h4><p>사진·이미지 체험</p></article>
-            <article class="wake"><h4>미래역 <small>WAKE</small></h4><p>AI·VR 체험</p></article>
-          </div>
-        </section>
-        <div class="compact-route-arrow" aria-hidden="true">↓</div>
-        <article class="compact-route-stop review"><span>03</span><div><h3>하차 후기</h3><p>참여 후기</p></div></article>
-      </div>
-    </section>
-
-    <section class="section-pad departure-exhibit" id="departure-exhibit">
-      <p class="station-announcement"><span>출발 안내</span> 올해 청소년들이 직접 만든 작품을 만나는 곳, 출발역에서 전시 여행을 시작합니다.</p>
-      <div class="section-title">
-        <span class="eyebrow">DEPARTURE STATION · MAIN EXHIBITION</span>
-        <h2>출발역 메인 전시</h2>
-        <p>안내데스크 앞은 단순한 안내 공간이 아니라 이번 전시의 첫 번째이자 가장 큰 작품 전시 공간입니다. 한 해 동안 청소년들이 뚝딱이 창의공작소에서 직접 만들고 완성한 결과물과 그 과정을 먼저 만나보세요.</p>
-      </div>
-      <div class="platform-grid">
-        <article class="platform-card"><b>01</b><div><h3>올해의 메이커 작품</h3><p>청소년들이 직접 제작한 목공·디지털 제작·메이커 결과물을 전시합니다.</p></div></article>
-        <article class="platform-card"><b>02</b><div><h3>제작 과정 기록</h3><p>활동 사진, 제작 과정, 아이디어 스케치 등을 함께 소개합니다.</p></div></article>
-        <article class="platform-card"><b>03</b><div><h3>출발역 관람 동선</h3><p>안내데스크 앞 메인 전시를 관람한 뒤 강당 체험부스로 이동합니다.</p></div></article>
-        <article class="platform-card"><b>04</b><div><h3>관람 후 이동</h3><p>메인 전시를 둘러본 뒤 강당 체험역으로 이동합니다.</p></div></article>
-      </div>
-    </section>
-
-    <section class="section-pad tinted" id="stations">
-      <p class="station-announcement"><span>강당 진입 안내</span> 다음 역부터는 보고 지나가는 전시가 아니라 직접 손을 움직이는 체험 구간입니다.</p>
-      <div class="section-title">
-        <span class="eyebrow">AUDITORIUM EXPERIENCE LINE</span>
-        <h2>강당 안 세 개의 체험역</h2>
-        <p>강당 안 체험부스는 만들기, 기록하기, 미래 기술 만나기의 흐름으로 이어집니다. 마음이 가는 역부터 둘러봐도 좋고, 노선을 따라 차례로 이동해도 좋습니다.</p>
-      </div>
-      <div class="info-grid station-guide-grid">
-        <article class="info-card make-border"><h3>공방역 MAKE</h3><p class="station-description">손으로 만들고 직접 완성하는 메이커 체험 공간입니다.</p><div class="station-program-groups"><section class="station-program-group" data-program-type="onsite"><h4 class="station-operation">현장 운영</h4><p class="operation-note">시간대 예약 후 운영 상황에 따라 참여할 수 있습니다.</p>
-          <div class="station-program-entry"><strong>작은 메이커공방</strong><p>재료를 고르고, 상상을 그리고, 직접 만들어보는 나만의 작업실</p></div>
-          <div class="station-program-entry"><strong>새김 네임택</strong><p>우드버닝으로 목재에 이름과 원하는 문양을 새겨 특별한 네임택을 완성하는 목공 체험입니다.</p></div>
-          <div class="station-program-entry"><strong>나만의 역명판 만들기</strong><p>목재를 활용해 직접 역 이름을 정하고, 기차역 표지판 형태의 나만의 역명판을 만들어보는 목공 체험입니다.</p></div>
-        </section></div><!-- 새 프로그램은 이 현장 운영 그룹 안에 추가합니다. --></article>
-        <article class="info-card take-border"><h3>장면역 TAKE</h3><p class="station-description">사진과 이미지를 활용해 나만의 장면을 만들고 기록하는 체험 공간입니다.</p><div class="station-program-groups"><section class="station-program-group" data-program-type="onsite"><h4 class="station-operation">현장 운영</h4><p class="operation-note">시간대 예약 후 운영 상황에 따라 참여할 수 있습니다.</p>
-          <div class="station-program-entry"><strong>AI 프로필 제작소</strong><p>사진을 AI 이미지로 변환해 나만의 새로운 프로필 이미지를 만들어보는 체험입니다.</p></div>
-          <div class="station-program-entry"><strong>오늘의 장면 포스터</strong><p>AI로 생성된 이미지를 활용해 배경과 주제, 스타일을 선택하고 포스터 콘텐츠로 재구성하는 체험입니다.</p></div>
-          <div class="station-program-entry"><strong>레코드 스튜디오</strong><p>촬영하거나 생성한 이미지를 활용해 앨범 아트와 레코드 형태의 콘텐츠를 만들어보는 체험입니다.</p></div>
-        </section></div><!-- 새 프로그램은 이 현장 운영 그룹 안에 추가합니다. --></article>
-        <article class="info-card wake-border"><h3>미래역 WAKE</h3><p class="station-description">AI, VR 등 새로운 기술을 활용해 미래의 가능성을 경험하는 체험 공간입니다.</p><div class="station-program-groups"><section class="station-program-group" data-program-type="onsite"><h4 class="station-operation">현장 운영</h4><p class="operation-note">시간대 예약 후 운영 상황에 따라 참여할 수 있습니다.</p>
-          <div class="station-program-entry"><strong>2126 AI 미래특허청</strong><p>지금의 물건 2~3개를 활용해 AI가 각 물건의 기능을 분석하고, 2126년에 존재할 법한 새로운 발명품과 미래 제품 이미지를 만들어보는 체험입니다.</p></div>
-          <div class="station-program-entry"><strong>피사의 뚝딱</strong><p>다양한 오브젝트를 쌓아 무너지지 않도록 높은 구조물을 만들어보는 게임형 체험입니다. 손동작을 활용해 오브젝트를 움직이며 균형과 높이에 도전합니다.</p></div>
-          <div class="station-program-entry"><strong>AR 색칠탐험</strong><p>Quiver를 활용해 내가 색칠한 그림이 화면 속에서 살아 움직이는 모습을 확인해보는 AR 체험입니다.</p></div>
-        </section></div><!-- 새 프로그램은 이 현장 운영 그룹 안에 추가합니다. --></article>
-      </div>
-    </section>
-
-    <section class="section-pad" id="programs">
-      <p class="station-announcement"><span>승강장 안내</span> 시간대별로 운영되는 예약 프로그램은 승차권 예약이 필요합니다.</p>
-      <div class="section-title">
-        <span class="eyebrow">PROGRAMS</span>
-        <h2>예약 프로그램</h2>
-        <p>정해진 시간에 진행되는 예약형 체험입니다. 참여할 프로그램과 시간을 선택한 뒤 승차권을 발급해 주세요.</p>
-      </div>
-
-      <article class="panel reservation-main-card" id="reservation">
-        <div class="panel-kicker">시간대별 예약</div>
-        <h3>예약 프로그램</h3>
-        <p class="ticket-issue-note">예약이 완료되면 현장에서 확인할 수 있는 개인 승차권이 발급됩니다.</p>
-        <ul class="check-list">
-          <li><strong>예약 프로그램 1</strong><span>테스트용 임시 프로그램명</span></li>
-          <li><strong>예약 프로그램 2</strong><span>테스트용 임시 프로그램명</span></li>
-          <li><strong>예약 프로그램 3</strong><span>테스트용 임시 프로그램명</span></li>
-          <li><strong>예약 프로그램 4</strong><span>테스트용 임시 프로그램명</span></li>
-        </ul>
-        <a class="button primary wide" href="reserve.html">승차권 예약하기</a>
-        <a class="text-link centered" href="my-ticket.html">이미 예약했다면 내 승차권 확인 →</a>
-      </article>
-    </section>
-
-    <section class="section-pad fablab-section" id="makers">
-      <div class="section-title fablab-title"><span class="eyebrow">YOUTH FABLAB</span><h2>후기청소년 FabLab</h2><p>후기청소년들이 직접 기획한 체험형 프로젝트를 현장에서 만나볼 수 있습니다.</p></div>
-      <article class="panel maker-panel">
-        <div class="team-grid">
-          <div class="team-card wake-border"><b>1팀</b><h4>커스텀 키캡 키링</h4><p>사전 출력한 키캡·파츠를 활용해 나만의 키링을 완성합니다.</p></div>
-          <div class="team-card make-border"><b>2팀</b><h4>집게리아 부스</h4><p>보드게임 ‘꼬치의 달인’처럼 모양을 보고 재료를 맞추는 미션형 체험입니다.</p></div>
-          <div class="team-card make-border"><b>3팀</b><h4>쥬라기 월드</h4><p>공룡 퀴즈와 공룡 화석 조각 찾기를 결합한 탐험형 체험입니다.</p></div>
-          <div class="team-card take-border"><b>4팀</b><h4>포토키링</h4><p>촬영한 사진을 활용해 나만의 포토키링을 제작합니다.</p></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="section-pad" id="visit">
-      <p class="station-announcement"><span>관람 안내</span> 전시 관람과 체험 참여가 가능한 시간을 확인해 주세요.</p>
-      <div class="section-title">
-        <span class="eyebrow">VISIT GUIDE</span>
-        <h2>전시 및 체험 운영시간</h2>
-        <p>실제 전시 관람 및 체험역 참여가 가능한 시간을 안내합니다.</p>
-      </div>
-
-      <div class="operation-guide-grid">
-        <article class="info-card operation-card">
-          <h3>전시</h3>
-          <strong class="operation-type">상시 운영</strong>
-          <dl class="operation-details"><div><dt>운영기간</dt><dd>2026.11.19.(목) ~ 2026.11.22.(일)</dd></div></dl>
-          <p>안내데스크 앞 메인 전시 공간에서 청소년들이 제작한 메이커 작품과 활동 결과물을 관람할 수 있습니다.</p>
+    <section class="home-stations home-wrap" id="stations" aria-labelledby="stations-title">
+      <div class="home-section-head"><div><span class="home-kicker">MAKE · TAKE · WAKE</span><h2 id="stations-title">강당 안 세 개의 체험역</h2></div><p>목공 · 이미지/콘텐츠 · 미래기술<br>정해진 순서 없이 자유롭게 참여해요.</p></div>
+      <p class="home-operation-note"><strong>시간대 예약 후 현장 참여</strong><span>각 프로그램은 현장 운영 상황에 따라 참여할 수 있습니다. 수업형 프로그램은 현장에서 지도자가 진행합니다.</span></p>
+      <div class="home-platforms">
+        <article class="home-platform home-make" id="make" aria-labelledby="make-title">
+          <div class="home-platform-top"><span>PLATFORM <b>01</b></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m8 25 16-16M16 6l4-4 10 10-4 4M3 22l4-4 7 7-4 4z"/></svg></div>
+          <header><h3 id="make-title">공방역 <span>MAKE</span></h3><p>목공 · 손으로 완성하는 메이커 체험</p></header>
+          <ol class="home-program-list">
+            <li><span>01</span><div><h4>작은 메이커공방</h4><p>재료를 고르고 상상을 직접 완성하는 작업실</p></div></li>
+            <li><span>02</span><div><h4>새김 네임택</h4><p>우드버닝으로 이름과 문양을 새기는 목공 체험</p></div></li>
+            <li><span>03</span><div><h4>나만의 역명판 만들기</h4><p>역 이름을 정하고 목재 역명판을 만드는 체험</p></div></li>
+          </ol><details class="home-program-details"><summary>체험 자세히</summary><p>손으로 만들고 직접 완성하는 메이커 체험 공간입니다.</p><dl><div><dt>작은 메이커공방</dt><dd>재료를 고르고, 상상을 그리고, 직접 만들어보는 나만의 작업실</dd></div><div><dt>새김 네임택</dt><dd>우드버닝으로 목재에 이름과 원하는 문양을 새겨 특별한 네임택을 완성하는 목공 체험입니다.</dd></div><div><dt>나만의 역명판 만들기</dt><dd>목재를 활용해 직접 역 이름을 정하고, 기차역 표지판 형태의 나만의 역명판을 만들어보는 목공 체험입니다.</dd></div></dl></details>
         </article>
-        <article class="info-card operation-card station-hours-card">
-          <h3>체험역 운영시간</h3>
-          <strong class="operation-type">운영시간 내 운영</strong>
-          <p>공방역 MAKE · 장면역 TAKE · 미래역 WAKE에서 체험 프로그램을 운영합니다.</p>
-          <dl class="hours-list"><div><dt>목요일 ~ 금요일</dt><dd>15:00 ~ 22:00</dd></div><div><dt>토요일</dt><dd>09:00 ~ 18:00</dd></div><div><dt>일요일</dt><dd>10:00 ~ 18:00</dd></div></dl>
+        <article class="home-platform home-take" id="take" aria-labelledby="take-title">
+          <div class="home-platform-top"><span>PLATFORM <b>02</b></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 9h7l2-4h8l2 4h7v18H3z"/><circle cx="16" cy="18" r="6"/></svg></div>
+          <header><h3 id="take-title">장면역 <span>TAKE</span></h3><p>이미지·콘텐츠 · 나만의 장면 만들기</p></header>
+          <ol class="home-program-list">
+            <li><span>01</span><div><h4>AI 프로필 제작소</h4><p>사진을 AI 이미지로 바꾸는 나만의 프로필</p></div></li>
+            <li><span>02</span><div><h4>오늘의 장면 포스터</h4><p>AI 이미지의 배경·주제·스타일로 만드는 포스터</p></div></li>
+            <li><span>03</span><div><h4>레코드 스튜디오</h4><p>사진과 생성 이미지로 앨범 아트·레코드 만들기</p></div></li>
+          </ol><details class="home-program-details"><summary>체험 자세히</summary><p>사진과 이미지를 활용해 나만의 장면을 만들고 기록하는 체험 공간입니다.</p><dl><div><dt>AI 프로필 제작소</dt><dd>사진을 AI 이미지로 변환해 나만의 새로운 프로필 이미지를 만들어보는 체험입니다.</dd></div><div><dt>오늘의 장면 포스터</dt><dd>AI로 생성된 이미지를 활용해 배경과 주제, 스타일을 선택하고 포스터 콘텐츠로 재구성하는 체험입니다.</dd></div><div><dt>레코드 스튜디오</dt><dd>촬영하거나 생성한 이미지를 활용해 앨범 아트와 레코드 형태의 콘텐츠를 만들어보는 체험입니다.</dd></div></dl></details>
         </article>
-        <article class="info-card operation-card">
-          <h3>예약 프로그램</h3>
-          <strong class="operation-type">지정 시간 운영</strong>
-          <p>지정된 시간에 운영되는 체험 프로그램입니다. 원하는 프로그램과 시간을 선택하여 승차권 발급 후 참여합니다.</p>
-        </article>
-        <article class="info-card operation-card contact-card">
-          <h3>문의</h3>
-          <p>기관·단체 참가 및 전시 관련 문의는 담당자에게 연락해 주세요.</p>
-          <dl class="contact-details"><div><dt>전화</dt><dd><a href="tel:02-490-0316">02-490-0316</a></dd></div></dl>
+        <article class="home-platform home-wake" id="wake" aria-labelledby="wake-title">
+          <div class="home-platform-top"><span>PLATFORM <b>03</b></span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 24v-3c-9-7-4-17 5-17s14 10 5 17v3zM11 28h10M13 31h6M16 9v8M12 13h8"/></svg></div>
+          <header><h3 id="wake-title">미래역 <span>WAKE</span></h3><p>미래기술 · AI·AR로 만나는 가능성</p></header>
+          <ol class="home-program-list">
+            <li><span>01</span><div><h4>2126 AI 미래특허청</h4><p>물건 2~3개의 기능을 조합하는 2126년 발명품</p></div></li>
+            <li><span>02</span><div><h4>피사의 뚝딱</h4><p>손동작으로 오브젝트를 쌓아 균형과 높이에 도전</p></div></li>
+            <li><span>03</span><div><h4>AR 색칠탐험</h4><p>내가 색칠한 그림이 살아 움직이는 AR 체험</p></div></li>
+          </ol><details class="home-program-details"><summary>체험 자세히</summary><p>AI, AR 등 새로운 기술을 활용해 미래의 가능성을 경험하는 체험 공간입니다.</p><dl><div><dt>2126 AI 미래특허청</dt><dd>지금의 물건 2~3개를 활용해 AI가 각 물건의 기능을 분석하고, 2126년에 존재할 법한 새로운 발명품과 미래 제품 이미지를 만들어보는 체험입니다.</dd></div><div><dt>피사의 뚝딱</dt><dd>다양한 오브젝트를 쌓아 무너지지 않도록 높은 구조물을 만들어보는 게임형 체험입니다. 손동작을 활용해 오브젝트를 움직이며 균형과 높이에 도전합니다.</dd></div><div><dt>AR 색칠탐험</dt><dd>내가 색칠한 그림이 화면 속에서 살아 움직이는 모습을 확인해보는 AR 체험입니다.</dd></div></dl></details>
         </article>
       </div>
-      <div class="exit-ticket">
-        <div>
-          <span class="eyebrow">LAST STOP</span>
-          <h3>오늘의 전시 여행은 어땠나요?</h3>
-          <p>짧은 후기를 남겨주시면 다음 뚝딱이 전시를 만드는 데 큰 힘이 됩니다.</p>
-        </div>
-        <a class="button primary" data-review-link href="https://docs.google.com/forms/d/e/1FAIpQLSdcm16Ix4SaaYV9xdZQv9fclo86l6voivmoLt5J2GnSL_pemA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" aria-describedby="review-note">하차 후기 남기기</a>
-        <small id="review-note">Google Forms 만족도 조사 페이지가 새 창에서 열립니다.</small>
-      </div>
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <img class="footer-logo" src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소 로고" />
-    <div class="footer-copy">
-      <strong>2026 뚝딱이 전시회</strong>
-      <p>2026.11.19.(목) ~ 11.22.(일) · 공방역 MAKE · 장면역 TAKE · 미래역 WAKE</p>
+    <div class="home-side-platforms home-wrap">
+      <section class="home-exhibit" id="departure-exhibit" aria-labelledby="exhibit-title">
+        <div class="home-section-head"><div><span class="home-kicker">DEPARTURE · 안내데스크 앞</span><h2 id="exhibit-title">출발역 메인 전시</h2></div><span class="home-station-code" aria-hidden="true">00 / START</span></div>
+        <p class="home-exhibit-lead">청소년들이 직접 만든 올해의 메이커 작품, 제작 과정과 활동 기록을 만나요.</p>
+        <!-- 실제 작품 사진 준비 후 .home-photo-placeholder를 img로 교체합니다. -->
+        <div class="home-gallery" aria-label="메이커 작품과 활동 기록 사진 준비 영역">
+          <!-- 실제 작품 사진 준비 후 각 figure 안의 .home-photo-placeholder를 img로 교체합니다.
+               .home-gallery img는 영역 비율을 유지합니다. 사진의 실제 내용을 alt에 적어 주세요. -->
+          <figure class="home-photo home-photo-feature"><div class="home-photo-placeholder"><span class="home-archive-label">2026 뚝딱이 / 작품 기록</span><span class="home-photo-number" aria-hidden="true">01</span><div><strong>상상이 작품이 되는 순간</strong><span>올해의 메이커 작품 사진을 준비하고 있어요.</span></div></div><figcaption>01 <span>올해의 메이커 작품</span><span aria-hidden="true">↗</span></figcaption></figure>
+          <figure class="home-photo"><div class="home-photo-placeholder"><span class="home-photo-number" aria-hidden="true">02</span><span>스케치에서 완성까지</span></div><figcaption>02 <span>제작 과정 기록</span></figcaption></figure>
+          <figure class="home-photo"><div class="home-photo-placeholder"><span class="home-photo-number" aria-hidden="true">03</span><span>함께 만든 시간들</span></div><figcaption>03 <span>활동 기록</span></figcaption></figure>
+        </div>
+        <details class="home-exhibit-details"><summary>작품·제작 과정·활동 기록 살펴보기</summary><h3>먼저, 올해의<br>메이커 작품을 만나요.</h3><p>안내데스크 앞은 전시 여행의 시작점이자 메인 작품 전시 공간입니다. 청소년들이 뚝딱이 창의공작소에서 한 해 동안 직접 만들고 완성한 결과물과 그 과정을 만나보세요.</p><ol class="home-exhibit-list"><li><span>01</span><div><h4>올해의 메이커 작품</h4><p>청소년들이 직접 제작한 목공·디지털 제작·메이커 결과물을 전시합니다.</p></div></li><li><span>02</span><div><h4>제작 과정 기록</h4><p>제작 과정과 아이디어 스케치를 함께 소개합니다.</p></div></li><li><span>03</span><div><h4>활동 기록</h4><p>활동 사진으로 함께 만들고 완성해 온 시간을 돌아봅니다.</p></div></li><li><span>04</span><div><h4>관람 후 이동</h4><p>메인 전시를 둘러본 뒤 강당 체험역으로 이동합니다.</p></div></li></ol></details>
+        <p class="home-next-stop"><span>NEXT STOP</span> 메인 전시를 둘러본 뒤 강당 체험역으로 이동합니다. <b aria-hidden="true">→</b></p>
+      </section>
+      <section class="home-fablab" id="makers" aria-labelledby="fablab-title">
+      <div class="home-section-head"><div><span class="home-kicker">SIDE PLATFORM · YOUTH FABLAB</span><h2 id="fablab-title">후기청소년 FabLab</h2></div><p>후기청소년들이 직접 기획한 체험형 프로젝트를 현장에서 만나볼 수 있습니다.</p></div>
+      <div class="home-team-list"><article><span>1팀</span><h3>키캡 DIY : 나만의 키캡 만들기</h3><p>키캡과 다양한 파츠를 활용해 직접 꾸미고 완성하는 커스텀 키캡 체험입니다.</p></article><article><span>2팀</span><h3>뚝딱 버거 미션</h3><p>제시된 모양을 보고 재료 파츠를 맞춰 버거를 완성하는 미션형 체험입니다.</p></article><article><span>3팀</span><h3>공룡 화석 탐험대</h3><p>공룡 퀴즈를 풀고 숨겨진 화석 조각을 찾아보는 탐험형 체험입니다.</p></article><article><span>4팀</span><h3>찰칵 포토키링</h3><p>촬영한 사진을 활용해 포토키링을 제작하는 체험입니다.</p></article></div>
+    </section>
     </div>
-    <a href="#top">맨 위로</a>
-  </footer>
+
+    <section class="home-booking home-wrap" id="programs" aria-labelledby="booking-title">
+      <div class="home-visit-pass" id="reservation">
+        <div class="home-visit-pass-copy"><span class="home-kicker">VISIT TICKET</span><h2 id="booking-title">방문 시간대 예약</h2><p><strong>1시간 단위 · 복수 선택 가능</strong> — 원하는 방문 날짜와 시간을 선택해 주세요.</p><p class="home-booking-purpose">특정 프로그램 신청이 아닌, 시간대별 방문 인원 파악을 위한 예약입니다.</p><p class="home-issue-note">예약이 완료되면 현장에서 확인할 수 있는 개인 승차권이 발급됩니다.</p></div>
+        <div class="home-visit-pass-action"><a class="home-button" href="reserve.html">승차권 예약하기 <span aria-hidden="true">→</span></a><a class="home-inline-link" href="my-ticket.html">이미 예약했다면 내 승차권 확인 →</a></div>
+      </div>
+    </section>
+
+    <section class="home-guide" id="visit" aria-labelledby="guide-title"><div class="home-wrap">
+      <div class="home-section-head"><div><span class="home-kicker">VISIT GUIDE</span><h2 id="guide-title">전시 및 체험 운영시간</h2></div><p>2026.11.19.(목) ~ 2026.11.22.(일)</p></div>
+      <div class="home-guide-grid"><div class="home-timetable"><h3>체험역 운영시간</h3><table><caption class="home-sr-only">요일별 체험역 운영시간</caption><thead><tr><th scope="col">운영일</th><th scope="col">시간</th></tr></thead><tbody><tr><th scope="row">목요일 ~ 금요일<small>11.19. — 11.20.</small></th><td>15:00 <span>~</span> 22:00</td></tr><tr><th scope="row">토요일<small>11.21.</small></th><td>09:00 <span>~</span> 18:00</td></tr><tr><th scope="row">일요일<small>11.22.</small></th><td>10:00 <span>~</span> 18:00</td></tr></tbody></table></div><div class="home-contact"><div><span class="home-kicker">CONTACT</span><h3>문의</h3><p>기관·단체 참가 및 전시 관련 문의는 담당자에게 연락해 주세요.</p></div><a href="tel:02-490-0316">02-490-0316 <span aria-hidden="true">↗</span></a></div><div class="home-review" id="review"><div><span class="home-kicker">LAST STOP</span><h3>오늘의 전시 여행은 어땠나요?</h3><p>짧은 후기가 다음 뚝딱이 전시를 만드는 데 큰 힘이 됩니다.</p></div><div><a class="home-button home-button-outline" data-review-link href="https://docs.google.com/forms/d/e/1FAIpQLSdcm16Ix4SaaYV9xdZQv9fclo86l6voivmoLt5J2GnSL_pemA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" aria-describedby="review-note">하차 후기 남기기 <span aria-hidden="true">↗</span></a><small id="review-note">Google Forms 만족도 조사가 새 창에서 열립니다.</small></div></div></div>
+      <details class="home-guide-details"><summary>전시 관람·방문 예약 안내</summary><div class="home-guide-info"><span class="home-kicker">전시 운영기간</span><p class="home-guide-date">2026.11.19.<small>목요일</small><span>— 11.22.</span><small>일요일</small></p><h3>전시 · 운영시간 내 관람</h3><p>안내데스크 앞 메인 전시 공간에서 청소년들이 제작한 메이커 작품과 활동 결과물을 관람할 수 있습니다.</p><h3>시간대 예약</h3><p>원활한 현장 운영을 위해 방문 날짜와 시간대를 예약해 주세요. 현장에서는 각 프로그램 운영 상황에 따라 참여합니다.</p></div></details>
+    </div></section>
+  </main>
+  <footer class="home-footer"><div class="home-wrap"><a class="home-brand" href="#top"><img src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소 로고" width="46" height="46"><span><strong>2026 뚝딱이 전시회</strong><small>NEXT STOP, IDEA STATION</small></span></a><p>작은 상상에서 시작된, 우리들의 다음 역.</p><a class="home-inline-link" href="#top">맨 위로 ↑</a></div></footer>
 </body>
 </html>
