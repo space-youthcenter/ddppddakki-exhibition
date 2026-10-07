@@ -207,7 +207,8 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-photo figcaption>span:first-child { font:650 11px/1.6 system-ui,sans-serif; }
 .home-photo-feature figcaption { transform:rotate(-.6deg); }
 .home-gallery img { display:block; width:100%; height:88px; object-fit:cover; }
-.home-photo-feature img { height:218px; }
+.home-photo-process img,.home-photo-activities img { object-fit:contain; background:#f1f0e6; }
+.home-photo-feature img { height:218px; object-fit:contain; background:#1e1f1d; }
 .home-exhibit-details { padding-top:12px; font-size:14px; }
 .home-exhibit-details>h3 { margin-block:12px 8px; font-size:20px; }
 .home-exhibit-list { list-style:none; padding:0; margin:12px 0 0; }
