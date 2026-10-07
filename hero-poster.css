@@ -17,24 +17,24 @@
   z-index:5;
 }
 .exhibit-poster .poster-rails { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
-.exhibit-poster .poster-masthead { position:absolute; top:27px; left:44px; right:44px; display:flex; align-items:center; justify-content:space-between; font:700 13px/1.4 ui-monospace,monospace; letter-spacing:.15em; }
+.exhibit-poster .poster-masthead { position:absolute; top:27px; left:44px; right:44px; display:flex; align-items:center; justify-content:space-between; font:700 13px/1.4 var(--home-font); letter-spacing:.15em; }
 .exhibit-poster .poster-masthead>span:first-child { display:flex; align-items:center; gap:19px; }
 .exhibit-poster .poster-masthead b { font-size:34px; line-height:1; letter-spacing:-.03em; }
 .exhibit-poster .poster-masthead>span:first-child>span { color:#ebbf62; border-left:1px solid #f7f3e970; padding-left:19px; }
 .exhibit-poster .poster-masthead>span:last-child { padding:4px 8px; background:#142c42; }
 .exhibit-poster .poster-masthead i { font-style:normal; font-size:22px; margin-left:12px; }
 .exhibit-poster .poster-title { position:absolute; top:80px; left:37px; font-size:clamp(112px,13.2vw,180px); font-weight:900; letter-spacing:-.085em; line-height:.98; }
-.exhibit-poster .poster-title>span { display:block; width:fit-content; }
+.exhibit-poster .poster-title>span { display:block; width:max-content; white-space:nowrap; overflow-wrap:normal; }
 .exhibit-poster .poster-title>span:last-child { margin-left:152px; }
 .exhibit-poster .poster-title i { display:inline-block; margin-left:12px; color:#ebbf62; font-style:normal; font-size:.64em; font-weight:500; vertical-align:14%; }
 .exhibit-poster .poster-dates { position:absolute; top:106px; right:46px; padding:0 12px 7px; background:#142c42; }
-.exhibit-poster .poster-date-label { font:700 10px/1.4 ui-monospace,monospace; letter-spacing:.13em; color:#b7c6cf; }
+.exhibit-poster .poster-date-label { font:700 10px/1.4 var(--home-font); letter-spacing:.13em; color:#b7c6cf; }
 .exhibit-poster .poster-dates p { display:flex; align-items:center; justify-content:flex-end; gap:13px; }
-.exhibit-poster .poster-dates time { font:700 64px/1.15 ui-monospace,monospace; letter-spacing:-.08em; }
-.exhibit-poster .poster-dates p>span { font:600 11px/1.5 system-ui,sans-serif; color:#d2dae0; }
-.exhibit-poster .poster-dates i { font:400 33px/1 ui-monospace,monospace; color:#ebbf62; }
+.exhibit-poster .poster-dates time { font:700 64px/1.15 var(--home-font); letter-spacing:-.08em; font-variant-numeric:tabular-nums; }
+.exhibit-poster .poster-dates p>span { font:600 11px/1.5 var(--home-font); color:#d2dae0; }
+.exhibit-poster .poster-dates i { font:400 33px/1 var(--home-font); color:#ebbf62; }
 .exhibit-poster .poster-departure { position:absolute; top:287px; right:66px; display:flex; gap:12px; align-items:center; padding:8px 0; background:#142c42; }
-.exhibit-poster .poster-departure>span { display:grid; place-items:center; width:38px; height:38px; flex-shrink:0; border:2px solid #f7f3e9; border-radius:50%; font:700 15px/1 ui-monospace,monospace; }
+.exhibit-poster .poster-departure>span { display:grid; place-items:center; width:38px; height:38px; flex-shrink:0; border:2px solid #f7f3e9; border-radius:50%; font:700 15px/1 var(--home-font); }
 .exhibit-poster .poster-departure strong { display:block; font-size:16px; }
 .exhibit-poster .poster-departure small { display:block; font-size:11px; color:#bdcbd1; }
 .exhibit-poster .poster-caption { position:absolute; left:43px; bottom:27px; width:290px; padding-right:8px; background:#142c42; }
@@ -42,17 +42,17 @@
 .exhibit-poster .poster-caption>span { display:block; font-size:11px; line-height:1.7; color:#c6d0d6; margin-block:7px; }
 .exhibit-poster .poster-caption>a { display:inline-flex; align-items:center; gap:26px; font-size:12px; font-weight:750; border-bottom:1px solid #bac4c9; padding-bottom:2px; }
 .exhibit-poster .poster-stamp { position:absolute; right:340px; bottom:151px; z-index:3; display:grid; place-content:center; width:91px; height:91px; border:4px double #e9bf6b; border-radius:50%; color:#e9bf6b; background:#142c42; text-align:center; transform:rotate(13deg); }
-.exhibit-poster .poster-stamp strong { font:850 17px/1 ui-monospace,monospace; margin-block:4px; }
-.exhibit-poster .poster-stamp small { font:700 7px/1.5 ui-monospace,monospace; letter-spacing:.08em; }
+.exhibit-poster .poster-stamp strong { font:850 17px/1 var(--home-font); margin-block:4px; }
+.exhibit-poster .poster-stamp small { font:700 7px/1.5 var(--home-font); letter-spacing:.08em; }
 .exhibit-poster .poster-ticket { position:absolute; z-index:2; left:32%; right:-5px; bottom:36px; display:grid; grid-template-columns:minmax(0,1fr) 235px 40px; align-items:stretch; min-height:116px; color:#142c42; background:#f8eed5; transform:rotate(-3deg); box-shadow:0 5px 0 #081a29; clip-path:polygon(0 0,100% 0,100% 100%,0 100%,0 59%,1.2% 54%,1.2% 46%,0 41%); }
 .exhibit-poster .poster-ticket-copy { display:flex; flex-direction:column; justify-content:center; gap:3px; padding:16px 26px; }
-.exhibit-poster .poster-ticket-copy>small { display:flex; justify-content:space-between; gap:10px; font:750 10px/1.4 ui-monospace,monospace; letter-spacing:.1em; }
+.exhibit-poster .poster-ticket-copy>small { display:flex; justify-content:space-between; gap:10px; font:750 10px/1.4 var(--home-font); letter-spacing:.1em; }
 .exhibit-poster .poster-ticket-copy i { font-style:normal; color:#6b716a; font-size:9px; }
 .exhibit-poster .poster-ticket-copy>strong { font-size:25px; line-height:1.5; letter-spacing:-.04em; }
 .exhibit-poster .poster-ticket-copy>span { font-size:12px; font-weight:600; }
 .exhibit-poster .poster-ticket-action { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 24px; border-left:1px dashed #6f796e; font-size:19px; font-weight:850; }
 .exhibit-poster .poster-ticket-action b { font-size:35px; font-weight:500; }
-.exhibit-poster .poster-ticket-stub { display:flex; align-items:center; justify-content:center; writing-mode:vertical-rl; background:#d5dccb; border-left:1px dashed #6f796e; font:700 9px/1 ui-monospace,monospace; letter-spacing:.09em; }
+.exhibit-poster .poster-ticket-stub { display:flex; align-items:center; justify-content:center; writing-mode:vertical-rl; background:#d5dccb; border-left:1px dashed #6f796e; font:700 9px/1 var(--home-font); letter-spacing:.09em; }
 .exhibit-poster .poster-ticket:hover { background:#fff8e7; }
 .exhibit-poster .poster-ticket:focus-visible { outline:4px solid #e9bf6b; outline-offset:-5px; }
 

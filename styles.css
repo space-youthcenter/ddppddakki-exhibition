@@ -101,7 +101,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 /* One exhibition poster. Its cream ticket strip is attached, not a floating card. */
 .home-hero { display:grid; grid-template-columns:minmax(0,1fr) 300px; margin-top:26px; border:2px solid var(--home-ink); background:var(--home-ink); color:var(--home-paper); }
 .home-poster-main { padding:22px 34px 24px; }
-.home-sign-top { display:flex; align-items:center; gap:20px; color:var(--home-gold); font:700 12px/1.5 ui-monospace,monospace; letter-spacing:.16em; }
+.home-sign-top { display:flex; align-items:center; gap:20px; color:var(--home-gold); font:700 12px/1.5 var(--home-font); letter-spacing:.16em; }
 .home-sign-top span:last-child { color:#c6d0d5; padding-left:20px; border-left:1px solid #78909d; }
 .home-poster-main h1 { font-size:clamp(48px,5.4vw,78px); letter-spacing:-.055em; line-height:1.12; margin-block:10px 12px; }
 .home-poster-main h1 small { display:block; font-size:26px; letter-spacing:.02em; font-weight:600; margin-bottom:3px; }
@@ -109,18 +109,18 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-poster-intro { font-size:14px; line-height:1.65; color:#d4dce0; margin-top:8px!important; }
 .home-poster-date { display:flex; flex-direction:column; justify-content:center; padding:22px 28px; border-left:1px solid #8194a06b; }
 .home-poster-date>p { display:flex; align-items:center; gap:14px; }
-.home-poster-date strong { font:700 43px/1.15 ui-monospace,monospace; letter-spacing:-.07em; }
+.home-poster-date strong { font:700 43px/1.15 var(--home-font); letter-spacing:-.07em; }
 .home-poster-date p>span { font-size:11px; }
 .home-poster-date>i { font-style:normal; font-size:21px; line-height:1.1; color:var(--home-gold); margin-left:47px; }
 .home-poster-date>.home-kicker { margin-bottom:10px; color:#c6d0d5; }
 .home-poster-lines { display:flex; margin-top:20px; gap:9px; }
-.home-poster-lines span { border-top:4px solid #6cac86; padding-top:5px; flex:1; font:700 10px/1.4 ui-monospace,monospace; }
+.home-poster-lines span { border-top:4px solid #6cac86; padding-top:5px; flex:1; font:700 10px/1.4 var(--home-font); }
 .home-poster-lines span:nth-child(2) { border-color:#e69a5e; }
 .home-poster-lines span:nth-child(3) { border-color:#71aee1; }
 .home-poster-ticket { grid-column:1/-1; display:grid; grid-template-columns:64px minmax(0,1fr) auto auto; align-items:center; gap:22px; padding:13px 28px; border-top:1px dashed #b0a88d; background:#fff8e5; color:var(--home-ink); }
 .home-poster-ticket p { font-size:14px; margin-top:3px; }
-.home-ticket-printmark { display:grid; place-content:center; width:58px; height:58px; border:3px double #8b6946; border-radius:50%; color:#8b6946; font:normal 7px/1.4 ui-monospace,monospace; text-align:center; transform:rotate(-12deg); }
-.home-ticket-printmark b { font:700 13px/1.6 system-ui,sans-serif; border-block:1px solid #8b694670; }
+.home-ticket-printmark { display:grid; place-content:center; width:58px; height:58px; border:3px double #8b6946; border-radius:50%; color:#8b6946; font:normal 7px/1.4 var(--home-font); text-align:center; transform:rotate(-12deg); }
+.home-ticket-printmark b { font:700 13px/1.6 var(--home-font); border-block:1px solid #8b694670; }
 .home-poster-ticket>.home-inline-link { font-size:13px; }
 
 /* Three parallel rails: choosing a platform is not a sequential route. */
@@ -144,7 +144,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-route-branch { min-height:38px; position:relative; display:flex; align-items:center; justify-content:center; }
 .home-route-branch::before { content:''; position:absolute; height:5px; left:-22px; right:-22px; background:var(--station-color); }
 .home-route-branch>span { position:relative; display:flex; align-items:center; width:min(310px,100%); padding-inline:10px; gap:9px; background:var(--home-paper); }
-.home-route-branch i { display:grid; place-items:center; width:26px; height:26px; border:2px solid var(--station-color); background:var(--station-color); color:#fff; border-radius:50%; flex-shrink:0; font:750 9px/1 ui-monospace,monospace; box-shadow:inset 0 0 0 2px var(--home-paper); }
+.home-route-branch i { display:grid; place-items:center; width:26px; height:26px; border:2px solid var(--station-color); background:var(--station-color); color:#fff; border-radius:50%; flex-shrink:0; font:750 9px/1 var(--home-font); box-shadow:inset 0 0 0 2px var(--home-paper); }
 .home-route-branch strong { color:var(--station-color); font-size:14px; white-space:nowrap; }
 .home-route-branch small { margin-left:auto; color:var(--home-muted); font-size:11px; }
 .home-make { --station-color:var(--home-make); }
@@ -172,7 +172,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-program-list { list-style:none; margin:0; padding:0 18px; }
 .home-program-list li { display:grid; grid-template-columns:21px 1fr; gap:9px; padding-block:12px; border-bottom:1px solid #deded4; }
 .home-program-list li:last-child { border-bottom:0; }
-.home-program-list li>span { color:var(--station-color); font:700 12px/1.9 ui-monospace,monospace; border-top:2px solid var(--station-color); }
+.home-program-list li>span { color:var(--station-color); font:700 12px/1.9 var(--home-font); border-top:2px solid var(--station-color); }
 .home-program-list h4 { font-size:18px; line-height:1.4; }
 .home-program-list p { margin-top:4px; font-size:14px; line-height:1.6; color:var(--home-muted); }
 .home-program-details { border-top:1px solid var(--station-color); background:#f3f1e8; padding:9px 18px; font-size:13px; }
@@ -188,7 +188,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-exhibit { min-width:0; padding:22px 26px; }
 .home-exhibit .home-section-head { margin-bottom:9px; }
 .home-exhibit .home-section-head h2 { font-size:28px; }
-.home-station-code { font:11px ui-monospace,monospace; padding:5px 8px; border:1px solid #acb2aa; white-space:nowrap; }
+.home-station-code { font:11px var(--home-font); padding:5px 8px; border:1px solid #acb2aa; white-space:nowrap; }
 .home-exhibit-lead { font-size:14px; color:#58625d; margin-bottom:18px!important; }
 .home-gallery { display:grid; grid-template-columns:1.8fr 1fr; gap:12px 16px; }
 .home-photo { position:relative; min-width:0; }
@@ -198,13 +198,13 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-photo-placeholder { position:relative; height:88px; border:1px solid #b5bab0; background:#f1f0e6; display:flex; flex-direction:column; align-items:start; justify-content:space-between; padding:12px; color:#58665b; }
 .home-photo-placeholder::after { content:''; position:absolute; inset:6px; border:1px solid #c2c6ba; clip-path:polygon(0 0,20% 0,20% 5%,80% 5%,80% 0,100% 0,100% 100%,80% 100%,80% 95%,20% 95%,20% 100%,0 100%); pointer-events:none; }
 .home-photo-feature .home-photo-placeholder { height:218px; padding:18px; background:#dbe0d3; }
-.home-archive-label { font:10px ui-monospace,monospace; letter-spacing:.06em; padding:3px 5px; border-bottom:1px dashed #81907d; }
+.home-archive-label { font:10px var(--home-font); letter-spacing:.06em; padding:3px 5px; border-bottom:1px dashed #81907d; }
 .home-photo-number { font-size:34px; line-height:1; font-weight:300; color:#7c887780; }
 .home-photo-feature .home-photo-number { font-size:60px; }
 .home-photo-placeholder strong { display:block; color:#344e3d; font-size:20px; letter-spacing:-.035em; }
 .home-photo-placeholder>span:last-child,.home-photo-placeholder div>span { font-size:11px; }
-.home-photo figcaption { display:flex; align-items:center; gap:8px; width:fit-content; max-width:100%; margin-top:6px; padding:3px 7px; border:1px solid #c8c4b4; background:#faf5e5; font:10px ui-monospace,monospace; }
-.home-photo figcaption>span:first-child { font:650 11px/1.6 system-ui,sans-serif; }
+.home-photo figcaption { display:flex; align-items:center; gap:8px; width:fit-content; max-width:100%; margin-top:6px; padding:3px 7px; border:1px solid #c8c4b4; background:#faf5e5; font:10px var(--home-font); }
+.home-photo figcaption>span:first-child { font:650 11px/1.6 var(--home-font); }
 .home-photo-feature figcaption { transform:rotate(-.6deg); }
 .home-gallery img { display:block; width:100%; height:88px; object-fit:cover; }
 .home-photo-process img,.home-photo-activities img { object-fit:contain; background:#f1f0e6; }
@@ -224,7 +224,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-fablab h2 { font-size:23px; margin-top:7px; }
 .home-fablab .home-section-head>p { font-size:13px; margin-top:7px; }
 .home-team-list article { display:grid; grid-template-columns:41px 1fr; gap:4px 10px; border-top:1px dashed #b8baaf; padding-block:10px; }
-.home-team-list article>span { grid-row:1/3; display:inline-flex; align-items:center; gap:4px; height:fit-content; padding:4px; border:1px solid #a5ac9e; font:800 11px/1.4 ui-monospace,system-ui,sans-serif; background:var(--home-paper); }
+.home-team-list article>span { grid-row:1/3; display:inline-flex; align-items:center; gap:4px; height:fit-content; padding:4px; border:1px solid #a5ac9e; font:800 11px/1.4 var(--home-font); background:var(--home-paper); }
 .home-team-list article>span::before { content:''; width:5px; height:12px; border-right:1px dashed #9ca697; border-left:2px solid #9ca697; }
 .home-team-list h3 { font-size:16px; line-height:1.45; }
 .home-team-list p { font-size:13px; line-height:1.6; color:var(--home-muted); }
@@ -252,7 +252,7 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-timetable thead th { font-size:11px; color:var(--home-muted); padding-block:5px; background:#e3e4d9; }
 .home-timetable tbody th { font-size:14px; font-weight:650; }
 .home-timetable th small { display:inline-block; font-size:10px; font-weight:500; color:var(--home-muted); margin-left:7px; }
-.home-timetable td { text-align:right; font:650 21px/1.5 ui-monospace,monospace; white-space:nowrap; letter-spacing:-.05em; }
+.home-timetable td { text-align:right; font:650 21px/1.5 var(--home-font); white-space:nowrap; letter-spacing:-.05em; }
 .home-timetable td>span { font-size:14px; font-weight:400; color:var(--home-muted); }
 .home-contact,.home-review { border-left:1px solid var(--home-line); padding-left:26px; }
 .home-contact h3,.home-review h3 { font-size:19px; margin-block:5px 9px; }
