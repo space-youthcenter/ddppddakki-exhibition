@@ -107,5 +107,17 @@ body::before{display:none}.hero{background:#fbf3e3;border-bottom:1px solid #b9aa
 @media print{.qr-page .qr-box.auto-qr,.qr-page .qr-box.auto-qr.has-qr{padding:3mm;border-width:1mm}.qr-page .qr-box.auto-qr.has-qr canvas{width:100%!important;height:100%!important}}
 
 /* Balanced three-station layout */
+.timeslot-field{min-width:0;margin:0;border:0;padding:0}.timeslot-field legend{font-weight:900;margin-bottom:10px}#visit-slots{display:grid;gap:10px}.form-card .visit-slot{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid #8c7d65;border-radius:4px;background:#fffaf0;cursor:pointer}.form-card .visit-slot input[type=checkbox]{width:22px;height:22px;min-height:22px;flex:0 0 22px}.visit-slot:has(input:checked){outline:3px solid #efbd50;background:#fff2c7}.visit-slot.unavailable{background:#eee;color:#777;cursor:not-allowed}.ticket-details strong{overflow-wrap:anywhere}
 .station-guide-grid{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.station-guide-grid>.info-card{width:100%;min-width:0}
 @media(max-width:800px){.station-guide-grid{grid-template-columns:1fr;gap:16px}}
+.admin-page .admin-title h1{font-size:clamp(26px,4vw,42px)}
+.admin-page .print-tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}.admin-page .print-tools p{flex-basis:100%}.admin-page .admin-panel{margin-bottom:24px}.admin-page .visit-summary{min-width:550px}.admin-page .admin-table button{padding:8px;margin:3px;cursor:pointer}
+@page admin-report{size:A4 landscape;margin:12mm}
+@media print{
+ .admin-page{page:admin-report;background:#fff;color:#000}
+ .admin-page .no-print,.admin-page button,.admin-page .site-header,.admin-page .count-card{display:none!important}
+ .admin-page[data-print-mode="list"] .summary-section{display:none}
+ .admin-page .admin-shell{padding:0;min-height:0}.admin-page .admin-title{display:block;margin:0 0 6mm}.admin-page .admin-title h1{font-size:18pt}.admin-page .admin-title p{color:#000}
+ .admin-page .admin-panel{padding:0;border:0;border-radius:0;box-shadow:none;margin-bottom:8mm;background:#fff}.admin-page .admin-panel h2{font-size:14pt}
+ .admin-page .table-scroll{overflow:visible}.admin-page .admin-table{width:100%;min-width:0;table-layout:fixed;font-size:9pt}.admin-page .admin-table th,.admin-page .admin-table td{border:1px solid #999;padding:2mm;color:#000;background:#fff;overflow-wrap:anywhere}.admin-page .admin-table th{font-size:9pt}.admin-page thead{display:table-header-group}.admin-page tr{break-inside:avoid}
+}
