@@ -30,7 +30,7 @@
     if (view) view.hidden = false; if (empty) empty.hidden = true;
     setText("[data-ticket-id]", reservation.ticketId); setText("[data-program]", reservation.programName);
     const program = CONFIG.PROGRAMS.find((item) => item.id === reservation.programId);
-    setText("[data-station]", reservation.station || program?.station || "체험역"); setText("[data-date]", reservation.date); setText("[data-time]", reservation.time);
+    setText("[data-station]", reservation.programId === "visit" ? "강당 체험역" : (reservation.station || program?.station || "체험역")); setText("[data-date]", reservation.date); setText("[data-time]", reservation.time);
     setText("[data-name]", reservation.name); setText("[data-party]", `${reservation.peopleCount}명`); setText("[data-status]", reservation.status);
     drawTicketCode(document.querySelector("#ticket-qr"), reservation.ticketId);
   };

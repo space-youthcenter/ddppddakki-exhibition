@@ -2,8 +2,15 @@ const CONFIG = Object.freeze({
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzXtq4ffMPm9fM_4EboiB3uRPLNky75lKUcafUvOfoSlV60ZOBBDwYqLCBtc7bFOgkkbg/exec",
   REVIEW_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSdcm16Ix4SaaYV9xdZQv9fclo86l6voivmoLt5J2GnSL_pemA/viewform?usp=publish-editor",
   // 실제 배포 주소가 정해지면 예: "https://example.com/ddookddakki" 형태로 입력하세요.
-  SITE_BASE_URL: "",
+  SITE_BASE_URL: "https://space-youthcenter.github.io/ddppddakki-exhibition",
   USE_MOCK_DATA: false,
+  VISIT_PROGRAM_ID: "visit",
+  VISIT_HOURS: {
+    "2026-11-19": [15, 22],
+    "2026-11-20": [15, 22],
+    "2026-11-21": [9, 18],
+    "2026-11-22": [10, 18]
+  },
   STORAGE_KEY: "ddookddakki_reservations_v2",
   EVENT_DATES: [
     { value: "2026-11-19", label: "2026.11.19.(목)" },
