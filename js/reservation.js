@@ -103,6 +103,8 @@
     const reservations = readLocal();
     const target = reservations.find((item) => item.ticketId === ticketId);
     if (!target) throw new Error("예약을 찾을 수 없습니다.");
+    if (!["예약 완료", "참여 확인", "취소"].includes(status)) throw new Error("예약 상태를 확인해 주세요.");
+    if (target.status === "취소" && status !== "취소") throw new Error("취소된 예약은 새로 예약해 주세요.");
     target.status = status;
     target.updatedAt = new Date().toISOString();
     writeLocal(reservations);
@@ -117,78 +119,4 @@
 
   Object.assign(window, { createReservation, getReservationByTicketId, verifyReservation, getReservations, getSlots, getAvailability, getAvailabilityByDate, updateReservationStatus, cancelReservation, remainingSeats, ReservationAPI: { createReservation, getReservationByTicketId, verifyReservation, getReservations, getSlots, getAvailability, getAvailabilityByDate, updateReservationStatus, cancelReservation, remainingSeats } });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("#reservation-form");
-    if (!form) return;
-    const programSelect = form.elements.programId;
-    const timeSelect = form.elements.time;
-    const dateInput = form.elements.date;
-    const availability = document.querySelector("#availability-message");
-    const timeslotNotice = document.querySelector("#timeslot-loading-message");
-    CONFIG.PROGRAMS.forEach((program) => programSelect.add(new Option(`${program.name} · 정원 ${program.capacity}명`, program.id)));
-    CONFIG.EVENT_DATES.forEach((date) => dateInput.add(new Option(date.label, date.value)));
-    const peopleSelect = form.elements.peopleCount;
-    const submit = form.querySelector("button[type=submit]");
-    let currentAvailability = null;
-    let availabilityByTime = new Map();
-
-    const showAvailability = async () => {
-      if (!programSelect.value || !dateInput.value || !timeSelect.value) { currentAvailability = null; availability.textContent = "프로그램·날짜·시간을 선택하면 정원 현황을 확인할 수 있어요."; submit.disabled = true; return; }
-      currentAvailability = availabilityByTime.get(timeSelect.value) || null;
-      if (!currentAvailability) { availability.dataset.state = "full"; availability.textContent = "선택한 시간대의 정원 정보를 찾을 수 없습니다."; submit.disabled = true; return; }
-      const full = currentAvailability.isFull || !currentAvailability.isOpen;
-      availability.textContent = full ? `정원 ${currentAvailability.capacity}명 / 현재 ${currentAvailability.reservedCount}명 예약 / 정원 마감` : `정원 ${currentAvailability.capacity}명 / 현재 ${currentAvailability.reservedCount}명 예약 / 잔여 ${currentAvailability.remainingCount}명`;
-      availability.dataset.state = full ? "full" : "available";
-      submit.disabled = full || Number(peopleSelect.value) > currentAvailability.remainingCount;
-      if (!full && Number(peopleSelect.value) > currentAvailability.remainingCount) availability.textContent += " · 잔여 인원보다 많은 인원은 예약할 수 없습니다.";
-    };
-
-    const loadTimeSlots = async () => {
-      const previous = timeSelect.value;
-      timeSelect.replaceChildren(new Option("시간을 선택해 주세요", ""));
-      timeSelect.disabled = true; availabilityByTime = new Map(); currentAvailability = null; submit.disabled = true;
-      if (!programSelect.value || !dateInput.value) { timeslotNotice.hidden = true; availability.textContent = "프로그램과 날짜를 선택하면 시간대별 정원 현황이 표시됩니다."; return; }
-      timeslotNotice.hidden = false; timeslotNotice.dataset.state = "loading"; timeslotNotice.textContent = "시간대별 잔여 인원을 확인하고 있습니다.";
-      try {
-        const states = await getAvailabilityByDate(programSelect.value, dateInput.value);
-        availabilityByTime = new Map(states.map((state) => [state.time, state]));
-        states.forEach((state) => {
-          const full = state.isFull || !state.isOpen;
-          const label = `${state.time} / 정원 ${state.capacity}명 / 현재 ${state.reservedCount}명 / ${full ? "마감" : `잔여 ${state.remainingCount}명`}`;
-          const option = new Option(label, state.time); option.disabled = full; timeSelect.add(option);
-        });
-        timeSelect.disabled = !states.length;
-        timeslotNotice.hidden = true;
-        if (states.some((state) => state.time === previous && !state.isFull && state.isOpen)) timeSelect.value = previous;
-        availability.textContent = states.length ? "예약 가능한 시간대를 선택해 주세요." : "등록된 시간대가 없습니다. 운영자에게 문의해 주세요.";
-        if (timeSelect.value) await showAvailability();
-      } catch (_) { timeslotNotice.hidden = false; timeslotNotice.dataset.state = "error"; timeslotNotice.textContent = "시간대 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."; availability.dataset.state = "full"; availability.textContent = "시간대 정보를 다시 불러온 뒤 예약해 주세요."; }
-    };
-    [programSelect, dateInput].forEach((field) => field.addEventListener("change", loadTimeSlots));
-    timeSelect.addEventListener("change", showAvailability);
-    peopleSelect.addEventListener("change", showAvailability);
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const message = document.querySelector("#form-message");
-      if (!form.reportValidity()) return;
-      submit.disabled = true; submit.textContent = "승차권 발급 중…"; message.textContent = "";
-      try {
-        const data = new FormData(form);
-        const latest = availabilityByTime.get(String(data.get("time")));
-        if (!latest || latest.isFull || !latest.isOpen) throw new Error("해당 시간대는 정원 마감되었습니다.");
-        if (Number(data.get("peopleCount")) > latest.remainingCount) throw new Error("잔여 인원보다 많은 인원은 예약할 수 없습니다.");
-        const reservation = await createReservation({
-          programId: data.get("programId"), date: data.get("date"), time: data.get("time"),
-          name: String(data.get("name")).trim(), checkCode: String(data.get("checkCode")).trim(), contactPhone: String(data.get("contactPhone")).trim(),
-          peopleCount: Number(data.get("peopleCount"))
-        });
-        location.href = `ticket.html?ticketId=${encodeURIComponent(reservation.ticketId)}`;
-      } catch (error) {
-        message.textContent = error.message || "예약을 처리하지 못했습니다.";
-        submit.textContent = "예약 완료 · 승차권 발급";
-        await loadTimeSlots();
-      }
-    });
-  });
 })();
