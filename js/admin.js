@@ -15,7 +15,15 @@ function render(){
  const active=rows.filter(r=>r.date===s.date&&r.slotTime===s.time&&["예약 완료","참여 확인"].includes(r.status));
  return `<tr><td>${esc(dateLabel(s.date))}</td><td>${esc(s.time)}</td><td>${active.length}건</td><td>${active.reduce((n,r)=>n+Number(r.peopleCount),0)}명</td></tr>`;
  }).join("");
- document.querySelector("#admin-list").innerHTML=rows.map(r=>`<tr><td>${esc(dateLabel(r.date))}</td><td>${esc(r.slotTime)}</td><td>${esc(r.ticketId)}</td><td>${esc(r.name)}</td><td>${esc(r.contactPhone||"-")}</td><td class="no-print">${esc(r.checkCode)}</td><td>${Number(r.peopleCount)}명</td><td>${esc(r.status)}</td><td class="no-print">${esc(r.createdAt)}</td><td class="no-print"><button data-action="check" data-id="${esc(r.ticketId)}" ${r.status!=="예약 완료"?"disabled":""}>참여 확인</button><button data-action="cancel" data-id="${esc(r.ticketId)}" ${r.status==="취소"?"disabled":""}>취소</button></td></tr>`).join("")||'<tr><td colspan="10">해당 예약이 없습니다.</td></tr>';
+ // Keep per-slot rows above for summary counts; group only the detailed roster.
+ const details=new Map();
+ rows.forEach(r=>{if(!details.has(r.ticketId))details.set(r.ticketId,{...r,visitTimes:new Set()});});
+ // Use all selected times even when the operator filters to one matching time slot.
+ reservations.forEach(r=>{
+ const detail=details.get(r.ticketId);
+ if(detail)Visit.times(r).forEach(t=>detail.visitTimes.add(t));
+ });
+ document.querySelector("#admin-list").innerHTML=Array.from(details.values()).map(r=>`<tr><td>${esc(dateLabel(r.date))}</td><td>${esc(Array.from(r.visitTimes).sort().join(", "))}</td><td>${esc(r.ticketId)}</td><td>${esc(r.name)}</td><td>${esc(r.contactPhone||"-")}</td><td class="no-print">${esc(r.checkCode)}</td><td>${Number(r.peopleCount)}명</td><td>${esc(r.status)}</td><td class="no-print">${esc(r.createdAt)}</td><td class="no-print"><button data-action="check" data-id="${esc(r.ticketId)}" ${r.status!=="예약 완료"?"disabled":""}>참여 확인</button><button data-action="cancel" data-id="${esc(r.ticketId)}" ${r.status==="취소"?"disabled":""}>취소</button></td></tr>`).join("")||'<tr><td colspan="10">해당 예약이 없습니다.</td></tr>';
 }
 function updateTimes(){
  const date=document.querySelector("#filter-date").value,select=document.querySelector("#filter-time"),previous=select.value;
