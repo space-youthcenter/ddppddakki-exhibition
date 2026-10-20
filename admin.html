@@ -1,9 +1,17 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>시간대별 예약 현황 | 2026 뚝딱이 전시회</title><link rel="stylesheet" href="styles.css"><script defer src="js/config.js"></script><script defer src="js/reservation.js"></script><script defer src="js/visit.js"></script><script defer src="js/admin.js?v=20261008-roster"></script></head>
-<body class="admin-page"><header class="site-header"><a href="index.html">2026 뚝딱이 전시회</a><nav class="top-nav"><a href="index.html">전시 사이트</a><a href="reserve.html">방문 예약</a></nav></header>
-<main class="admin-shell" id="main"><div class="admin-title"><div><h1>2026 뚝딱이 전시회 시간대별 예약 현황</h1><p id="print-scope">전체 날짜 / 전체 시간대</p></div><div class="count-card no-print"><small>예약 수</small><strong id="reservation-count">0건</strong></div></div>
-<section class="admin-panel"><div class="filters no-print"><label>날짜<select id="filter-date"><option value="">전체 날짜</option></select></label><label>시간대<select id="filter-time"><option value="">전체 시간대</option></select></label></div>
-<div class="print-tools no-print"><button id="print-all" type="button" disabled>전체 출력</button><button id="print-current" type="button" disabled>선택 날짜·시간대 출력</button><button id="print-list" type="button" disabled>선택 시간대 명단 출력</button><p>날짜와 시간대를 선택한 뒤 인쇄하세요. 취소된 예약은 명단에 표시되며 집계에서는 제외됩니다.</p><p>상세 명단은 예약번호당 한 줄로 표시하며, 선택한 방문 시간대를 모두 함께 보여줍니다. 참여 확인과 취소는 예약 전체에 적용됩니다.</p></div>
-<p class="no-print">관리자 전용 화면입니다. 개인정보가 포함된 URL과 출력물을 외부에 공유하지 마세요. URL 비공개만으로 접근이 보호되지는 않으므로 실제 운영 전 관리자 접근 통제를 확인해 주세요.</p>
-<p id="admin-error" class="error-message no-print" role="alert"></p>
-<section class="summary-section"><h2>일자별 시간대 요약표</h2><div class="table-scroll"><table class="admin-table visit-summary"><thead><tr><th>날짜</th><th>시간대</th><th>예약 건수</th><th>예약 인원</th></tr></thead><tbody id="slot-list"></tbody></table></div></section>
-<section><h2>상세 예약자 명단</h2><div class="table-scroll"><table class="admin-table visit-roster"><thead><tr><th>날짜</th><th>방문 시간대</th><th>예약번호</th><th>대표자명</th><th>대표 연락처</th><th class="no-print">확인용 번호</th><th>참여 인원</th><th>상태</th><th class="no-print">예약 생성일시</th><th class="no-print">현장 처리</th></tr></thead><tbody id="admin-list"></tbody></table></div></section></section></main></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>관리자 운영 안내 | 2026 뚝딱이 전시회</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="index.html"><img class="site-logo" src="assets/ddookddakki-logo-2026.png" alt="뚝딱이 창의공작소 로고"><span><strong>2026 뚝딱이 전시회</strong><small>운영 담당자 안내</small></span></a><nav class="top-nav"><a href="index.html">전시 사이트</a></nav></header>
+  <main class="subpage narrow-page">
+    <section class="page-hero compact"><span class="eyebrow">STAFF NOTICE</span><h1>공개 관리자 화면 운영 중단</h1><p>예약자 개인정보 보호를 위해 이 페이지에서는 예약 목록 조회와 상태 변경 기능을 제공하지 않습니다.</p></section>
+    <section class="form-card"><h2>담당자 운영 안내</h2><p>권한이 있는 담당자는 비공개 Google Sheets에서 예약 현황을 확인하고 참여 확인·취소를 처리해 주세요.</p><p>이 화면의 중단만으로 서버 API가 보호되는 것은 아닙니다. 서버 접근 제한을 적용하고 확인하기 전까지 공개 관리자 기능을 재개하지 않습니다.</p><a class="button ghost" href="index.html">전시 사이트로 돌아가기</a></section>
+  </main>
+</body>
+</html>

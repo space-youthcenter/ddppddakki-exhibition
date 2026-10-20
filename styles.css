@@ -434,3 +434,20 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
   .home-wrap { width:100%; }
   .home-platform,.home-photo,.home-visit-pass { break-inside:avoid; }
 }
+
+/* Field signs only: high-resolution QR, white quiet zone, no placeholder overlay. */
+.qr-page .qr-box.auto-qr, .qr-page .qr-box.auto-qr.has-qr {
+  width: min(260px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+  padding: 28px;
+  border: 1px solid #111;
+  background: #fff;
+  background-image: none;
+  box-sizing: border-box;
+}
+.qr-page .qr-box.auto-qr::after { content: none; display: none; }
+.qr-page .qr-box.has-qr canvas { object-fit: contain; }
+@media print {
+  .qr-page .qr-box.auto-qr, .qr-page .qr-box.auto-qr.has-qr { width: 92mm; height: 92mm; padding: 10mm; border-width: .3mm; }
+}

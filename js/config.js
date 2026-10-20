@@ -21,7 +21,7 @@ const CONFIG = Object.freeze({
   // 테스트용 임시 프로그램명입니다. 실제 프로그램 확정 후 이름과 역 정보를 교체하세요.
   PROGRAMS: [
     { id: "program-1", name: "예약 프로그램 1", station: "공방역 MAKE", capacity: 8 },
-    { id: "program-2", name: "예약 프로그램 2", station: "장면역 TAKE", capacity: 8 },
+    { id: "program-2", name: "예약 프로그램 2", station: "기록역 TAKE", capacity: 8 },
     { id: "program-3", name: "예약 프로그램 3", station: "미래역 WAKE", capacity: 6 },
     { id: "program-4", name: "예약 프로그램 4", station: "환승 프로그램", capacity: 6 }
   ],

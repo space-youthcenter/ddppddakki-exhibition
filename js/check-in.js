@@ -9,22 +9,21 @@
     setText("[data-checkin-date]", reservation.date); setText("[data-checkin-time]", reservation.time);
     setText("[data-checkin-name]", reservation.name); setText("[data-checkin-people]", `${reservation.peopleCount}명`);
     setText("[data-checkin-status]", reservation.status);
-    const message = document.querySelector("#check-in-message"); const button = document.querySelector("#confirm-check-in");
-    button.hidden = reservation.status !== "예약 완료";
+    const message = document.querySelector("#check-in-message");
     message.dataset.state = reservation.status === "취소" ? "full" : "available";
-    message.textContent = reservation.status === "참여 확인" ? "이미 참여 확인된 예약입니다." : reservation.status === "취소" ? "취소된 예약입니다." : "예약 정보를 확인한 뒤 참여 확인 버튼을 눌러주세요.";
+    message.textContent = reservation.status === "참여 확인" ? "이미 참여 확인된 예약입니다." : reservation.status === "취소" ? "취소된 예약입니다." : "승차권 정보를 현장 담당자에게 보여주세요. 참여 확인은 담당자가 처리합니다.";
   };
+  // Public ticket QR remains read-only. Staff manage status in their private Sheet.
+  // This UI restriction is NOT server authorization; apply the Apps Script guard too.
   document.addEventListener("DOMContentLoaded", async () => {
     const ticketId = new URLSearchParams(location.search).get("ticketId") || "";
-    const button = document.querySelector("#confirm-check-in");
     try {
       if (!ticketId) throw new Error("예약번호가 없습니다.");
-      let reservation = await getReservationByTicketId(ticketId); render(reservation);
-      button.addEventListener("click", async () => {
-        button.disabled = true;
-        try { reservation = await updateReservationStatus(ticketId, "참여 확인"); render(reservation); }
-        catch (error) { const message = document.querySelector("#check-in-message"); message.dataset.state = "full"; message.textContent = error.message || "참여 상태를 변경하지 못했습니다."; button.disabled = false; }
-      });
-    } catch (error) { document.querySelector("#check-in-loading").hidden = true; document.querySelector("#check-in-error").hidden = false; document.querySelector("#check-in-error p").textContent = error.message || "QR 또는 예약번호를 다시 확인해 주세요."; }
+      render(await getReservationByTicketId(ticketId));
+    } catch (error) {
+      document.querySelector("#check-in-loading").hidden = true;
+      document.querySelector("#check-in-error").hidden = false;
+      document.querySelector("#check-in-error p").textContent = error.message || "QR 또는 예약번호를 다시 확인해 주세요.";
+    }
   });
 })();
