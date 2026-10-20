@@ -223,11 +223,17 @@ html:has(body.exhibition-home) { scroll-behavior: auto; scroll-padding-top: 0; }
 .home-fablab .home-kicker { display:inline-block; padding:3px 8px; border-left:3px solid var(--home-ink); background:#e6e5da; transform:rotate(-1deg); font-size:9px; }
 .home-fablab h2 { font-size:23px; margin-top:7px; }
 .home-fablab .home-section-head>p { font-size:13px; margin-top:7px; }
-.home-team-list article { display:grid; grid-template-columns:41px 1fr; gap:4px 10px; border-top:1px dashed #b8baaf; padding-block:10px; }
-.home-team-list article>span { grid-row:1/3; display:inline-flex; align-items:center; gap:4px; height:fit-content; padding:4px; border:1px solid #a5ac9e; font:800 11px/1.4 var(--home-font); background:var(--home-paper); }
+.home-team-list article { display:grid; grid-template-columns:41px minmax(0,1fr); gap:4px 10px; border-top:1px dashed #b8baaf; padding-block:10px; }
+.home-team-list article>span { grid-row:1/4; display:inline-flex; align-items:center; gap:4px; height:fit-content; padding:4px; border:1px solid #a5ac9e; font:800 11px/1.4 var(--home-font); background:var(--home-paper); }
 .home-team-list article>span::before { content:''; width:5px; height:12px; border-right:1px dashed #9ca697; border-left:2px solid #9ca697; }
 .home-team-list h3 { font-size:16px; line-height:1.45; }
 .home-team-list p { font-size:13px; line-height:1.6; color:var(--home-muted); }
+.home-team-list article>h3,.home-team-list article>p { grid-column:2; min-width:0; overflow-wrap:anywhere; }
+.home-team-list .home-team-schedule { grid-column:2; min-width:0; margin:2px 0; padding:7px 8px; border-left:2px solid #7d897a; background:#e7e8dc; color:var(--home-ink); font-size:13px; line-height:1.6; font-weight:650; font-variant-numeric:tabular-nums; }
+.home-team-schedule>div { display:grid; grid-template-columns:max-content minmax(0,1fr); gap:3px 8px; align-items:baseline; }
+.home-team-schedule dt { font-size:10px; font-weight:600; color:#526052; }
+.home-team-schedule dd { display:flex; flex-wrap:wrap; gap:0 4px; min-width:0; margin:0; }
+.home-team-schedule time { white-space:nowrap; }
 
 /* A horizontal ticket banner, with the existing two booking destinations. */
 .home-booking { padding-bottom:26px; }
