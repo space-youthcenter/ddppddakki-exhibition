@@ -1,0 +1,4 @@
+ONNX Runtime Web 1.31.1
+Source: https://registry.npmjs.org/onnxruntime-web/-/onnxruntime-web-1.31.1.tgz
+Upstream: https://github.com/microsoft/onnxruntime
+Unmodified distribution files. MIT license.

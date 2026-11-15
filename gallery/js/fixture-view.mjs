@@ -1,6 +1,7 @@
 import {safeImageUrl} from './work-view.mjs';
 import {FIXTURE_SIZE,FIXTURE_TYPES,FIXTURE_BAYS,fixtureSlot,fixtureLabel} from './fixture-layout.mjs';
 import {creatorLabel} from './work-info.mjs';
+import {hangingPoint} from './hanging.mjs';
 import {ASSETS} from './assets.mjs?v=higgsfield1';
 import {fixtureSkinName,stationImageUrl,registeredFixtureSlot,registeredFixtureBay,FIXTURE_IMAGE_REGISTRATION,fixtureFastenerWindows} from './fixture-skins.mjs';
 const fixtureNode=(tag,cls,text)=>{const e=document.createElement(tag);e.className=cls||'';if(text!==undefined)e.textContent=text;return e;};
@@ -22,6 +23,14 @@ export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
   return {slot:s,media,left:x/12,top:y/10,width:width/12,height:height/10,anchor:{x:s.x,y:s.y},bottom:true,frame:{asset:frame,left:fx/12,top:fy/10,width:fw/12,height:fh/10,aperture:{left:(fx+fw*a.x)/12,top:(fy+fh*a.y)/10,width:aw/12,height:ah/10}}};
  }
  if(s.mode==='object'&&media.cutout){fit=Math.min(fit,boundW/(media.width*2*Math.max(media.contact.x,1-media.contact.x)),30/(media.height*Math.max(.001,1-media.contact.y)));}
+ const hanging=s.mode==='hang'&&media.cutout&&hangingPoint(media.contact?.hang);
+ if(hanging){
+  // Fit around the existing hook, reserving a disjoint envelope for each slot.
+  // A small amount above the hook admits an off-centre hole without crossing the rail.
+  fit=Math.min(fit,boundW/(2*media.width*Math.max(hanging.x,1-hanging.x)),boundH/(media.height*Math.max(.001,1-hanging.y)),30/(media.height*Math.max(.001,hanging.y)));
+  const width=media.width*fit,height=media.height*fit;
+  return {slot:s,media,left:s.x-width*hanging.x/12,top:s.y-height*hanging.y/10,width:width/12,height:height/10,anchor:{x:s.x,y:s.y},bottom:false,hanging};
+ }
  const width=media.width*fit,height=media.height*fit,bottom=['object','table'].includes(s.mode)||s.align==='bottom';
  let x=s.x*12-width/2,y=bottom?s.y*10-height:s.y*10;
  if(s.mode==='object'&&media.cutout){x=s.x*12-width*media.contact.x;y=s.y*10-height*media.contact.y;}

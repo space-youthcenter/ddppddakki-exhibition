@@ -1,0 +1,19 @@
+birefnet-lite-web
+
+These ONNX files are derived from BiRefNet_lite, created by Peng Zheng, Dehong Gao,
+Deng-Ping Fan, Li Liu, Jorma Laaksonen, Wanli Ouyang and Nicu Sebe:
+
+  "Bilateral Reference for High-Resolution Dichotomous Image Segmentation",
+  CAAI Artificial Intelligence Research, 2024 (arXiv:2401.03407).
+  Code and weights: https://github.com/ZhengPeng7/BiRefNet and
+  https://huggingface.co/ZhengPeng7/BiRefNet_lite, MIT licence,
+  Copyright (c) 2024 ZhengPeng.
+
+Changes made by clevr.tools (see README.md for details and validation):
+  - deformable convolution rewritten as a per-kernel-position bilinear gather, so it fits in browser GPU memory
+  - wide Split operators regrouped to stay within WebGPU's storage-buffer limit
+  - separate static-shape exports at 768 and 512 pixels
+  - float32 weights stored as float16 and cast back to float32 when the model loads
+  - ONNX Runtime graph optimisation (basic level) applied before the weight conversion
+
+The model's weights were not retrained or fine-tuned.
