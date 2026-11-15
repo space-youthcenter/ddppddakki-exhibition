@@ -1,0 +1,48 @@
+/* Position real generated image layers and HTML controls. No CSS-drawn room/fixtures. */
+.g-station[data-image-theme=reference] .g-entrance-scene{aspect-ratio:16/9;min-height:0;max-height:900px}
+.g-station[data-image-theme=reference] .g-entrance-scene:after{background:none}
+.g-station[data-image-theme=reference] .g-entrance-content{position:absolute;inset:0;padding:0;pointer-events:none}
+.g-station[data-image-theme=reference] .g-entrance-heading{position:absolute;top:19%;left:30%;width:40%;color:#fff2d5;pointer-events:auto}
+.g-station[data-image-theme=reference] .g-entrance-heading .g-eyebrow{font-size:clamp(9px,.8vw,11px);color:#e9d8ac;letter-spacing:.1em;line-height:1.2}
+.g-station[data-image-theme=reference] .g-entrance-heading h1{font-size:clamp(20px,2.85vw,42px);margin:5px 0;line-height:1.25}
+.g-station[data-image-theme=reference] .g-entrance-heading p{font-size:clamp(9px,1.05vw,15px);color:#f4e7cc;margin:0;line-height:1.4}
+.g-station[data-image-theme=reference] .g-entrance-actions{position:absolute;left:0;right:0;top:auto;bottom:24%;transform:none;margin:0;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-station[data-image-theme=reference] .g-entrance-secondary{position:static;transform:none;margin:10px 0 0;pointer-events:auto;background:#fff9edeb}
+.g-station[data-image-theme=reference] .g-category-doors{bottom:5%;width:min(850px,86%);gap:12px;align-items:stretch}
+.g-station[data-image-theme=reference] .g-category-door,.g-station[data-image-theme=reference] .g-category-door:last-child{min-height:96px;flex:1;border:1px solid #dfd1a9;border-radius:7px;background:#203e32ee;padding:12px 8px;box-shadow:0 3px 12px #152b1c30}
+.g-station[data-image-theme=reference] .g-category-door strong,.g-station[data-image-theme=reference] .g-category-door:last-child strong{font-size:22px}
+.g-station[data-image-theme=reference] .g-category-door small{font-size:11px}
+.g-station[data-image-theme=reference] [data-layout="3"] .g-room-wall-sign{left:54.5%;top:13%;color:#fff0d2;font-size:clamp(16px,2.3vw,32px);letter-spacing:.1em}
+.g-station[data-image-theme=reference]:not(.g-public) .g-info-dialog[data-kind=upload]:before,.g-station[data-image-theme=reference]:not(.g-public) .g-info-dialog[data-kind=guestbook]:before{background-image:url('../assets/reference-design/web/room-entrance.webp')}
+.g-fixture[data-skin=reference] .g-fixture-body{object-fit:contain}
+.g-fixture[data-skin=reference] .g-fixture-sign{color:#fff1d4;font-size:2cqw}
+.g-fixture[data-skin=reference]:is([data-type=table-frames],[data-type=poster-stand]) .g-fixture-sign{font-size:1.3cqw;line-height:1.1}
+.g-fixture[data-skin=reference] .g-fixture-zoom{top:98%;z-index:7}
+.g-fixture[data-skin=reference] .g-fixture-work[data-mode=table]>img{border:0;padding:0;background:transparent;box-shadow:none;filter:none;transform:none}
+.g-fixture[data-skin=reference] .g-fixture-work[data-mode=clip]>img{padding:0;background:none;box-shadow:1px 2px 3px #32250b40;filter:none}
+.g-fixture[data-skin=reference] .g-fixture-work[data-mode=record]>img{background:none;box-shadow:1px 2px 3px #32250b40;filter:none}
+.g-raster-frame-mat{position:absolute;background:#f8f1e0;pointer-events:none;z-index:0}
+.g-fixture-work>img.g-raster-frame{object-fit:fill;max-width:none;z-index:2;filter:drop-shadow(1px 2px 2px #25150d35)!important}
+.g-fixture[data-skin=reference] .g-fixture-work>img:not(.g-raster-frame){z-index:1}
+.g-fixture[data-skin=reference] .g-work-number,.g-fixture[data-skin=reference] .g-example-mark{z-index:6}
+.g-image-fastener{position:absolute;display:block;overflow:hidden;pointer-events:none;z-index:4}
+.g-image-fastener>img{position:absolute;max-width:none;max-height:none;pointer-events:none}
+.g-fixture-dialog:has([data-skin=reference]) .g-fixture-focus{aspect-ratio:6/5;overflow:visible}
+.g-fixture-dialog:has([data-skin=reference]) .g-fixture-focus>.g-fixture{top:0!important;height:100%!important}
+.g-fixture-dialog:has([data-skin=reference]) .g-fixture-zoom{display:none}
+@media(max-width:700px){
+ .g-station[data-image-theme=reference] .g-entrance-scene{aspect-ratio:auto;min-height:700px}
+ .g-station[data-image-theme=reference] .g-entrance-bg{object-position:50% 50%}
+ .g-station[data-image-theme=reference] .g-entrance-heading{top:20%;left:6%;width:88%}
+ .g-station[data-image-theme=reference] .g-entrance-heading .g-eyebrow{font-size:10px}
+ .g-station[data-image-theme=reference] .g-entrance-heading h1{font-size:29px}
+ .g-station[data-image-theme=reference] .g-entrance-heading p{font-size:11px}
+ .g-station[data-image-theme=reference] .g-entrance-actions{bottom:36%}
+ .g-station[data-image-theme=reference] .g-entrance-secondary{white-space:nowrap}
+ .g-station[data-image-theme=reference] .g-category-doors{bottom:4%;width:88%;gap:10px}
+ .g-station[data-image-theme=reference] .g-category-door,.g-station[data-image-theme=reference] .g-category-door:last-child{min-height:90px;padding:10px 5px;border-width:1px}
+ .g-station[data-image-theme=reference] .g-category-door strong,.g-station[data-image-theme=reference] .g-category-door:last-child strong{font-size:21px}
+ .g-station[data-image-theme=reference] .g-category-door small{font-size:10px}
+ .g-fixture-dialog:has([data-skin=reference]) .g-fixture-sign{font-size:2cqw}
+ .g-fixture-dialog:has([data-skin=reference]) [data-type=table-frames] .g-fixture-sign{font-size:1.3cqw}
+}

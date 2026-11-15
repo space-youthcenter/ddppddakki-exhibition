@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="참가자들의 창작으로 비어 있던 공간이 하나씩 완성되는 2026 뚝딱이 온라인 작품 전시관.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://script.google.com https://script.googleusercontent.com; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>온라인 작품 전시관 · 2026 뚝딱이 전시회</title>
+  <link rel="icon" href="./assets/art/station.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/PretendardVariable-1.3.9.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./styles/gallery.css">
+  <link rel="stylesheet" href="./styles/maker.css?v=higgsfield1">
+  <link rel="stylesheet" href="./styles/higgsfield.css?v=higgsfield1">
+  <link rel="stylesheet" href="./styles/operations.css">
+  <link rel="stylesheet" href="./styles/station.css">
+  <link rel="stylesheet" href="./styles/reference-design.css">
+  <link rel="stylesheet" href="./styles/visitor.css">
+  <link rel="stylesheet" href="./styles/final-design.css">
+  <script type="module" src="./js/public-app.mjs"></script>
+</head>
+<body class="dd-gallery g-public g-station g-final-design">
+  <a class="g-skip" href="#gallery-main">전시관 본문으로 건너뛰기</a>
+  <header class="g-header">
+    <a class="g-brand" href="#entrance" aria-label="2026 뚝딱이 전시회 전시관 입구">
+      <span class="g-brand-mark" aria-hidden="true"><svg viewBox="0 0 40 44"><path d="M6 36V19a14 14 0 0 1 28 0v17M12 35V19a8 8 0 0 1 16 0v16M6 36h28M16 25h8M15 30h10M14 35l-4 7m16-7 4 7"/></svg></span>
+      <span><strong>2026 뚝딱이 전시회</strong><small>NEXT STOP, IDEA STATION</small></span>
+    </a>
+    <nav class="g-header-nav" aria-label="전시관 메뉴">
+      <a href="#entrance" id="nav-entrance" aria-current="page">전시관 입구</a>
+      <a href="#make-1" id="nav-rooms">작품 감상</a>
+      <button type="button" data-info="upload">작품 등록</button>
+      <a href="#guestbook" data-info="guestbook">방명록</a>
+      <button type="button" data-info="guide">관람 안내 <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+
+  <main id="gallery-main">
+    <p id="public-status" class="g-public-status" role="status" hidden></p>
+    <section id="entrance" class="g-entrance" aria-labelledby="entrance-title">
+      <div class="g-entrance-scene">
+        <div class="g-master-architecture">
+          <img class="g-entrance-bg" id="entrance-background" src="./assets/final-design-v3/web/room-entrance.webp" alt="유리 천장과 원목 아치, 두 안내 게시판과 역 시계가 있는 따뜻한 전시관 입구" width="1672" height="941" fetchpriority="high">
+          <div class="g-entrance-content"><div class="g-entrance-heading">
+            <span class="g-eyebrow">THE IDEA STATION GALLERY</span>
+            <h1 id="entrance-title">온라인 작품 전시관</h1>
+            <p>참가자들의 창작이 모여 완성되는 또 하나의 전시회</p>
+          </div></div>
+          <span class="g-master-banner" aria-hidden="true">2026<br>뚝딱이<br>전시회<small>NEXT STOP<br>IDEA STATION</small></span>
+        </div>
+        <nav id="category-doors" class="g-category-doors" aria-label="MAKE TAKE WAKE 전시관으로 이동"></nav>
+        <div class="g-entrance-actions">
+          <a href="#make-1" class="g-btn g-btn-primary g-enter">전시관 둘러보기 <span aria-hidden="true">→</span></a>
+          <div class="g-entrance-secondary">
+            <button type="button" data-info="upload">내 작품 등록하기 <span aria-hidden="true">↗</span></button>
+            <button type="button" data-info="guestbook">방명록 <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+        <aside class="g-master-notice" aria-labelledby="entry-notice-title">
+          <h2 id="entry-notice-title">전시 안내</h2>
+          <div class="g-master-notice-links">
+            <button type="button" data-info="about"><span>전시관 소개</span><i aria-hidden="true">→</i></button>
+            <button type="button" data-info="story"><span>전시 이야기</span><i aria-hidden="true">→</i></button>
+            <button type="button" data-info="upload"><span>작품 등록 안내</span><i aria-hidden="true">→</i></button>
+          </div>
+        </aside>
+        <aside class="g-master-guide" aria-labelledby="entry-guide-title">
+          <h2 id="entry-guide-title">관람 방법</h2>
+          <ol><li><span>작품을 한 번 눌러</span> <span>감상하세요.</span></li><li><span>이미지와 작품</span> <span>이야기를 만나보세요.</span></li><li><span>닫으면 전시실로</span> <span>돌아옵니다.</span></li></ol>
+        </aside>
+      </div>
+      <div class="g-welcome-note">
+        <p>참가자들의 창작이 모여 완성되는 <strong>또 하나의 전시회.</strong></p>
+        <span id="entrance-total">첫 번째 작품을 기다리고 있어요</span>
+      </div>
+    </section>
+
+    <section id="exhibition" class="g-exhibition" aria-labelledby="room-title" hidden>
+      <div class="g-gallery-navigation"><span class="g-nav-caption">전시관 이동</span><nav id="category-nav" class="g-category-nav" aria-label="상위 전시 분야"></nav><a class="g-back-entrance" href="#entrance">입구로 ↗</a></div>
+      <div class="g-room-heading">
+        <div class="g-room-title-group"><span class="g-eyebrow" id="room-kicker">ROOM 01 · 햇살의 방</span><h1 id="room-title" tabindex="-1">전시 1관</h1><p id="room-subtitle">작은 상상이 모이는 공간</p></div>
+        <div class="g-room-capacity"><span>공개 중인 작품</span><strong id="room-count">0 <i>작품</i></strong><div class="g-count-track"><span id="room-progress"></span></div></div>
+      </div>
+      <div class="g-room-shell">
+        <div class="g-room-viewport" id="room-viewport" tabindex="0" role="region" aria-label="공간형 전시실. 모바일에서는 좌우로 밀어 둘러보세요.">
+          <div class="g-room-scene" id="room-scene" data-theme="daylight">
+            <img class="g-room-bg" id="room-background" src="./assets/higgsfield/web/room-base.webp" alt="크림색의 세 벽면과 햇빛이 비치는 목재 바닥, 천장 레일 조명으로 이루어진 전시실" width="1600" height="900">
+            <span class="g-room-wall-sign" id="room-wall-sign" aria-hidden="true">GALLERY 01</span>
+            <div id="works-layer" class="g-works-layer" role="group" aria-label="전시된 작품"></div>
+            <div class="g-empty-note" id="empty-note"><span aria-hidden="true">✦</span><h2>첫 번째 상상을 기다리는 중</h2><p>아직은 고요한 이 공간에<br>하나의 작품이 새로운 이야기를 엽니다.</p></div>
+            <span class="g-floor-caption" aria-hidden="true">NEXT STOP, YOUR IMAGINATION.</span>
+          </div>
+        </div>
+        <p class="g-view-hint">작품을 한 번 누르면 이미지와 이야기가 열립니다.</p>
+        <div class="g-pan-controls" role="group" aria-label="전시실 시점 이동"><button type="button" data-pan="left">← 왼쪽</button><button type="button" data-pan="center" aria-pressed="true">중앙</button><button type="button" data-pan="right">오른쪽 →</button></div>
+      </div>
+      <nav class="g-room-navigation" aria-label="전시실 이동">
+        <button type="button" class="g-nav-arrow" id="room-prev" aria-label="이전 전시실">← <span>이전 전시실</span></button>
+        <div id="room-tabs" class="g-room-tabs"></div>
+        <button type="button" class="g-nav-arrow" id="room-next" aria-label="다음 전시실"><span>다음 전시실</span> →</button>
+      </nav>
+      <div class="g-room-bottom"><a href="#entrance">↖ 전시관 입구로</a></div>
+    </section>
+
+  </main>
+  <footer class="g-footer"><span>2026 뚝딱이 전시회 <i>·</i> 시립중랑청소년센터</span><span>MAKE <i>·</i> TAKE <i>·</i> WAKE</span><button type="button" data-info="privacy">관람 기록 안내</button></footer>
+  <div id="toast" class="g-toast" role="status" aria-live="polite" hidden></div>
+
+  <dialog id="art-dialog" class="g-art-dialog" aria-labelledby="art-title">
+    <div class="g-art-toolbar"><span>작품 감상</span><button type="button" id="art-close" aria-label="작품 감상 닫기" autofocus>닫기 <span aria-hidden="true">×</span></button></div>
+    <div class="g-art-content">
+      <div class="g-art-visual"><img id="art-image" alt=""></div>
+      <div class="g-art-label">
+        <span class="g-eyebrow" id="art-location"></span>
+        <span class="g-art-category" id="art-category"></span>
+        <h2 id="art-title"></h2>
+        <p id="art-creator" class="g-art-creator"></p>
+        <span id="art-source" class="g-source-badge"></span>
+        <p id="art-description"></p>
+        <div class="g-art-pagination"><button type="button" id="art-prev" aria-label="이전 작품">← 이전 작품</button><span id="art-index"></span><button type="button" id="art-next" aria-label="다음 작품">다음 작품 →</button></div>
+      </div>
+    </div>
+  </dialog>
+  <dialog id="info-dialog" class="g-info-dialog" aria-labelledby="info-title">
+    <div class="g-info-toolbar"><span class="g-eyebrow" id="info-kicker">전시 안내</span><button type="button" class="g-dialog-close" id="info-close" aria-label="안내 닫기" autofocus>✕</button></div>
+    <div class="g-info-content"><h2 id="info-title"></h2><div id="info-body"></div><div class="g-info-footer"><button type="button" class="g-btn g-btn-primary" id="info-done">확인</button></div></div>
+  </dialog>
+  <noscript><p class="g-noscript">공간형 전시관을 감상하려면 브라우저의 JavaScript를 켜 주세요.</p></noscript>
+</body>
+</html>
