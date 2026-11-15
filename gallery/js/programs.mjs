@@ -5,8 +5,7 @@ export const CATEGORY_INFO = Object.freeze({
  WAKE:{id:'wake',label:'WAKE',subtitle:'작은 질문에서 시작하는 내일의 발견',color:'#4B6575'},
  '후기청소년 FabLab':{id:'fablab',label:'FabLab',subtitle:'도구와 생각을 연결하는 창작 실험실',color:'#716850'},
 });
-export const SOURCES=Object.freeze({experience:'체험 결과물',onsite:'현장 전시 작품',example:'체험 예시 작품'});
-export const SOURCE_NOTICE='직접 제작했거나 온라인 공개 권한을 확인한 작품입니다. 현장 전시 작품과 체험 예시도 촬영·공개에 필요한 허락을 확인했습니다.';
+export const PUBLICATION_RIGHTS_NOTICE='직접 제작했거나 온라인 공개 권한을 확인한 작품입니다. 사진 속 인물과 제3자 저작물의 촬영·온라인 공개에 필요한 허락을 확인했습니다.';
 export const PROGRAMS=Object.freeze([
  {id:'name-tag',category:'MAKE',name:'새김 네임택',fixtures:['tag-arch','craft-shelf'],type:'object'},
  {id:'station-sign',category:'MAKE',name:'나만의 역명판',fixtures:['sign-arch','craft-shelf'],type:'object'},
@@ -23,10 +22,8 @@ export const PROGRAMS=Object.freeze([
 ]);
 export const programFor=id=>PROGRAMS.find(p=>p.id===id);
 export const programsFor=category=>PROGRAMS.filter(p=>p.category===category);
-export const sourceLabel=work=>SOURCES[work.sourceType]||'기존 전시 작품';
-export function validateProgram(category,boothId,sourceType){
+export function validateProgram(category,boothId){
  const p=programFor(boothId);
  if(!p||p.category!==category)throw new Error('체험 분야에 맞는 프로그램을 선택해 주세요.');
- if(!Object.hasOwn(SOURCES,sourceType))throw new Error('작품 출처를 선택해 주세요.');
  return p;
 }

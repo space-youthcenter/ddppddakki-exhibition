@@ -1,5 +1,4 @@
 import {safeImageUrl} from './work-view.mjs';
-import {sourceLabel} from './programs.mjs';
 import {FIXTURE_SIZE,FIXTURE_TYPES,FIXTURE_BAYS,fixtureSlot,fixtureLabel} from './fixture-layout.mjs';
 import {creatorLabel} from './work-info.mjs';
 import {ASSETS} from './assets.mjs?v=higgsfield1';
@@ -33,11 +32,11 @@ export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
 }
 export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtureSkinName()}={}){
  const g=fixtureArtworkGeometry(work,{skin}),b=fixtureNode('button','g-fixture-work'),s=g.slot;b.type='button';
- Object.assign(b.dataset,{workId:work.id,slot:s.id,mode:s.mode,source:work.sourceType||'experience',cutout:String(g.media.cutout)});
+ Object.assign(b.dataset,{workId:work.id,slot:s.id,mode:s.mode,cutout:String(g.media.cutout)});
  Object.assign(b.style,{left:g.left+'%',top:g.top+'%',width:g.width+'%',height:g.height+'%'});
  b.style.setProperty('--turn',s.rotate+'deg');
- b.setAttribute('aria-label',`${work.title}, ${sourceLabel(work)}, ${creatorLabel(work)}, 작품 크게 감상하기`);
- b.title=`${work.title} · ${sourceLabel(work)}`;
+ b.setAttribute('aria-label',`${work.title}, ${creatorLabel(work)}, 작품 크게 감상하기`);
+ b.title=work.title;
  if(focusId===work.id)b.classList.add('is-review-focus');
  if(arrival&&!(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion:reduce)').matches)){
   b.classList.add('g-fixture-arrival');
@@ -62,7 +61,6 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtur
   b.append(shadow);
  }
  const badge=fixtureNode('span','g-work-number',String(work.labelNumber||'').padStart(2,'0'));b.append(badge);
- if(work.sourceType==='example')b.append(fixtureNode('span','g-example-mark','예시'));
  b.onclick=()=>onOpen?.(work.id,b);return b;
 }
 export function createFixtureElement(f,works,{onOpen,onZoom,focusId,arrivalIds=new Set(),assetUrl,skin=fixtureSkinName()}={}){

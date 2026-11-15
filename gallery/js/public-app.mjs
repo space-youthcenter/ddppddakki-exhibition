@@ -1,4 +1,4 @@
-import {CATEGORY_INFO,PROGRAMS,programFor,sourceLabel} from './programs.mjs';
+import {CATEGORY_INFO,PROGRAMS,programFor} from './programs.mjs';
 import {FIXTURE_TYPES} from './fixture-layout.mjs';
 import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs';
 import {fixtureSkinName,stationImageUrl} from './fixture-skins.mjs';
@@ -19,7 +19,7 @@ const read=(action,args={})=>demo?demoStore.read(action,args):readPublic(config.
 // Visitor navigation only: stored category/program IDs and placements stay unchanged.
 const visitorCategories=['MAKE','TAKE','WAKE'];
 const visitorWorks=()=>catalog.works.filter(w=>visitorCategories.includes(w.category));
-let roomFixtures=[],currentCategory='MAKE',alignOnLoad=false;
+let roomFixtures=[],currentCategory='MAKE',alignOnLoad=false,metricsState=null;
 let catalog={revision:0,roomsOpened:1,works:[]},roomWorks=[],currentRoom='make-1',roomRequest=0,detailRequest=0,activeId=null,detail,returnFocus,returnView,lastRevision=-1,refreshing=false;
 const metrics=createMetrics(demo||config.metricsEnabled!==true?null:config.endpoint),reduced=matchMedia('(prefers-reduced-motion:reduce)');
 const status=message=>{$('public-status').textContent=message;$('public-status').hidden=!message;};
@@ -43,6 +43,13 @@ function entrance(){
  }
  if(catalog.works.some(w=>w.placement.layoutVersion!==3)){const a=make('a','','기존 전시실');a.href='#room-1';$('category-nav').append(a);}
  const count=visitorWorks().length;$('entrance-total').textContent=count?'세 전시관에 '+count+'개의 이야기가 도착했어요':'세 전시관이 첫 번째 작품을 기다립니다';
+}
+async function refreshMetrics(){
+ const output=$('visitor-total');if(!output||demo)return;
+ try{const value=await read('stats');if(!Number.isInteger(value.totalSessions)||!Number.isInteger(value.todaySessions))throw new Error('invalid');metricsState=value;
+  output.textContent='누적 관람 '+value.totalSessions.toLocaleString('ko-KR')+'세션 · 오늘 '+value.todaySessions.toLocaleString('ko-KR')+(value.enabled?'':' · 집계 중단');
+  metrics.setEnabled(config.metricsEnabled===true&&value.enabled===true);
+ }catch{output.textContent='관람 집계를 불러오지 못했습니다';metrics.setEnabled(false);metricsState=null;}
 }
 function shell(){
  const meta=roomMeta(),legacy=meta.layoutVersion!==3,theme=themeFor(legacy?currentRoom:meta.number),count=catalog.works.filter(w=>w.placement.room===currentRoom).length;
@@ -117,7 +124,7 @@ async function openArt(id,source,reload=false){
  const seq=++detailRequest;activeId=id;detail=null;
  $('art-image').removeAttribute('src');$('art-image').alt='';$('art-image').onerror=null;
  $('art-title').textContent='작품을 불러오고 있습니다';
- for(const key of ['art-description','art-creator','art-category','art-location','art-source','art-index'])$(key).textContent='';
+ for(const key of ['art-description','art-creator','art-category','art-location','art-index'])$(key).textContent='';
  $('art-prev').disabled=true;$('art-next').disabled=true;$('art-dialog').setAttribute('aria-busy','true');
  $('art-dialog').style.setProperty('--art-background','#F7F3E9');
  if(!$('art-dialog').open){$('art-dialog').showModal();$('art-dialog').scrollTop=0;}
@@ -132,7 +139,6 @@ function renderArt(){
  $('art-image').onerror=()=>{if(media.cutout){$('art-image').onerror=null;$('art-image').src=safeImageUrl(w.imageUrl);}else $('art-image').alt=w.title+' · 이미지를 불러오지 못했습니다';};
  $('art-image').src=safeImageUrl(media.url);$('art-image').alt=w.title;
  $('art-title').textContent=w.title;$('art-category').textContent=c?.label||w.category;
- $('art-source').textContent=sourceLabel(w);$('art-source').dataset.source=w.sourceType||'experience';
  $('art-description').textContent=w.description;$('art-creator').textContent='만든 이 · '+creatorLabel(w);
  $('art-dialog').style.setProperty('--art-background',detailBackground(w));
  $('art-location').textContent=w.placement.layoutVersion===3?(c?.label||w.category)+' · 전시 '+w.placement.roomNumber+'관':'전시 '+w.placement.room+'관';
@@ -224,9 +230,10 @@ async function info(kind,source){
   p('키보드: Tab으로 선택 · Enter 또는 Space로 열기 · Esc로 닫기','g-info-note');
  }
  if(kind==='privacy'){
-  if(config.metricsEnabled!==true)p('현재 관람 통계 수집은 중단되어 있습니다. 아래는 향후 집계를 운영할 때의 기준입니다.','g-info-status');
+  if(config.metricsEnabled!==true||metricsState?.enabled!==true)p('현재 관람 통계 수집은 중단되어 있습니다. 아래는 향후 집계를 운영할 때의 기준입니다.','g-info-status');
   p('방문 세션과 일별 추정 기기 수, 작품 감상 횟수를 집계합니다. 30분 동안 활동이 없으면 새 세션으로 봅니다. 같은 브라우저를 여러 사람이 사용할 수 있어 실제 인원과 다릅니다.');
-  p('IP 주소·위치·이름은 수집하지 않습니다. 브라우저의 임의 식별자는 매일 새로 만들며, 집계가 차단되거나 실패하면 누락될 수 있습니다.');
+  p('전시관 통계 기록에는 IP 주소·위치·이름을 저장하지 않습니다. 브라우저 임의 식별자는 매일 새로 만들고 서버에는 해시값으로 기록합니다. Google 등 접속 제공자의 자체 로그와는 별개입니다. 집계 차단·연결 오류로 누락될 수 있으며, 다른 브라우저·기기·저장소 삭제는 별도 방문으로 잡힐 수 있습니다.');
+  p('관람 이벤트는 행사 결과 집계에 사용하며 2027년 2월 20일까지 보관합니다. 문의: 시립중랑청소년센터 02-490-0316. 같은 세션의 작품 감상은 작품별 1회로 계산합니다.');
   body.append(button(metrics.optedOut()?'관람 기록 집계 허용':'이 브라우저의 관람 기록 집계 끄기',()=>{metrics.setOptOut(!metrics.optedOut());info('privacy');},'g-btn'));
  }
  if(kind==='guestbook'){
@@ -253,6 +260,7 @@ if(demo){
  $('demo-hide').onclick=async()=>{const s=await demoStore.snapshot(),w=s.works.find(w=>w.placement.room===currentRoom&&w.status==='published');if(w){await demoStore.visibility(w.id,false);await refresh();toast('첫 작품을 숨겼습니다. 자리는 보존합니다.');}};
  $('demo-restore').onclick=async()=>{const s=await demoStore.snapshot();for(const w of s.works.filter(w=>w.status==='hidden'))await demoStore.visibility(w.id,true);await refresh();};
  $('demo-reset').onclick=()=>{const d=$('demo-reset-dialog');d.showModal();};$('demo-reset-cancel').onclick=()=>$('demo-reset-dialog').close();$('demo-reset-confirm').onclick=async()=>{await demoStore.reset();$('demo-reset-dialog').close();goRoom('make-1');await refresh();await loadRoom();};
+ $('demo-flex-tour').onclick=async()=>{try{const s=await demoStore.snapshot();if(s.works.length){toast('빈 전시관부터 다시 시작한 뒤 유연 배치 예시를 선택해 주세요.');return;}for(const [booth,kind,n] of [['name-tag','tag-arch',17],['station-sign','sign-arch',1],['woodcraft','craft-shelf',7],['photo','photo-lines',19],['photo','table-frames',1],['future-patent','card-rack',25],['coloring','color-panel',1]])await demoStore.add(booth,kind,n);await refresh();goRoom('make-1');toast('71개의 가상 작품: 동일 구조물·혼합 전시·별도 방 개방을 확인하세요.');}catch(e){toast(e.message);}};
  $('demo-tour').onclick=async()=>{const s=await demoStore.snapshot();if(s.works.length){toast('이미 가상 작품이 있습니다. 필요하면 빈 전시관부터 다시 시작해 주세요.');return;}for(const [booth,kind,n] of [['name-tag','tag-arch',6],['station-sign','sign-arch',3],['photo','photo-lines',7],['photo','table-frames',4],['future-patent','card-rack',10],['coloring','color-panel',5]])await demoStore.add(booth,kind,n);await refresh();goRoom('make-1');toast('35개의 가상 작품으로 MAKE·TAKE·WAKE를 준비했습니다.');};
 }
-entrance();route();refresh();metrics.record('session');setInterval(()=>{if(!document.hidden)refresh();},Math.max(15000,config.pollMs||60000));
+entrance();route();refresh();refreshMetrics();setInterval(()=>{if(!document.hidden){refresh();refreshMetrics();}},Math.max(15000,config.pollMs||60000));
