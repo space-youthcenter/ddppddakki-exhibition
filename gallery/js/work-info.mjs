@@ -10,4 +10,9 @@ export function publicCreator(work){
 }
 // Accept an already-filtered public record; never use this helper on private input.
 export function creatorLabel(work){return (work.creatorType==='team'?'팀 · ':'')+(work.creatorDisplayName||'익명 제작자');}
+export function artworkLabel(work){return work.title?.trim()||(work.creatorRole==='photographer'?'사진':'작품');}
+export function creatorCaption(work){return (work.creatorRole==='photographer'?'촬영 · ':'만든 이 · ')+creatorLabel(work);}
+// Curated collection metadata is set only by an authenticated owner import.
+// Participant submissions cannot opt out of the normal title/description checks.
+export function publicPresentation(work){return work.creditOnly===true&&work.creatorRole==='photographer'?{creditOnly:true,creatorRole:'photographer',collection:String(work.collection||'').slice(0,80)}:{};}
 export function detailBackground(work){return /^#[0-9a-f]{6}$/i.test(work.detailBackground||'')?work.detailBackground.toUpperCase():(DETAIL_COLORS[work.category]||'#F7F3E9');}

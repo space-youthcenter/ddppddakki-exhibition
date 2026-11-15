@@ -1,6 +1,6 @@
 import {safeImageUrl} from './work-view.mjs';
 import {FIXTURE_SIZE,FIXTURE_TYPES,FIXTURE_BAYS,fixtureSlot,fixtureLabel} from './fixture-layout.mjs';
-import {creatorLabel} from './work-info.mjs';
+import {creatorLabel,creatorCaption,artworkLabel} from './work-info.mjs';
 import {hangingPoint} from './hanging.mjs';
 import {ASSETS} from './assets.mjs?v=higgsfield1';
 import {fixtureSkinName,stationImageUrl,registeredFixtureSlot,registeredFixtureBay,FIXTURE_IMAGE_REGISTRATION,fixtureFastenerWindows} from './fixture-skins.mjs';
@@ -44,8 +44,8 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtur
  Object.assign(b.dataset,{workId:work.id,slot:s.id,mode:s.mode,cutout:String(g.media.cutout)});
  Object.assign(b.style,{left:g.left+'%',top:g.top+'%',width:g.width+'%',height:g.height+'%'});
  b.style.setProperty('--turn',s.rotate+'deg');
- b.setAttribute('aria-label',`${work.title}, ${creatorLabel(work)}, 작품 크게 감상하기`);
- b.title=work.title;
+ b.setAttribute('aria-label',`${artworkLabel(work)}, ${creatorCaption(work)}, 작품 크게 감상하기`);
+ b.title=artworkLabel(work);
  if(focusId===work.id)b.classList.add('is-review-focus');
  if(arrival&&!(typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion:reduce)').matches)){
   b.classList.add('g-fixture-arrival');
@@ -59,6 +59,12 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtur
   const border=fixtureNode('img','g-raster-frame');border.src=g.frame.asset.url;border.alt='';relative(border,g.frame);b.append(border);
  }
  b.append(img);
+ if(work.creatorRole==='photographer'){
+  const credit=fixtureNode('span','g-photo-credit',creatorCaption(work));
+  // Seat the HTML credit beneath the frame, not inside the photograph.
+  if(g.frame)credit.style.top=((g.frame.top+g.frame.height-g.top)/g.height*100)+'%';
+  b.append(credit);
+ }
  if(skin==='prototype'){
   if(s.mode==='clip')b.append(fixtureNode('i','g-live-clip'));
   if(s.mode==='hang')b.append(fixtureNode('i','g-live-hook'));

@@ -3,7 +3,7 @@ import {FIXTURE_TYPES} from './fixture-layout.mjs';
 import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs';
 import {fixtureSkinName,stationImageUrl} from './fixture-skins.mjs';
 import {alignEntranceSigns} from './sign-surfaces.mjs';
-import {creatorLabel,detailBackground} from './work-info.mjs';
+import {creatorLabel,creatorCaption,artworkLabel,detailBackground} from './work-info.mjs';
 import {GALLERY_CONFIG as config} from './config.mjs';
 import {readPublic,validEndpoint,createMetrics} from './public-api.mjs';
 import {CAPACITY,themeFor} from './layout.mjs';
@@ -82,7 +82,7 @@ function renderWorks(works,previous=[],fixtures=roomFixtures){
  if(roomMeta().layoutVersion===3){for(const f of roomFixtures){const el=createFixtureElement(f,works,{onOpen:openArt,arrivalIds:new Set(works.filter(w=>!before.has(w.id)).map(w=>w.id))});el.querySelector('.g-fixture-sign')?.remove();el.setAttribute('aria-label','작품 전시 구조물');$('works-layer').append(el);}}
  else for(const w of works){const el=createWorkElement(w,{variant:'B',onOpen:openArt});$('works-layer').append(el);}
  for(const el of $('works-layer').querySelectorAll('[data-work-id]')){
-  const work=works.find(w=>w.id===el.dataset.workId);el.classList.add('g-direct-work');el.setAttribute('aria-haspopup','dialog');el.title=work.title+' · '+creatorLabel(work);
+  const work=works.find(w=>w.id===el.dataset.workId);el.classList.add('g-direct-work');el.setAttribute('aria-haspopup','dialog');el.title=artworkLabel(work)+' · '+creatorCaption(work);
  }
  $('empty-note').hidden=!!fixtures.length||!!works.length;if(!$('empty-note').hidden)empty();
 }
@@ -123,7 +123,8 @@ async function openArt(id,source,reload=false){
  }
  const seq=++detailRequest;activeId=id;detail=null;
  $('art-image').removeAttribute('src');$('art-image').alt='';$('art-image').onerror=null;
- $('art-title').textContent='작품을 불러오고 있습니다';
+ $('art-title').hidden=false;$('art-title').textContent='작품을 불러오고 있습니다';
+ $('art-dialog').setAttribute('aria-labelledby','art-title');
  for(const key of ['art-description','art-creator','art-category','art-location','art-index'])$(key).textContent='';
  $('art-prev').disabled=true;$('art-next').disabled=true;$('art-dialog').setAttribute('aria-busy','true');
  $('art-dialog').style.setProperty('--art-background','#F7F3E9');
@@ -136,10 +137,13 @@ async function openArt(id,source,reload=false){
 function renderArt(){
  const w=detail;if(!w)return;const media=fixtureArtwork(w),c=CATEGORY_INFO[w.category];
  $('art-dialog').dataset.presentation=media.cutout?w.displayType:'frame';
- $('art-image').onerror=()=>{if(media.cutout){$('art-image').onerror=null;$('art-image').src=safeImageUrl(w.imageUrl);}else $('art-image').alt=w.title+' · 이미지를 불러오지 못했습니다';};
- $('art-image').src=safeImageUrl(media.url);$('art-image').alt=w.title;
- $('art-title').textContent=w.title;$('art-category').textContent=c?.label||w.category;
- $('art-description').textContent=w.description;$('art-creator').textContent='만든 이 · '+creatorLabel(w);
+ $('art-image').onerror=()=>{if(media.cutout){$('art-image').onerror=null;$('art-image').src=safeImageUrl(w.imageUrl);}else $('art-image').alt=artworkLabel(w)+' · 이미지를 불러오지 못했습니다';};
+ $('art-image').src=safeImageUrl(media.url);$('art-image').alt=artworkLabel(w)+' · '+creatorCaption(w);
+ $('art-title').textContent=w.title||'';$('art-title').hidden=!w.title?.trim();
+ $('art-category').textContent=w.collection||c?.label||w.category;
+ $('art-description').textContent=w.description||'';$('art-description').hidden=!w.description?.trim();
+ $('art-creator').textContent=creatorCaption(w);
+ $('art-dialog').setAttribute('aria-labelledby',w.title?.trim()?'art-title':'art-creator');
  $('art-dialog').style.setProperty('--art-background',detailBackground(w));
  $('art-location').textContent=w.placement.layoutVersion===3?(c?.label||w.category)+' · 전시 '+w.placement.roomNumber+'관':'전시 '+w.placement.room+'관';
  const works=visitorWorks(),i=works.findIndex(x=>x.id===w.id);$('art-index').textContent=i<0?'':(i+1)+' / '+works.length;
