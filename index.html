@@ -11,6 +11,20 @@
   <link rel="stylesheet" href="hero-poster.css?v=20261007-fonts">
   <script defer src="js/config.js"></script>
   <script defer src="js/review-links.js"></script>
+  <style id="online-gallery-banner-style">
+    /* Online gallery entry only; existing sections and booking styles are unchanged. */
+    .home-gallery-banner { display:flex; align-items:center; gap:24px; margin-block:0 26px; padding:18px 24px; border:1px solid var(--home-line); border-left:5px solid var(--home-make); background:var(--home-white); }
+    .home-gallery-banner-copy { flex:1; min-width:0; }
+    .home-gallery-banner .home-kicker { color:var(--home-make); margin-bottom:3px; }
+    .home-gallery-banner h2 { font-size:24px; }
+    .home-gallery-banner p { margin-top:4px; font-size:14px; color:var(--home-muted); word-break:keep-all; overflow-wrap:anywhere; }
+    .home-gallery-banner .home-button { flex-shrink:0; margin:0; font-size:14px; }
+    @media (max-width:600px) {
+      .home-gallery-banner { flex-direction:column; align-items:stretch; gap:14px; padding:18px; margin-bottom:20px; }
+      .home-gallery-banner h2 { font-size:22px; }
+      .home-gallery-banner .home-button { width:100%; }
+    }
+  </style>
 </head>
 <body class="exhibition-home" id="top">
   <a class="skip-link" href="#main">본문으로 바로가기</a>
@@ -50,6 +64,15 @@
         <span class="poster-ticket-action">승차권 예약하기 <b aria-hidden="true">↗</b></span>
         <span class="poster-ticket-stub" aria-hidden="true">MAKE / TAKE / WAKE</span>
       </a>
+    </section>
+
+    <section class="home-gallery-banner home-wrap" id="online-gallery" aria-labelledby="online-gallery-title">
+      <div class="home-gallery-banner-copy">
+        <span class="home-kicker">ONLINE EXHIBITION</span>
+        <h2 id="online-gallery-title">온라인 작품 전시관</h2>
+        <p>청소년들의 창작이 모이는 전시관을 온라인에서도 만나보세요.</p>
+      </div>
+      <a class="home-button" href="gallery/">온라인 전시관 둘러보기 <span aria-hidden="true">→</span></a>
     </section>
 
     <section class="home-route home-wrap" id="route" aria-labelledby="route-title">
