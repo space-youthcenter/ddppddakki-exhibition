@@ -100,12 +100,19 @@ export function createFixtureElement(f,works,{onOpen,onZoom,focusId,arrivalIds=n
  const assigned=works.filter(w=>w.placement?.room===f.room&&w.placement?.fixtureId===f.id);
  const rows=document.body?.classList.contains('g-public')?photoCollectionRows(f,assigned):[],rowIds=new Set(rows.flatMap(r=>r.works.map(w=>w.id)));
  // Leave breathing room between the photographs and the row's separate HTML label.
- for(const w of assigned){const grouped=rowIds.has(w.id);wrap.append(createFixtureWork(grouped?{...w,displayScale:(w.displayScale||1)*.85}:w,{onOpen,focusId,skin,showCredit:!grouped,arrival:arrivalIds.has(w.id)}));}
+ for(const w of assigned){const grouped=rowIds.has(w.id),node=createFixtureWork(grouped?{...w,displayScale:(w.displayScale||1)*.85}:w,{onOpen,focusId,skin,showCredit:!grouped,arrival:arrivalIds.has(w.id)});if(grouped&&(Number(w.placement.slotId.slice(1))-1)%3===0)node.style.left=(parseFloat(node.style.left)+1.4)+'%';wrap.append(node);}
  for(const r of rows){
-  const first={...r.works[0].placement,slotId:'s'+String(r.row*3+1).padStart(2,'0')},second={...first,slotId:'s'+String(r.row*3+2).padStart(2,'0')};
-  const a=registeredFixtureSlot(first,fixtureSlot(first),skin),b=registeredFixtureSlot(second,fixtureSlot(second),skin);
-  const credit=fixtureNode('div','g-photo-row-credit',r.caption);credit.dataset.photographerRow=String(r.row+1);
-  Object.assign(credit.style,{left:((a.x+b.x)/2-8.1)+'%',top:(a.y-3.5)+'%',width:'16.2%'});wrap.append(credit);
+  const first={...r.works[0].placement,slotId:'s'+String(r.row*3+1).padStart(2,'0')};
+  const a=registeredFixtureSlot(first,fixtureSlot(first),skin);
+  const credit=fixtureNode('div','g-photo-row-credit');credit.dataset.photographerRow=String(r.row+1);credit.setAttribute('aria-label',r.caption);
+  credit.append(fixtureNode('small','','PHOTOGRAPHER'),fixtureNode('span','','촬영'),fixtureNode('strong','',r.works[0].creatorDisplayName||r.caption.replace(/^촬영 · /,'')));
+  Object.assign(credit.style,{left:'12.2%',top:a.y+'%',width:'9.7%',height:'12.8%'});wrap.append(credit);
+  // Hang the HTML name card using the same photographed wooden clip as the photos.
+  const source=fixtureFastenerWindows(f.type,skin)[r.row*3];
+  if(source){const crop=fixtureNode('span','g-image-fastener g-name-card-clip'),part=fixtureNode('img');crop.setAttribute('aria-hidden','true');
+   Object.assign(crop.style,{left:'15.25%',top:source.y+'%',width:source.width+'%',height:source.height+'%'});
+   part.src=image.src;part.alt='';Object.assign(part.style,{left:-source.x/source.width*100+'%',top:-source.y/source.height*100+'%',width:100/source.width*100+'%',height:100/source.height*100+'%'});crop.append(part);wrap.append(crop);
+  }
  }
  // Reuse the actual generated pixels above the photos; no CSS-drawn clip/hook substitute.
  for(const r of fixtureFastenerWindows(f.type,skin)){
