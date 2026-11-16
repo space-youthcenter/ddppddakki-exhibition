@@ -16,7 +16,7 @@ document.body.dataset.imageTheme=fixtureSkinName();
 if(fixtureSkinName()==='final')alignEntranceSigns(document);
 $('entrance-background').src=stationImageUrl('room-entrance');
 const demo=document.body.dataset.demo==='fixtures',demoStore=demo?await new (await import('./station-store.mjs')).StationDemoStore().connect():null;
-const publicCache=new PublicGalleryCache(),roomViews=new Map();let renderedRoom=null,renderedKey=null,metricsStarted=false;
+const publicCache=new PublicGalleryCache(),roomViews=new Map();let renderedRoom=null,renderedKey=null,metricsStarted=false,initialRoomRead=null;const pendingViews=new Set();
 const read=(action,args={})=>demo?demoStore.read(action,args):readPublic(config.endpoint,action,args);
 // Visitor navigation only: stored category/program IDs and placements stay unchanged.
 const visitorCategories=['MAKE','TAKE','WAKE'];
@@ -50,7 +50,7 @@ async function refreshMetrics(){
  const output=$('visitor-total');if(!output||demo)return;
  try{const value=await read('stats');if(!Number.isInteger(value.totalSessions)||!Number.isInteger(value.todaySessions))throw new Error('invalid');metricsState=value;
   output.textContent='누적 관람 '+value.totalSessions.toLocaleString('ko-KR')+'세션 · 오늘 '+value.todaySessions.toLocaleString('ko-KR')+(value.enabled?'':' · 집계 중단');
-  metrics.setEnabled(config.metricsEnabled===true&&value.enabled===true);
+  metrics.setEnabled(config.metricsEnabled===true&&value.enabled===true);for(const id of pendingViews)if(catalog.works.some(w=>w.id===id))metrics.record('view',id);pendingViews.clear();
  }catch{output.textContent='관람 집계를 불러오지 못했습니다';metrics.setEnabled(false);metricsState=null;}
 }
 function shell(){
@@ -98,13 +98,13 @@ function showRoom(result,{cached=false}={}){
 function startMetrics(){if(metricsStarted)return;metricsStarted=true;setTimeout(refreshMetrics,1200);}
 async function loadRoom(){
  const seq=++roomRequest,room=currentRoom;shell();if(!demo&&!config.endpoint)return;
- if(!publicCache.catalog)return;
+ if(!publicCache.catalog){if(!initialRoomRead)initialRoomRead={room,promise:read('room',{room,media:'display'}).then(value=>({value}),error=>({error}))};return;}
  if(!publicCache.fresh()){await refresh();return;}
  const cached=publicCache.room(room);if(cached){if(renderedRoom!==room||renderedKey!==publicCache.roomKey(room))showRoom(cached,{cached:true});return;}
  if(typeof room==='string'&&!(catalog.rooms||[]).some(r=>r.id===room)){showRoom({works:[],fixtures:[]},{cached:true});return;}
  if(renderedRoom!==room){renderWorks([],[],[]);renderedRoom=null;empty('작품을 불러오고 있습니다');}
  const ticket=publicCache.ticket(room);
- try{const result=await read('room',{room,media:'display'});if(seq!==roomRequest||room!==currentRoom)return;
+ try{const initial=initialRoomRead?.room===room?initialRoomRead:null;initialRoomRead=null;const loaded=initial?await initial.promise:{value:await read('room',{room,media:'display'})};if(loaded.error)throw loaded.error;const result=loaded.value;if(seq!==roomRequest||room!==currentRoom)return;
   if(!publicCache.putRoom(ticket,result)){setTimeout(refresh,0);return;}showRoom(result);
  }catch(e){if(seq!==roomRequest)return;if(!publicCache.fresh()){renderWorks([],[],[]);renderedRoom=null;}if(!roomWorks.length)empty('연결을 기다리고 있습니다');status(e.message);if(/변경/.test(e.message))setTimeout(refresh,0);}
 }
@@ -159,7 +159,7 @@ async function openArt(id,source,reload=false){
  $('art-prev').disabled=true;$('art-next').disabled=true;$('art-dialog').style.setProperty('--art-background','#F7F3E9');
  if(!$('art-dialog').open){$('art-dialog').showModal();$('art-dialog').scrollTop=0;}
  const cached=publicCache.detail(id),preview=cached||publicCache.preview(id);if(preview){detail=preview;renderArt();}
- $('art-dialog').setAttribute('aria-busy',String(!cached));metrics.record('view',id);if(cached)return;
+ $('art-dialog').setAttribute('aria-busy',String(!cached));if(metricsState)metrics.record('view',id);else pendingViews.add(id);if(cached)return;
  try{
   const w=await read('artwork',{id,media:'display'});if(seq!==detailRequest||!$('art-dialog').open)return;
   if(!publicCache.putDetail(id,key,w)){closeArt();refresh();return;}
