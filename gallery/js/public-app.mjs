@@ -98,7 +98,7 @@ function showRoom(result,{cached=false}={}){
 function startMetrics(){if(metricsStarted)return;metricsStarted=true;setTimeout(refreshMetrics,1200);}
 async function loadRoom(){
  const seq=++roomRequest,room=currentRoom;shell();if(!demo&&!config.endpoint)return;
- if(!publicCache.catalog){if(!initialRoomRead)initialRoomRead={room,promise:read('room',{room,media:'display'}).then(value=>({value}),error=>({error}))};return;}
+ if(!publicCache.catalog){if(!initialRoomRead)initialRoomRead={room,promise:read('room',{room,media:'display',catalog:'1'}).then(value=>({value}),error=>({error}))};return;}
  if(!publicCache.fresh()){await refresh();return;}
  const cached=publicCache.room(room);if(cached){if(renderedRoom!==room||renderedKey!==publicCache.roomKey(room))showRoom(cached,{cached:true});return;}
  if(typeof room==='string'&&!(catalog.rooms||[]).some(r=>r.id===room)){showRoom({works:[],fixtures:[]},{cached:true});return;}
@@ -135,7 +135,7 @@ window.addEventListener('resize',syncPanControls);
 new ResizeObserver(syncPanControls).observe($('room-viewport'));
 async function refresh(){
  if(refreshing||(!demo&&!config.endpoint))return;refreshing=true;
- try{const next=await read('catalog',{revision:lastRevision});
+ try{const initial=!publicCache.catalog&&initialRoomRead?await initialRoomRead.promise:null;const next=initial?.value?.catalog||await read('catalog',{revision:lastRevision});
   if(next.notModified===true&&next.revision===lastRevision)publicCache.confirm();
   else{if(!Number.isInteger(next.roomsOpened)||next.roomsOpened<1||!Array.isArray(next.works))throw new Error('전시 정보를 읽지 못했습니다.');
    const changed=lastRevision!==next.revision;lastRevision=next.revision;catalog=next;publicCache.sync(next);if(changed){entrance();shell();}}
