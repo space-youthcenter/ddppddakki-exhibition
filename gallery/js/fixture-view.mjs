@@ -39,7 +39,7 @@ export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
  if(!(s.mode==='object'&&media.cutout))y=Math.max(bottom?s.y*10-boundH:s.y*10,Math.min(y,(bottom?s.y*10:s.y*10+boundH)-height));
  return {slot:s,media,left:x/12,top:y/10,width:width/12,height:height/10,anchor:{x:s.x,y:s.y},bottom};
 }
-export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtureSkinName()}={}){
+export function createFixtureWork(work,{onOpen,arrival=false,focusId,showCredit=true,skin=fixtureSkinName()}={}){
  const g=fixtureArtworkGeometry(work,{skin}),b=fixtureNode('button','g-fixture-work'),s=g.slot;b.type='button';
  Object.assign(b.dataset,{workId:work.id,slot:s.id,mode:s.mode,cutout:String(g.media.cutout)});
  Object.assign(b.style,{left:g.left+'%',top:g.top+'%',width:g.width+'%',height:g.height+'%'});
@@ -59,7 +59,7 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtur
   const border=fixtureNode('img','g-raster-frame');border.src=g.frame.asset.url;border.alt='';relative(border,g.frame);b.append(border);
  }
  b.append(img);
- if(work.creatorRole==='photographer'){
+ if(showCredit&&work.creatorRole==='photographer'){
   const credit=fixtureNode('span','g-photo-credit',creatorCaption(work));
   // Seat the HTML credit beneath the frame, not inside the photograph.
   if(g.frame)credit.style.top=((g.frame.top+g.frame.height-g.top)/g.height*100)+'%';
@@ -78,6 +78,18 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,skin=fixtur
  const badge=fixtureNode('span','g-work-number',String(work.labelNumber||'').padStart(2,'0'));b.append(badge);
  b.onclick=()=>onOpen?.(work.id,b);return b;
 }
+// Only the operator-curated 18-photo collection uses one caption per author row.
+// Ordinary submissions and the administrator's inspection view keep their captions.
+export function photoCollectionRows(f,works){
+ if(f.type!=='photo-lines')return [];
+ const rows=[];
+ for(let row=0;row<3;row++){
+  const members=works.filter(w=>Math.floor((Number(w.placement?.slotId?.slice(1))-1)/3)===row);
+  if(!members.length||!members.every(w=>/^chalkak-2026-(0[1-9]|1[0-8])$/.test(w.id)&&w.creditOnly===true&&w.creatorRole==='photographer'&&w.collection==='사진동아리 찰칵 · 올해의 베스트컷'&&creatorCaption(w)===creatorCaption(members[0])))continue;
+  rows.push({row,works:members,caption:creatorCaption(members[0])});
+ }
+ return rows;
+}
 export function createFixtureElement(f,works,{onOpen,onZoom,focusId,arrivalIds=new Set(),assetUrl,skin=fixtureSkinName()}={}){
  const def=FIXTURE_TYPES[f.type],bay=registeredFixtureBay(f.bay,FIXTURE_BAYS[f.bay],skin),wrap=fixtureNode('section','g-fixture');
  wrap.setAttribute('aria-label',def.name);Object.assign(wrap.dataset,{fixture:f.id,type:f.type,room:f.room,skin});
@@ -86,7 +98,15 @@ export function createFixtureElement(f,works,{onOpen,onZoom,focusId,arrivalIds=n
  const title=fixtureNode('div','g-fixture-sign',def.name),sign=skin==='reference'&&FIXTURE_IMAGE_REGISTRATION[f.type]?.sign;
  if(sign)Object.assign(title.style,{top:sign.top+'%',left:sign.left+'%',width:sign.width+'%'});wrap.append(title);
  const assigned=works.filter(w=>w.placement?.room===f.room&&w.placement?.fixtureId===f.id);
- for(const w of assigned)wrap.append(createFixtureWork(w,{onOpen,focusId,skin,arrival:arrivalIds.has(w.id)}));
+ const rows=document.body?.classList.contains('g-public')?photoCollectionRows(f,assigned):[],rowIds=new Set(rows.flatMap(r=>r.works.map(w=>w.id)));
+ // Leave breathing room between the photographs and the row's separate HTML label.
+ for(const w of assigned){const grouped=rowIds.has(w.id);wrap.append(createFixtureWork(grouped?{...w,displayScale:(w.displayScale||1)*.85}:w,{onOpen,focusId,skin,showCredit:!grouped,arrival:arrivalIds.has(w.id)}));}
+ for(const r of rows){
+  const first={...r.works[0].placement,slotId:'s'+String(r.row*3+1).padStart(2,'0')},second={...first,slotId:'s'+String(r.row*3+2).padStart(2,'0')};
+  const a=registeredFixtureSlot(first,fixtureSlot(first),skin),b=registeredFixtureSlot(second,fixtureSlot(second),skin);
+  const credit=fixtureNode('div','g-photo-row-credit',r.caption);credit.dataset.photographerRow=String(r.row+1);
+  Object.assign(credit.style,{left:((a.x+b.x)/2-8.1)+'%',top:(a.y-3.5)+'%',width:'16.2%'});wrap.append(credit);
+ }
  // Reuse the actual generated pixels above the photos; no CSS-drawn clip/hook substitute.
  for(const r of fixtureFastenerWindows(f.type,skin)){
   const crop=fixtureNode('span','g-image-fastener'),part=fixtureNode('img');crop.setAttribute('aria-hidden','true');
