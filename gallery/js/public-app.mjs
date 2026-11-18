@@ -174,7 +174,7 @@ function renderArt(){
  $('art-image').src=safeImageUrl(media.url);$('art-image').alt=artworkLabel(w)+' · '+creatorCaption(w);
  $('art-title').textContent=w.title||'';$('art-title').hidden=!w.title?.trim();
  $('art-category').textContent=w.collection||c?.label||w.category;
- $('art-description').textContent=w.description||'';$('art-description').hidden=!w.description?.trim();
+ $('art-description').textContent='';$('art-description').hidden=true;
  $('art-creator').textContent=creatorCaption(w);
  $('art-dialog').setAttribute('aria-labelledby',w.title?.trim()?'art-title':'art-creator');
  $('art-dialog').style.setProperty('--art-background',detailBackground(w));
@@ -244,10 +244,10 @@ async function info(kind,source){
   p('뚝딱이 전시회에서 만든 작품이나 온라인 공개가 허용된 현장 전시 작품을 등록할 수 있습니다.');
   p('등록된 작품은 관리자 확인을 거쳐 온라인 전시관에 공개됩니다.');
   const steps=make('ol','g-info-process');
-  for(const [title,description] of [['작품 등록','작품 사진과 제목, 설명을 입력합니다.'],['관리자 확인','작품 정보와 온라인 공개 동의를 확인합니다.'],['온라인 전시','승인된 작품은 해당 전시관의 빈 공간에 배치됩니다.']]){
+  for(const [title,description] of [['작품 등록','작품 사진과 작품명을 입력합니다. 제작자는 선택 사항입니다.'],['관리자 확인','작품 정보와 온라인 공개 동의를 확인합니다.'],['온라인 전시','승인된 작품은 해당 전시관의 빈 공간에 배치됩니다.']]){
    const step=make('li'),copy=make('div');copy.append(make('h3','',title),make('p','',description));step.append(copy);steps.append(step);
   }body.append(steps);
-  const notice=make('section','g-info-note');notice.append(make('h3','','공개 전 확인해 주세요'),make('p','','제작자 표시명은 선택사항입니다. 실명 대신 별명이나 팀명을 사용할 수 있으며, 공개 동의가 없는 표시명은 공개하지 않습니다.'),make('p','','온라인 공개가 어려운 작품이나 다른 사람의 초상·저작물이 포함된 경우에는 필요한 공개 권한을 확인해 주세요.'));
+  const notice=make('section','g-info-note');notice.append(make('h3','','공개 전 확인해 주세요'),make('p','','제작자는 선택사항입니다. 실명 대신 별명이나 팀명을 사용할 수 있으며, 공개에 동의한 이름만 표시합니다.'),make('p','','온라인 공개가 어려운 작품이나 다른 사람의 초상·저작물이 포함된 경우에는 필요한 공개 권한을 확인해 주세요.'));
   const contact=make('p');contact.append(document.createTextNode('작품 공개 및 철회 문의'),make('br'),make('strong','','시립중랑청소년센터 '));const phone=make('a','','02-490-0316');phone.href='tel:024900316';contact.append(phone);notice.append(contact);body.append(notice);
   if(demo)p('지금은 가상 작품으로 둘러보는 시제품입니다. 이 화면에서는 실제 작품을 접수하지 않습니다.','g-info-status');
   else if(config.uploadUrl){
