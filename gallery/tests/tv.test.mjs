@@ -60,3 +60,16 @@ test('lost public validation expires all displayed works and closes the detail',
  const h=harness();h.reply(h.take('catalog'),h.cat());h.reply(h.take('room'),h.room());h.e['tv-fixtures'].getElementsByTagName('button')[0].onclick();
  h.tick(51000);h.tick(1000);assert.equal(h.e['tv-fixtures'].children.length,0);assert.equal(h.e['tv-detail'].style.display,'none');
 });
+test('minimum TV scene sizes keep 56px hit targets separate on every fixture',()=>{
+ const c=realm();
+ for(const [type,def] of Object.entries(FIXTURE_TYPES))for(const bay of c.DDGTV_LAYOUT.bays){
+  const scene=type==='card-rack'?1120:900,scale=scene/1600;
+  const rects=def.slots.map(slot=>{
+   const g=c.DDGTVGeometry.geometry({displayType:'frame',width:700,height:1000,placement:{fixtureType:type,slotId:slot.id}});
+   const cx=(bay.x+bay.width*(g.left+g.width/2)/100)*scale,cy=(bay.y+bay.height*(g.top+g.height/2)/100)*scale;
+   const w=Math.max(56,bay.width*g.width/100*scale),h=Math.max(56,bay.height*g.height/100*scale);
+   return {id:slot.id,left:cx-w/2,right:cx+w/2,top:cy-h/2,bottom:cy+h/2};
+  });
+  for(let i=0;i<rects.length;i++)for(let j=i+1;j<rects.length;j++){const a=rects[i],b=rects[j];assert.ok(Math.min(a.right,b.right)<=Math.max(a.left,b.left)||Math.min(a.bottom,b.bottom)<=Math.max(a.top,b.top),type+' '+a.id+' '+b.id);}
+ }
+});

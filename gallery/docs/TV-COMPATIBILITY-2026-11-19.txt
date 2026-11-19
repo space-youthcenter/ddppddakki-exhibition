@@ -1,6 +1,6 @@
 2026-11-19 LG TV emergency compatibility release
 
-Entry: gallery/tv.html?v=20261119-1#make-1
+Entry: gallery/tv.html?v=20261119-2#make-1
 The usual gallery entry detects known LG/webOS/NetCast TV browsers or missing
 required browser capabilities and sends them to the independent TV viewer.
 Modern PC/mobile gallery modules, CSS, images and placements are unchanged.
@@ -28,7 +28,9 @@ TV viewer:
 - MAKE/TAKE/WAKE links are static HTML, available before script initialization.
   Single activation opens detail with immediate preview then larger image.
   Close/Escape restores room, scroll and focus. Enter/Space use native buttons.
-  56px minimum work targets; 60px category links. No double touch/click handler.
+  56px minimum work targets; 60px category links. Photo scenes keep at least
+  900px width (dense card racks: 1120px) to avoid overlapping touch targets;
+  smaller TV/browser viewports can scroll the room. No double touch/click handler.
 - Room cache (3) and detail cache (4) are memory-only. Catalog polls every 20s;
   revision changes clear images and details. If public validation cannot be
   renewed for 50s, visible work images and open details are removed until
@@ -55,7 +57,7 @@ Refresh on the television:
 1. Close the old gallery tab and open the full TV URL in a new tab.
 2. Use the on-page 새로고침 to recheck published works.
 3. If the browser retains an older page, change the URL query to
-   tv.html?v=20261119-2#make-1 and reload; if necessary clear the Internet
+   tv.html?v=20261119-3#make-1 and reload; if necessary clear the Internet
    browser's cached files, then reopen. Do not reset the TV or erase site data.
 
 Rebuild (development only):

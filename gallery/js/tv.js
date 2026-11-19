@@ -197,7 +197,9 @@
   function step(n) {var i;for(i=0;i<currentWorks.length;i++)if(currentWorks[i].id===detailId){openArt(currentWorks[(i+n+currentWorks.length)%currentWorks.length].id);break;}}
   function resize() {
     var stage=id('tv-stage'),available=document.documentElement.clientWidth,viewHeight=window.innerHeight||document.documentElement.clientHeight,top=stage.getBoundingClientRect().top+(window.pageYOffset||0),target=available;
-    if(available>=900)target=Math.min(available,Math.max(440,viewHeight-top-52)*16/9);
+    var minimum=currentWorks.some(function(w){return w.placement && w.placement.fixtureType==='card-rack';})?1120:900;
+    if(available>=900)target=Math.min(available,Math.max(minimum,(viewHeight-top-52)*16/9));
+    target=Math.max(minimum,target);
     stage.style.width=Math.floor(target)+'px';stage.style.height=Math.floor(target*9/16)+'px';stage.style.paddingTop='0';
     var width=stage.clientWidth,buttons=stage.getElementsByTagName('button'),i,b,g,ww,hh,w,h;
     id('tv-sign').style.fontSize=Math.max(14,Math.round(width*(room==='entrance'?0.026:0.035)))+'px';

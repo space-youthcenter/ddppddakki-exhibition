@@ -9,6 +9,7 @@ button:focus,a:focus,select:focus{outline:4px solid #d69c35;outline-offset:2px}b
 .tv-header nav a.is-current{background:#194b36;color:#fff7da;border-color:#194b36}
 .tv-toolbar{padding:10px 24px;min-height:76px}.tv-toolbar label{margin-right:8px}.tv-toolbar select{max-width:50%}#tv-refresh{float:right}#tv-count{margin-left:20px}
 #tv-status{margin:0;padding:5px 24px 10px;min-height:40px;font-size:18px}#tv-status.is-error{color:#932b1b;background:#fff1d6}
+.tv-viewport{width:100%;overflow:auto;-webkit-overflow-scrolling:touch}
 .tv-stage{position:relative;margin:0 auto;width:100%;padding-top:56.25%;overflow:hidden;background:#e9ddc6}
 .tv-camera{position:absolute;left:0;top:0;width:100%;height:100%}.tv-background{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
 #tv-sign{position:absolute;left:34%;top:5.7%;width:33%;height:12%;margin:0;text-align:center;color:#fff4cc;font-size:46px;line-height:1.55;overflow:hidden;text-shadow:0 1px 2px #14291c}
