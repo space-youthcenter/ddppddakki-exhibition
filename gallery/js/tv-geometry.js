@@ -18,9 +18,17 @@ function rotatedDisplaySize(width, height, rotation) {
 }
 function orientArtworkMedia(media, rotation) {
   var size=rotatedDisplaySize(media.width,media.height,rotation),result={},key;
+  // Rotate the visible outline, not the empty corners of the PNG canvas.
+  // Source pixels still rotate about their original centre; offsetX/Y translate
+  // that centre into the visible envelope without cropping or changing pixels.
+  if(media.outline&&media.outline.length>2&&size.rotation){
+    var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity,i,p,x,y,rx,ry;
+    for(i=0;i<media.outline.length;i++){p=media.outline[i];x=(p[0]-.5)*media.width;y=(p[1]-.5)*media.height;rx=x*size.cos-y*size.sin;ry=x*size.sin+y*size.cos;minX=Math.min(minX,rx);maxX=Math.max(maxX,rx);minY=Math.min(minY,ry);maxY=Math.max(maxY,ry);}
+    if(maxX>minX&&maxY>minY){size.width=maxX-minX;size.height=maxY-minY;size.offsetX=-(minX+maxX)/2;size.offsetY=-(minY+maxY)/2;}
+  }
   for(key in media)if(Object.prototype.hasOwnProperty.call(media,key))result[key]=media[key];
   for(key in size)if(Object.prototype.hasOwnProperty.call(size,key))result[key]=size[key];
-  function turnPoint(p){var x=(p.x-.5)*media.width,y=(p.y-.5)*media.height;return {x:Math.max(0,Math.min(1,.5+(x*size.cos-y*size.sin)/size.width)),y:Math.max(0,Math.min(1,.5+(x*size.sin+y*size.cos)/size.height))};}
+  function turnPoint(p){var x=(p.x-.5)*media.width,y=(p.y-.5)*media.height;return {x:Math.max(0,Math.min(1,.5+(x*size.cos-y*size.sin+(size.offsetX||0))/size.width)),y:Math.max(0,Math.min(1,.5+(x*size.sin+y*size.cos+(size.offsetY||0))/size.height))};}
   if(media.contact&&size.rotation){result.contact=turnPoint(media.contact);if(media.contact.hang)result.contact.hang=turnPoint(media.contact.hang);}
   return result;
 }
@@ -35,11 +43,12 @@ function patentLandscapeReady(work) {
 // The returned source rectangle rotates about its centre into the fitted envelope.
 function orientedImageRect(media, bounds) {
   var k=Math.min(bounds.width/media.width,bounds.height/media.height),w=media.sourceWidth*k,h=media.sourceHeight*k;
-  return {left:bounds.left+(bounds.width-w)/2,top:bounds.top+(bounds.height-h)/2,width:w,height:h,rotation:media.rotation||0};
+  return {left:bounds.left+(bounds.width-w)/2+(media.offsetX||0)*k,top:bounds.top+(bounds.height-h)/2+(media.offsetY||0)*k,width:w,height:h,rotation:media.rotation||0};
 }
 function applyOrientationInEnvelope(img, media) {
   if(!media.rotation)return;
-  img.style.left=(1-media.sourceWidth/media.width)*50+'%';img.style.top=(1-media.sourceHeight/media.height)*50+'%';
+  img.style.maxWidth='none';img.style.maxHeight='none';
+  img.style.left=((1-media.sourceWidth/media.width)*50+(media.offsetX||0)/media.width*100)+'%';img.style.top=((1-media.sourceHeight/media.height)*50+(media.offsetY||0)/media.height*100)+'%';
   img.style.width=media.sourceWidth/media.width*100+'%';img.style.height=media.sourceHeight/media.height*100+'%';
   img.style.transform='rotate('+media.rotation+'deg)';img.style.transformOrigin='50% 50%';
 }
@@ -52,8 +61,54 @@ function fitOrientedPreview(img, stage, media) {
   img.style.position='absolute';img.style.left=rect.left+'px';img.style.top=rect.top+'px';img.style.width=rect.width+'px';img.style.height=rect.height+'px';
   img.style.maxWidth='none';img.style.maxHeight='none';img.style.transform='rotate('+rect.rotation+'deg)';img.style.transformOrigin='50% 50%';
 }
+// Read-only display measurements. No RGB/alpha edits, encoding, uploads or API calls.
+// ES5 is intentional: the same implementation runs in the TV viewer.
+var displayAlphaCache = [], displayAlphaBytes = 0;
+function clearDisplayAlphaCache() { displayAlphaCache = []; displayAlphaBytes = 0; }
+function cachedDisplayOutline(url) {
+  for (var i = displayAlphaCache.length - 1; i >= 0; i--) if (displayAlphaCache[i].url === url) return displayAlphaCache[i].outline;
+  return undefined;
+}
+// The convex hull of every non-transparent pixel includes thin chains and
+// antialiased edges. Four corners per row span suffice; RGB is never examined.
+function alphaOutlineFromRgba(data, width, height) {
+  if (!(width > 0 && height > 0) || data.length !== width * height * 4) return null;
+  var points = [], x, y, first, last;
+  for (y = 0; y < height; y++) {
+    first = -1; last = -1;
+    for (x = 0; x < width; x++) if (data[(y * width + x) * 4 + 3] > 0) { if (first < 0) first = x; last = x; }
+    if (first >= 0) points.push([first, y], [last + 1, y], [first, y + 1], [last + 1, y + 1]);
+  }
+  if (!points.length) return null;
+  points.sort(function(a, b) { return a[0] - b[0] || a[1] - b[1]; });
+  function cross(a, b, c) { return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]); }
+  function half(list) {
+    var h = [], i;
+    for (i = 0; i < list.length; i++) { while (h.length > 1 && cross(h[h.length-2], h[h.length-1], list[i]) <= 0) h.pop(); h.push(list[i]); }
+    h.pop(); return h;
+  }
+  return half(points).concat(half(points.reverse())).map(function(p) { return [p[0]/width, p[1]/height]; });
+}
+function measureDisplayOutline(img, url) {
+  var known = cachedDisplayOutline(url), width = img.naturalWidth, height = img.naturalHeight, outline = null, canvas;
+  if (known !== undefined) return known;
+  if (!url || !(width > 0 && height > 0)) return null;
+  try {
+    // Inspect the already downloaded display derivative at its native pixels.
+    // If canvas access is unavailable/tainted/too large, keep the original fit.
+    if (width * height <= 4000000) {
+      canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+      var context = canvas.getContext('2d'); context.drawImage(img, 0, 0);
+      outline = alphaOutlineFromRgba(context.getImageData(0, 0, width, height).data, width, height);
+    }
+  } catch (error) { outline = null; }
+  if (canvas) canvas.width = canvas.height = 0;
+  displayAlphaCache.push({url:url, outline:outline}); displayAlphaBytes += url.length * 2;
+  while (displayAlphaCache.length > 24 || displayAlphaBytes > 32000000) displayAlphaBytes -= displayAlphaCache.shift().url.length * 2;
+  return outline;
+}
 
-root.DDGOrientation={orientArtworkMedia:orientArtworkMedia,orientedImageRect:orientedImageRect};
+root.DDGOrientation={cachedDisplayOutline:cachedDisplayOutline,measureDisplayOutline:measureDisplayOutline,orientArtworkMedia:orientArtworkMedia,orientedImageRect:orientedImageRect};
 }(window));
 /* ES5, read-only port of fixtureArtworkGeometry. No saved placements are changed. */
 (function (root) {
@@ -62,7 +117,7 @@ root.DDGOrientation={orientArtworkMedia:orientArtworkMedia,orientedImageRect:ori
   function media(w) {
     var cut = w.media && w.media.cutout;
     if ((w.displayType === 'object' || w.displayType === 'special') && cut && cut.status === 'approved' && w.displayPreference !== 'original') {
-      return root.DDGOrientation.orientArtworkMedia({url:cut.url,width:cut.width,height:cut.height,cutout:true,contact:point(cut.contact) ? cut.contact : {x:0.5,y:1}},w.displayRotation);
+      return root.DDGOrientation.orientArtworkMedia({url:cut.url,width:cut.width,height:cut.height,cutout:true,outline:root.DDGOrientation.cachedDisplayOutline(cut.url),contact:point(cut.contact) ? cut.contact : {x:0.5,y:1}},w.displayRotation);
     }
     return root.DDGOrientation.orientArtworkMedia({url:w.imageUrl,width:w.width,height:w.height,cutout:false},w.displayRotation);
   }

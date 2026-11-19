@@ -1,7 +1,8 @@
-import {fitOrientedPreview} from './display-orientation.mjs';
+import {fitOrientedPreview} from './display-orientation.mjs?v=20261119-size1';
+import {measureDisplayOutline,clearDisplayAlphaCache} from './display-alpha.mjs?v=20261119-size1';
 import {CATEGORY_INFO,PROGRAMS,programFor} from './programs.mjs';
 import {FIXTURE_TYPES} from './fixture-layout.mjs';
-import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs?v=20261119-rotation1';
+import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs?v=20261119-size1';
 import {fixtureSkinName,stationImageUrl} from './fixture-skins.mjs';
 import {alignEntranceSigns} from './sign-surfaces.mjs';
 import {creatorLabel,creatorCaption,artworkLabel,detailBackground} from './work-info.mjs';
@@ -148,7 +149,7 @@ async function refresh(){
   if(!$('exhibition').hidden)await loadRoom();else startMetrics();
  }catch(e){status(e.message);expirePublicView();}finally{refreshing=false;}
 }
-function expirePublicView(){if(publicCache.fresh())return;publicCache.clear();renderWorks([],[],[]);renderedRoom=null;renderedKey=null;if($('art-dialog').open)closeArt();empty('공개 상태를 확인하고 있습니다');}
+function expirePublicView(){if(publicCache.fresh())return;publicCache.clear();clearDisplayAlphaCache();renderWorks([],[],[]);renderedRoom=null;renderedKey=null;if($('art-dialog').open)closeArt();empty('공개 상태를 확인하고 있습니다');}
 async function openArt(id,source,reload=false){
  if(!publicCache.fresh()){await refresh();if(!publicCache.fresh())return;}
  if(!catalog.works.some(w=>w.id===id)||(!reload&&activeId===id&&$('art-dialog').open))return;
@@ -169,7 +170,12 @@ async function openArt(id,source,reload=false){
  }catch(e){if(seq!==detailRequest)return;publicCache.details.delete(id);$('art-dialog').setAttribute('aria-busy','false');if(!detail){closeArt();toast(e.message);}refresh();}
 }
 let detailMedia=null;
-function fitArtRotation(){if(detail&&detailMedia&&$('art-dialog').open)fitOrientedPreview($('art-image'),$('art-image').parentElement,detailMedia);}
+function fitArtRotation(){
+ if(!detail||!detailMedia||!$('art-dialog').open)return;const img=$('art-image');
+ if(detailMedia.cutout&&detailMedia.rotation&&img.complete&&img.getAttribute('src')===safeImageUrl(detailMedia.url)&&measureDisplayOutline(img,detailMedia.url))detailMedia=fixtureArtwork(detail);
+ fitOrientedPreview(img,img.parentElement,detailMedia);
+}
+$('art-image').onload=fitArtRotation;
 new ResizeObserver(fitArtRotation).observe($('art-image').parentElement);
 function renderArt(){
  const w=detail;if(!w)return;const media=fixtureArtwork(w),c=CATEGORY_INFO[w.category];detailMedia=media;

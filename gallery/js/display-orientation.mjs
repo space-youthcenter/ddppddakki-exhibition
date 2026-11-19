@@ -16,9 +16,17 @@ export function rotatedDisplaySize(width, height, rotation) {
 }
 export function orientArtworkMedia(media, rotation) {
   var size=rotatedDisplaySize(media.width,media.height,rotation),result={},key;
+  // Rotate the visible outline, not the empty corners of the PNG canvas.
+  // Source pixels still rotate about their original centre; offsetX/Y translate
+  // that centre into the visible envelope without cropping or changing pixels.
+  if(media.outline&&media.outline.length>2&&size.rotation){
+    var minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity,i,p,x,y,rx,ry;
+    for(i=0;i<media.outline.length;i++){p=media.outline[i];x=(p[0]-.5)*media.width;y=(p[1]-.5)*media.height;rx=x*size.cos-y*size.sin;ry=x*size.sin+y*size.cos;minX=Math.min(minX,rx);maxX=Math.max(maxX,rx);minY=Math.min(minY,ry);maxY=Math.max(maxY,ry);}
+    if(maxX>minX&&maxY>minY){size.width=maxX-minX;size.height=maxY-minY;size.offsetX=-(minX+maxX)/2;size.offsetY=-(minY+maxY)/2;}
+  }
   for(key in media)if(Object.prototype.hasOwnProperty.call(media,key))result[key]=media[key];
   for(key in size)if(Object.prototype.hasOwnProperty.call(size,key))result[key]=size[key];
-  function turnPoint(p){var x=(p.x-.5)*media.width,y=(p.y-.5)*media.height;return {x:Math.max(0,Math.min(1,.5+(x*size.cos-y*size.sin)/size.width)),y:Math.max(0,Math.min(1,.5+(x*size.sin+y*size.cos)/size.height))};}
+  function turnPoint(p){var x=(p.x-.5)*media.width,y=(p.y-.5)*media.height;return {x:Math.max(0,Math.min(1,.5+(x*size.cos-y*size.sin+(size.offsetX||0))/size.width)),y:Math.max(0,Math.min(1,.5+(x*size.sin+y*size.cos+(size.offsetY||0))/size.height))};}
   if(media.contact&&size.rotation){result.contact=turnPoint(media.contact);if(media.contact.hang)result.contact.hang=turnPoint(media.contact.hang);}
   return result;
 }
@@ -33,11 +41,12 @@ export function patentLandscapeReady(work) {
 // The returned source rectangle rotates about its centre into the fitted envelope.
 export function orientedImageRect(media, bounds) {
   var k=Math.min(bounds.width/media.width,bounds.height/media.height),w=media.sourceWidth*k,h=media.sourceHeight*k;
-  return {left:bounds.left+(bounds.width-w)/2,top:bounds.top+(bounds.height-h)/2,width:w,height:h,rotation:media.rotation||0};
+  return {left:bounds.left+(bounds.width-w)/2+(media.offsetX||0)*k,top:bounds.top+(bounds.height-h)/2+(media.offsetY||0)*k,width:w,height:h,rotation:media.rotation||0};
 }
 export function applyOrientationInEnvelope(img, media) {
   if(!media.rotation)return;
-  img.style.left=(1-media.sourceWidth/media.width)*50+'%';img.style.top=(1-media.sourceHeight/media.height)*50+'%';
+  img.style.maxWidth='none';img.style.maxHeight='none';
+  img.style.left=((1-media.sourceWidth/media.width)*50+(media.offsetX||0)/media.width*100)+'%';img.style.top=((1-media.sourceHeight/media.height)*50+(media.offsetY||0)/media.height*100)+'%';
   img.style.width=media.sourceWidth/media.width*100+'%';img.style.height=media.sourceHeight/media.height*100+'%';
   img.style.transform='rotate('+media.rotation+'deg)';img.style.transformOrigin='50% 50%';
 }

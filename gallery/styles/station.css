@@ -40,6 +40,7 @@
 .g-fixture-work[data-mode=clip]>img{padding:5%;background:#f8f4eb;box-shadow:1px 3px 4px #33271438;filter:none}
 .g-fixture-work[data-mode=table]>img{border:5px solid #b78850;border-top-color:#dfb67c;border-left-color:#d8ac70;background:#fff9e9;box-shadow:3px 3px 1px #715536,5px 6px 8px #28180d40;transform:perspective(400px) rotateX(-5deg);padding:3%;filter:none}
 .g-fixture-work[data-mode=card]>img{border-radius:2px;box-shadow:1px 3px 4px #33231455;filter:none}
+.g-fixture-work[data-mode=card][data-cutout=true]>img{box-shadow:none;filter:drop-shadow(1px 2px 2px #33231440)}
 .g-fixture-work[data-mode=record]>img{background:#f8efde;box-shadow:4px 3px 1px #302e28,6px 6px 6px #221c1830;filter:none}
 .g-live-clip{position:absolute;top:-7%;left:48%;height:13%;width:5%;min-width:3px;background:linear-gradient(90deg,#a46f3e,#e6bc7e);box-shadow:1px 1px 2px #513a2555;border-radius:1px;pointer-events:none}
 .g-live-hook{position:absolute;top:-4%;left:48%;height:7%;width:5%;border:1px solid #b9914b;border-radius:50%;pointer-events:none}

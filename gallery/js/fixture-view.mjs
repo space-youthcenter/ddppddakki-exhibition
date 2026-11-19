@@ -1,4 +1,5 @@
-import {orientArtworkMedia,applyOrientationInEnvelope} from './display-orientation.mjs';
+import {orientArtworkMedia,applyOrientationInEnvelope} from './display-orientation.mjs?v=20261119-size1';
+import {cachedDisplayOutline,measureDisplayOutline} from './display-alpha.mjs?v=20261119-size1';
 import {safeImageUrl} from './work-view.mjs?v=20261119-rotation1';
 import {FIXTURE_SIZE,FIXTURE_TYPES,FIXTURE_BAYS,fixtureSlot,fixtureLabel} from './fixture-layout.mjs';
 import {creatorLabel,creatorCaption,artworkLabel} from './work-info.mjs';
@@ -9,7 +10,7 @@ const fixtureNode=(tag,cls,text)=>{const e=document.createElement(tag);e.classNa
 export function fixtureImageUrl(type,skin=fixtureSkinName()){return stationImageUrl(FIXTURE_TYPES[type].asset,skin);}
 export function fixtureArtwork(work){
  const cut=work.media?.cutout;
- return orientArtworkMedia(['object','special'].includes(work.displayType)&&cut?.status==='approved'&&work.displayPreference!=='original'?{url:cut.url,width:cut.width,height:cut.height,cutout:true,contact:cut.contact||{x:.5,y:1}}:{url:work.imageUrl,width:work.width,height:work.height,cutout:false},work.displayRotation);
+ return orientArtworkMedia(['object','special'].includes(work.displayType)&&cut?.status==='approved'&&work.displayPreference!=='original'?{url:cut.url,width:cut.width,height:cut.height,cutout:true,outline:cachedDisplayOutline(cut.url),contact:cut.contact||{x:.5,y:1}}:{url:work.imageUrl,width:work.width,height:work.height,cutout:false},work.displayRotation);
 }
 /** Every coordinate is relative to the same 1200×1000 camera, in review and public. */
 export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
@@ -41,7 +42,7 @@ export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
  return {slot:s,media,left:x/12,top:y/10,width:width/12,height:height/10,anchor:{x:s.x,y:s.y},bottom};
 }
 export function createFixtureWork(work,{onOpen,arrival=false,focusId,showCredit=true,skin=fixtureSkinName()}={}){
- const g=fixtureArtworkGeometry(work,{skin}),b=fixtureNode('button','g-fixture-work'),s=g.slot;b.type='button';
+ let g=fixtureArtworkGeometry(work,{skin});const b=fixtureNode('button','g-fixture-work'),s=g.slot;b.type='button';
  Object.assign(b.dataset,{workId:work.id,slot:s.id,mode:s.mode,cutout:String(g.media.cutout)});
  Object.assign(b.style,{left:g.left+'%',top:g.top+'%',width:g.width+'%',height:g.height+'%'});
  b.style.setProperty('--turn',s.rotate+'deg');
@@ -52,7 +53,12 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,showCredit=
   b.classList.add('g-fixture-arrival');
   b.addEventListener('animationend',()=>b.classList.remove('g-fixture-arrival'),{once:true});
  }
- const img=fixtureNode('img');img.src=safeImageUrl(g.media.url);img.alt='';img.draggable=false;applyOrientationInEnvelope(img,g.media);
+ const img=fixtureNode('img');img.alt='';img.draggable=false;applyOrientationInEnvelope(img,g.media);
+ img.onload=()=>{if(!g.media.cutout||!g.media.rotation||!measureDisplayOutline(img,g.media.url))return;
+  g=fixtureArtworkGeometry(work,{skin});Object.assign(b.style,{left:g.left+'%',top:g.top+'%',width:g.width+'%',height:g.height+'%'});applyOrientationInEnvelope(img,g.media);
+  const shadow=b.querySelector('.g-fixture-contact');if(shadow)Object.assign(shadow.style,{left:(g.media.contact.x*100-28)+'%',top:(g.media.contact.y*100-3)+'%'});
+ };
+ img.src=safeImageUrl(g.media.url);
  img.onerror=()=>{if(g.media.cutout){const fallback=createFixtureWork({...work,displayPreference:'original'},{onOpen,focusId,skin});b.replaceWith(fallback);}else b.classList.add('has-image-error');};
  if(g.frame){
   const relative=(node,r)=>Object.assign(node.style,{left:(r.left-g.left)/g.width*100+'%',top:(r.top-g.top)/g.height*100+'%',width:r.width/g.width*100+'%',height:r.height/g.height*100+'%'});

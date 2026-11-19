@@ -121,8 +121,8 @@
     img.src=src;img.alt='';box(img,{left:-r.x/r.width*100,top:-r.y/r.height*100,width:100/r.width*100,height:100/r.height*100});crop.appendChild(img);wrap.appendChild(crop);
   }
   function imageBox(img,g) {
-    var m=g.media,sw=g.width*m.sourceWidth/m.width,sh=g.height*m.sourceHeight/m.height;
-    box(img,{left:g.left+(g.width-sw)/2,top:g.top+(g.height-sh)/2,width:sw,height:sh});
+    var m=g.media,r=window.DDGOrientation.orientedImageRect(m,{left:g.left*12,top:g.top*10,width:g.width*12,height:g.height*10});
+    box(img,{left:r.left/12,top:r.top/10,width:r.width/12,height:r.height/10});
     img.style.transform=img.style.webkitTransform='rotate('+m.rotation+'deg)';img.style.transformOrigin=img.style.webkitTransformOrigin='50% 50%';
   }
   function addArt(w,wrap,grouped) {
@@ -131,15 +131,20 @@
     g=geometry.geometry(work);if(!g)return false;
     if(grouped && (Number(w.placement.slotId.slice(1))-1)%3===0)g.left+=1.4;
     if(!safeImage(g.media.url))return false;
-    img=node('img','tv-art');img.alt='';img.src=g.media.url;imageBox(img,g);wrap.appendChild(img);
+    img=node('img','tv-art');img.alt='';imageBox(img,g);wrap.appendChild(img);
     button=node('button','tv-hit');button.type='button';button.setAttribute('aria-label',title(w)+', '+credit(w)+', 크게 감상');button.setAttribute('data-work-id',w.id);button.title=title(w);box(button,g);
     button.onclick=function(){openArt(w.id,button);};wrap.appendChild(button);
     // Keep the hit target centred around the image, without stretching the artwork.
     button.tvBounds=g;button.tvWrap=wrap;
+    img.onload=function(){if(!g.media.cutout||!g.media.rotation||!window.DDGOrientation.measureDisplayOutline(img,g.media.url))return;
+      g=geometry.geometry(work);if(grouped&&(Number(w.placement.slotId.slice(1))-1)%3===0)g.left+=1.4;
+      imageBox(img,g);box(button,g);button.tvBounds=g;resize();
+    };
     img.onerror=function(){
-      if(g.media.cutout && safeImage(w.imageUrl)) {var copy={};for(k in w)if(own(w,k))copy[k]=w[k];copy.displayPreference='original';var fallback=geometry.geometry(copy);if(fallback){imageBox(img,fallback);box(button,fallback);button.tvBounds=fallback;img.onerror=null;img.src=w.imageUrl;resize();}}
+      if(g.media.cutout && safeImage(w.imageUrl)) {var copy={};for(k in w)if(own(w,k))copy[k]=w[k];copy.displayPreference='original';var fallback=geometry.geometry(copy);if(fallback){imageBox(img,fallback);box(button,fallback);button.tvBounds=fallback;img.onerror=img.onload=null;img.src=w.imageUrl;resize();}}
       else{button.style.border='2px solid #a26d29';text(button,'작품 보기');button.style.color='#183e30';status('일부 미리보기를 불러오지 못했습니다. 작품을 눌러 다시 확인할 수 있습니다.',true);}
     };
+    img.src=g.media.url;
     if(g.frame){frame=node('img','tv-frame');frame.src=asset+g.frame.asset+'.png';frame.alt='';box(frame,g.frame);wrap.appendChild(frame);}
     return true;
   }
@@ -169,11 +174,13 @@
   }
   function fitDetail() {
     var img=id('tv-detail-image'),stage=id('tv-detail-stage'),height=Math.max(180,Math.min(680,(window.innerHeight||document.documentElement.clientHeight)-340)),width=stage.clientWidth,k;
-    stage.style.height=height+'px';if(!img.tvMedia || !width)return;var r=window.DDGOrientation.orientedImageRect(img.tvMedia,{left:0,top:0,width:width,height:height});img.style.width=r.width+'px';img.style.height=r.height+'px';img.style.left=r.left+'px';img.style.top=r.top+'px';img.style.transform=img.style.webkitTransform='rotate('+r.rotation+'deg)';img.style.transformOrigin=img.style.webkitTransformOrigin='50% 50%';
+    stage.style.height=height+'px';if(!img.tvMedia || !width)return;
+    if(img.tvMedia.cutout&&img.tvMedia.rotation&&img.complete&&window.DDGOrientation.measureDisplayOutline(img,img.tvMedia.url))img.tvMedia=geometry.media(img.tvWork);
+    var r=window.DDGOrientation.orientedImageRect(img.tvMedia,{left:0,top:0,width:width,height:height});img.style.width=r.width+'px';img.style.height=r.height+'px';img.style.left=r.left+'px';img.style.top=r.top+'px';img.style.transform=img.style.webkitTransform='rotate('+r.rotation+'deg)';img.style.transformOrigin=img.style.webkitTransformOrigin='50% 50%';
   }
   function detailImage(w) {
     var m=geometry.media(w),url=safeImage(m.url)||safeImage(w.imageUrl);if(!url)return false;
-    id('tv-detail-image').tvMedia=m;id('tv-detail-image').src=url;id('tv-detail-image').alt=title(w);fitDetail();return true;
+    id('tv-detail-image').tvMedia=m;id('tv-detail-image').tvWork=w;id('tv-detail-image').src=url;id('tv-detail-image').alt=title(w);fitDetail();return true;
   }
   function openArt(workId,source) {
     if(!fresh()){expire();refresh(false);return;}
