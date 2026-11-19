@@ -1,8 +1,9 @@
+import {displayMediaSize} from './display-orientation.mjs';
 import {CATEGORY_INFO,programFor} from './programs.mjs';
 // Layout v3 is additive. Layouts 1 and 2 keep their original eight positions.
 export const FIXTURE_VERSION=3;
 // Allocation evolves independently of the saved image/slot coordinate version.
-export const ALLOCATION_VERSION=2;
+export const ALLOCATION_VERSION=3;
 export const FIXTURE_SIZE={width:1200,height:1000};
 export const FIXTURE_BAYS=Object.freeze([
  {id:'west',x:45,y:210,width:760,height:633.333,depth:3},
@@ -25,28 +26,28 @@ export const FIXTURE_TYPES=Object.freeze({
  'record-rack':{name:'레코드 재킷 진열대',asset:'record-rack',slots:grid(3,2,{left:26,right:74,top:37,bottom:65,width:19,height:23,mode:'record',ratio:1})},
 });
 // Only combinations supported by the existing independent raster layers are enabled.
-// Small hanging pieces and large craft objects deliberately occupy different rooms.
+// Hanging pieces and craft shelves can share the two independent room bays.
 export const FIXTURE_RULES=Object.freeze({
- 'tag-arch':{types:['frame','object'],with:['sign-arch'],ratio:[.25,4]},
- 'sign-arch':{types:['frame','object'],with:['tag-arch'],ratio:[.25,4]},
- 'craft-shelf':{types:['frame','object','special'],with:['table-frames'],ratio:[.25,4]},
+ 'tag-arch':{types:['frame','object'],with:['sign-arch','craft-shelf','table-frames'],ratio:[.25,4]},
+ 'sign-arch':{types:['frame','object'],with:['tag-arch','craft-shelf','table-frames'],ratio:[.25,4]},
+ 'craft-shelf':{types:['frame','object','special'],with:['table-frames','tag-arch','sign-arch'],ratio:[.25,4]},
  'photo-lines':{types:['frame'],with:['table-frames','record-rack'],ratio:[.25,4]},
- 'table-frames':{types:['frame','object','special'],with:['craft-shelf','photo-lines','record-rack','poster-stand','card-rack','color-panel'],ratio:[.25,4]},
+ 'table-frames':{types:['frame','object','special'],with:['craft-shelf','tag-arch','sign-arch','photo-lines','record-rack','poster-stand','card-rack','color-panel'],ratio:[.25,4]},
  'poster-stand':{types:['frame','easel'],with:['table-frames'],ratio:[.15,6]},
  'card-rack':{types:['frame','object'],with:['color-panel','table-frames'],ratio:[.25,4]},
  'color-panel':{types:['frame'],with:['card-rack','table-frames'],ratio:[.25,4]},
  'record-rack':{types:['frame','special'],with:['table-frames','photo-lines'],ratio:[.25,4]},
 });
 export function fixtureMediaRatio(work){
- const sculptural=['object','special'].includes(work.displayType),cut=sculptural?work.media?.cutout||work.cutout:null;
- const width=cut?.width||(sculptural&&work.cutoutWidth)||work.width;
- const height=cut?.height||(sculptural&&work.cutoutHeight)||work.height;
- return width/height;
+ const size=displayMediaSize(work);return size.width/size.height;
 }
 export function compatibleFixtures(work){
  const p=programFor(work.boothId),ratio=fixtureMediaRatio(work),type=work.displayType==='auto'?'frame':work.displayType||'frame';
  if(!p||p.category!==work.category||!Number.isFinite(ratio)||ratio<=0)return [];
- return p.fixtures.filter(id=>{const rule=FIXTURE_RULES[id];return rule.types.includes(type)&&ratio>=rule.ratio[0]&&ratio<=rule.ratio[1];});
+ // Transparent objects are contained inside the existing slot without cropping.
+ // A long keychain must not lose every display option after its background is removed.
+ const containedObject=['object','special'].includes(type);
+ return p.fixtures.filter(id=>{const rule=FIXTURE_RULES[id];return rule.types.includes(type)&&(containedObject||ratio>=rule.ratio[0]&&ratio<=rule.ratio[1]);});
 }
 export function recommendedFixture(work){
  const candidates=compatibleFixtures(work),ratio=fixtureMediaRatio(work);
@@ -77,6 +78,23 @@ export function validateFixturePlacements(works){
   occupied.add(pk);bayKinds.set(fk,p.fixtureType);
  }return true;
 }
+// Fill the selected fixture type in earlier MAKE rooms before opening another.
+// Never change a hanging work to shelf display just because a shelf has space.
+function makeRoomChoice(works,instances,kind){
+ const existing=f=>{
+  const def=FIXTURE_TYPES[f.type],used=new Set(works.filter(w=>w.placement?.room===f.room&&w.placement?.fixtureId===f.id).map(w=>w.placement.slotId)),slot=def.slots.find(s=>!used.has(s.id));
+  return slot?{chosen:f,slot,remainingSlots:def.slots.length-used.size,action:'existing-slot'}:null;
+ };
+ const create=(number,bay,action)=>({chosen:{id:`fixture-${bay+1}`,type:kind,bay,room:`make-${number}`,category:'MAKE',roomNumber:number},slot:FIXTURE_TYPES[kind].slots[0],remainingSlots:FIXTURE_TYPES[kind].slots.length,action});
+ const numbers=[...new Set(instances.map(f=>f.roomNumber))].sort((a,b)=>a-b);
+ for(const number of numbers){
+  const occupants=instances.filter(f=>f.roomNumber===number);
+  for(const f of occupants.filter(f=>f.type===kind)){const choice=existing(f);if(choice)return choice;}
+  const bay=FIXTURE_BAYS.findIndex((_,i)=>!occupants.some(f=>f.bay===i));
+  if(bay>=0&&occupants.every(f=>fixturesCanShare(kind,f.type)))return create(number,bay,'new-fixture');
+ }
+ return create(numbers.length?Math.max(...numbers)+1:1,0,'new-room');
+}
 /** Pure, read-only plan. Approval reruns this against the locked current state. */
 export function planFixturePlacement(works,work){
  const existing=works.find(w=>w.id===work.id&&isFixturePlacement(w.placement));
@@ -91,7 +109,8 @@ export function planFixturePlacement(works,work){
  validateFixturePlacements(works);
  const instances=fixtureInstances(works).filter(f=>f.category===work.category);
  let chosen,slot,remainingSlots,action='existing-slot',separated=false;
- for(const f of instances.filter(f=>f.type===kind)){
+ if(work.category==='MAKE')({chosen,slot,remainingSlots,action}=makeRoomChoice(works,instances,kind));
+ else for(const f of instances.filter(f=>f.type===kind)){
   const occupied=new Set(works.filter(w=>w.placement?.room===f.room&&w.placement?.fixtureId===f.id).map(w=>w.placement.slotId));
   slot=def.slots.find(s=>!occupied.has(s.id));if(slot){chosen=f;remainingSlots=def.slots.length-occupied.size;break;}
  }
@@ -110,8 +129,8 @@ export function planFixturePlacement(works,work){
   action=matched?'new-fixture':'new-room';remainingSlots=def.slots.length;
   chosen={id:`fixture-${bay+1}`,type:kind,bay,room:`${CATEGORY_INFO[work.category].id}-${number}`,category:work.category,roomNumber:number};slot=def.slots[0];
  }
- const placement={layoutVersion:3,allocationVersion:ALLOCATION_VERSION,category:work.category,booth:work.boothId,room:chosen.room,roomNumber:chosen.roomNumber,fixtureId:chosen.id,fixtureType:kind,bay:chosen.bay,slotId:slot.id};
- const reason=action==='existing-slot'?'같은 구조물의 남은 슬롯을 사용합니다.':action==='new-fixture'?'작품이 배정되지 않은 자리에 구조물을 추가합니다.':separated?'작품 크기와 구조물 구성이 어울리도록 별도 전시실을 엽니다.':'사용할 구조물 자리가 없어 새 전시실을 엽니다.';
+ const placement={layoutVersion:3,allocationVersion:ALLOCATION_VERSION,category:work.category,booth:work.boothId,room:chosen.room,roomNumber:chosen.roomNumber,fixtureId:chosen.id,fixtureType:chosen.type,bay:chosen.bay,slotId:slot.id};
+ const reason=action==='existing-slot'?'같은 구조물의 남은 슬롯을 사용합니다.':action==='new-fixture'?'작품이 배정되지 않은 자리에 구조물을 추가합니다.':separated?'작품 크기와 구조물 구성이 어울리도록 별도 전시실을 엽니다.':'선택한 전시 형태의 빈칸과 구조물 자리가 없어 새 전시실을 엽니다.';
  return {placement,action,recommendedFixture:recommended,compatibleFixtures:compatible,remainingSlots,newFixture:action!=='existing-slot',newRoom:action==='new-room',reason};
 }
 /** Must be called inside the existing ScriptLock transaction for approval. */

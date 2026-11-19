@@ -1,6 +1,7 @@
+import {fitOrientedPreview} from './display-orientation.mjs';
 import {CATEGORY_INFO,PROGRAMS,programFor} from './programs.mjs';
 import {FIXTURE_TYPES} from './fixture-layout.mjs';
-import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs?v=20261116-perf1';
+import {createFixtureElement,fixtureArtwork} from './fixture-view.mjs?v=20261119-rotation1';
 import {fixtureSkinName,stationImageUrl} from './fixture-skins.mjs';
 import {alignEntranceSigns} from './sign-surfaces.mjs';
 import {creatorLabel,creatorCaption,artworkLabel,detailBackground} from './work-info.mjs';
@@ -9,7 +10,7 @@ import {readPublic,validEndpoint,createMetrics} from './public-api.mjs?v=2026111
 import {PublicGalleryCache} from './public-cache.mjs';
 import {CAPACITY,themeFor} from './layout.mjs';
 import {ASSETS} from './assets.mjs';
-import {createWorkElement,safeImageUrl} from './work-view.mjs';
+import {createWorkElement,safeImageUrl} from './work-view.mjs?v=20261119-rotation1';
 
 const $=id=>document.getElementById(id),make=(tag,cls,value)=>{const e=document.createElement(tag);e.className=cls||'';if(value!==undefined)e.textContent=value;return e;};
 document.body.dataset.imageTheme=fixtureSkinName();
@@ -167,10 +168,13 @@ async function openArt(id,source,reload=false){
   if(seq!==detailRequest||!publicCache.fresh()||publicCache.workKey(id)!==key)return;detail=w;renderArt();
  }catch(e){if(seq!==detailRequest)return;publicCache.details.delete(id);$('art-dialog').setAttribute('aria-busy','false');if(!detail){closeArt();toast(e.message);}refresh();}
 }
+let detailMedia=null;
+function fitArtRotation(){if(detail&&detailMedia&&$('art-dialog').open)fitOrientedPreview($('art-image'),$('art-image').parentElement,detailMedia);}
+new ResizeObserver(fitArtRotation).observe($('art-image').parentElement);
 function renderArt(){
- const w=detail;if(!w)return;const media=fixtureArtwork(w),c=CATEGORY_INFO[w.category];
+ const w=detail;if(!w)return;const media=fixtureArtwork(w),c=CATEGORY_INFO[w.category];detailMedia=media;
  $('art-dialog').dataset.presentation=media.cutout?w.displayType:'frame';
- $('art-image').onerror=()=>{if(media.cutout){$('art-image').onerror=null;$('art-image').src=safeImageUrl(w.imageUrl);}else $('art-image').alt=artworkLabel(w)+' · 이미지를 불러오지 못했습니다';};
+ $('art-image').onerror=()=>{if(media.cutout){$('art-image').onerror=null;detailMedia=fixtureArtwork({...w,displayPreference:'original'});$('art-image').src=safeImageUrl(w.imageUrl);fitArtRotation();}else $('art-image').alt=artworkLabel(w)+' · 이미지를 불러오지 못했습니다';};
  $('art-image').src=safeImageUrl(media.url);$('art-image').alt=artworkLabel(w)+' · '+creatorCaption(w);
  $('art-title').textContent=w.title||'';$('art-title').hidden=!w.title?.trim();
  $('art-category').textContent=w.collection||c?.label||w.category;
@@ -181,10 +185,10 @@ function renderArt(){
  $('art-location').textContent=w.placement.layoutVersion===3?(c?.label||w.category)+' · 전시 '+w.placement.roomNumber+'관':'전시 '+w.placement.room+'관';
  const works=visitorWorks(),i=works.findIndex(x=>x.id===w.id);$('art-index').textContent=i<0?'':(i+1)+' / '+works.length;
  $('art-prev').disabled=i<=0;$('art-next').disabled=i<0||i>=works.length-1;
- $('art-dialog').setAttribute('aria-busy','false');
+ $('art-dialog').setAttribute('aria-busy','false');fitArtRotation();
 }
 function closeArt(restore=true){
- const closingId=activeId;detailRequest++;activeId=null;detail=null;
+ const closingId=activeId;detailRequest++;activeId=null;detail=null;detailMedia=null;
  $('art-image').removeAttribute('src');$('art-image').onerror=null;$('art-dialog').setAttribute('aria-busy','false');
  if($('art-dialog').open)$('art-dialog').close();
  if(restore){

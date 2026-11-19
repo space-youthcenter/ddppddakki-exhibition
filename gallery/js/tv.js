@@ -120,19 +120,24 @@
     var crop=node('span','tv-fastener'),img=node('img');box(crop,{left:left==null?r.x:left,top:r.y,width:r.width,height:r.height});
     img.src=src;img.alt='';box(img,{left:-r.x/r.width*100,top:-r.y/r.height*100,width:100/r.width*100,height:100/r.height*100});crop.appendChild(img);wrap.appendChild(crop);
   }
+  function imageBox(img,g) {
+    var m=g.media,sw=g.width*m.sourceWidth/m.width,sh=g.height*m.sourceHeight/m.height;
+    box(img,{left:g.left+(g.width-sw)/2,top:g.top+(g.height-sh)/2,width:sw,height:sh});
+    img.style.transform=img.style.webkitTransform='rotate('+m.rotation+'deg)';img.style.transformOrigin=img.style.webkitTransformOrigin='50% 50%';
+  }
   function addArt(w,wrap,grouped) {
     var work=w,k,g,img,button,b,frame;
     if(grouped){work={};for(k in w)if(own(w,k))work[k]=w[k];work.displayScale=(w.displayScale||1)*0.85;}
     g=geometry.geometry(work);if(!g)return false;
     if(grouped && (Number(w.placement.slotId.slice(1))-1)%3===0)g.left+=1.4;
     if(!safeImage(g.media.url))return false;
-    img=node('img','tv-art');img.alt='';img.src=g.media.url;box(img,g);wrap.appendChild(img);
+    img=node('img','tv-art');img.alt='';img.src=g.media.url;imageBox(img,g);wrap.appendChild(img);
     button=node('button','tv-hit');button.type='button';button.setAttribute('aria-label',title(w)+', '+credit(w)+', 크게 감상');button.setAttribute('data-work-id',w.id);button.title=title(w);box(button,g);
     button.onclick=function(){openArt(w.id,button);};wrap.appendChild(button);
     // Keep the hit target centred around the image, without stretching the artwork.
     button.tvBounds=g;button.tvWrap=wrap;
     img.onerror=function(){
-      if(g.media.cutout && safeImage(w.imageUrl)) {var copy={};for(k in w)if(own(w,k))copy[k]=w[k];copy.displayPreference='original';var fallback=geometry.geometry(copy);if(fallback){box(img,fallback);box(button,fallback);button.tvBounds=fallback;img.onerror=null;img.src=w.imageUrl;resize();}}
+      if(g.media.cutout && safeImage(w.imageUrl)) {var copy={};for(k in w)if(own(w,k))copy[k]=w[k];copy.displayPreference='original';var fallback=geometry.geometry(copy);if(fallback){imageBox(img,fallback);box(button,fallback);button.tvBounds=fallback;img.onerror=null;img.src=w.imageUrl;resize();}}
       else{button.style.border='2px solid #a26d29';text(button,'작품 보기');button.style.color='#183e30';status('일부 미리보기를 불러오지 못했습니다. 작품을 눌러 다시 확인할 수 있습니다.',true);}
     };
     if(g.frame){frame=node('img','tv-frame');frame.src=asset+g.frame.asset+'.png';frame.alt='';box(frame,g.frame);wrap.appendChild(frame);}
@@ -160,15 +165,15 @@
     status(currentWorks.length?currentWorks.length+'개의 작품이 전시되어 있습니다. 작품을 터치해 감상하세요.':'이 전시실에는 아직 공개된 작품이 없습니다. 다른 전시관도 둘러보세요.');resize();
   }
   function addExtra(w) {
-    var b=node('button','tv-extra-work'),img=node('img'),m=geometry.media(w);b.type='button';img.src=safeImage(m.url)||safeImage(w.imageUrl);img.alt=title(w);b.appendChild(img);b.appendChild(node('span','',credit(w)));b.onclick=function(){openArt(w.id,b);};id('tv-extra').appendChild(b);
+    var b=node('button','tv-extra-work'),img=node('img'),m=geometry.media(w),visual=node('span','tv-extra-visual'),rect=window.DDGOrientation.orientedImageRect(m,{left:0,top:0,width:220,height:160});b.type='button';img.src=safeImage(m.url)||safeImage(w.imageUrl);img.alt=title(w);visual.style.cssText='display:block;position:relative;width:220px;height:160px;overflow:hidden';img.style.position='absolute';img.style.width=rect.width+'px';img.style.height=rect.height+'px';img.style.left=rect.left+'px';img.style.top=rect.top+'px';img.style.maxWidth=img.style.maxHeight='none';img.style.transform=img.style.webkitTransform='rotate('+m.rotation+'deg)';visual.appendChild(img);b.appendChild(visual);b.appendChild(node('span','',credit(w)));b.onclick=function(){openArt(w.id,b);};id('tv-extra').appendChild(b);
   }
   function fitDetail() {
     var img=id('tv-detail-image'),stage=id('tv-detail-stage'),height=Math.max(180,Math.min(680,(window.innerHeight||document.documentElement.clientHeight)-340)),width=stage.clientWidth,k;
-    stage.style.height=height+'px';if(!img.naturalWidth || !width)return;k=Math.min(width/img.naturalWidth,height/img.naturalHeight);img.style.width=Math.round(img.naturalWidth*k)+'px';img.style.height=Math.round(img.naturalHeight*k)+'px';img.style.left=Math.round((width-img.naturalWidth*k)/2)+'px';img.style.top=Math.round((height-img.naturalHeight*k)/2)+'px';
+    stage.style.height=height+'px';if(!img.tvMedia || !width)return;var r=window.DDGOrientation.orientedImageRect(img.tvMedia,{left:0,top:0,width:width,height:height});img.style.width=r.width+'px';img.style.height=r.height+'px';img.style.left=r.left+'px';img.style.top=r.top+'px';img.style.transform=img.style.webkitTransform='rotate('+r.rotation+'deg)';img.style.transformOrigin=img.style.webkitTransformOrigin='50% 50%';
   }
   function detailImage(w) {
     var m=geometry.media(w),url=safeImage(m.url)||safeImage(w.imageUrl);if(!url)return false;
-    id('tv-detail-image').src=url;id('tv-detail-image').alt=title(w);fitDetail();return true;
+    id('tv-detail-image').tvMedia=m;id('tv-detail-image').src=url;id('tv-detail-image').alt=title(w);fitDetail();return true;
   }
   function openArt(workId,source) {
     if(!fresh()){expire();refresh(false);return;}
@@ -185,7 +190,7 @@
       if(!data || !matches(data)){closeDetail();refresh(true);return;}
       cachePut(detailCache,detailOrder,workId,data,4);
       var loader=new Image(),url=safeImage(geometry.media(data).url)||safeImage(data.imageUrl);
-      loader.onload=function(){if(token===detailToken && detailOpen && fresh() && matches(data)){id('tv-detail-image').src=url;fitDetail();text(id('tv-detail-status'),'');}};
+      loader.onload=function(){if(token===detailToken && detailOpen && fresh() && matches(data)){detailImage(data);text(id('tv-detail-status'),'');}};
       loader.onerror=function(){if(token===detailToken)text(id('tv-detail-status'),'큰 이미지를 불러오지 못해 미리보기를 표시합니다.');};
       if(url)loader.src=url;
     });

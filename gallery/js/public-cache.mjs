@@ -1,7 +1,7 @@
 // Memory only. A recent catalog is the authority for every cached image.
 export const PUBLIC_LEASE_MS=45000;
 const trim=(map,max)=>{let bytes=Array.from(map.values()).reduce((n,r)=>n+r.bytes,0);while(map.size>1&&(map.size>6||bytes>max)){const id=map.keys().next().value;bytes-=map.get(id).bytes;map.delete(id);}};
-const signature=w=>JSON.stringify([w.id,w.updatedAt,w.mediaVersion,w.placement,w.displayType,w.displayScale,w.hasCutout]);
+const signature=w=>JSON.stringify([w.id,w.updatedAt,w.mediaVersion,w.placement,w.displayType,w.displayScale,w.displayRotation||0,w.hasCutout]);
 export class PublicGalleryCache {
  constructor({now=()=>Date.now(),leaseMs=PUBLIC_LEASE_MS}={}){this.now=now;this.leaseMs=leaseMs;this.checkedAt=-Infinity;this.works=new Map();this.rooms=new Map();this.details=new Map();this.catalog=null;}
  fresh(){return this.now()-this.checkedAt<this.leaseMs;}

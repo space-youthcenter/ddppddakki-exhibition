@@ -1,3 +1,4 @@
+import {orientArtworkMedia} from './display-orientation.mjs';
 /** Presentation is separate from allocation. Switching A/B or a failed cutout
  * never updates placement, approval, or the source asset. */
 export const DISPLAY_TYPES = { object: '입체형', frame: '벽면 액자', easel: '이젤', special: '특수형 · 전용 전시대' };
@@ -8,12 +9,12 @@ export function presentationFor(work, slot, variant = 'B') {
   const ready = cutout?.status === 'approved' && cutout.url && cutout.width > 0 && cutout.height > 0;
   const supported = slot.support && slot.supports.includes(type);
   const useCutout = variant === 'B' && ['object', 'special'].includes(type) && ready && supported && work.displayPreference !== 'original';
-  if (useCutout) return { kind: type, imageUrl: cutout.url, originalUrl: work.imageUrl, width: cutout.width, height: cutout.height,
-    support: type === 'special' ? { ...slot.support, style: 'console' } : slot.support, contact: cutout.contact ?? { x: .5, y: 1 }, scale: work.displayScale ?? 1, fallback: false };
+  if (useCutout) return orientArtworkMedia({ kind: type, imageUrl: cutout.url, originalUrl: work.imageUrl, width: cutout.width, height: cutout.height,
+    support: type === 'special' ? { ...slot.support, style: 'console' } : slot.support, contact: cutout.contact ?? { x: .5, y: 1 }, scale: work.displayScale ?? 1, fallback: false },work.displayRotation);
   const kind = slot.type === 'frame' ? 'frame' : 'easel';
-  return { kind, imageUrl: work.imageUrl, originalUrl: work.imageUrl, width: work.width, height: work.height,
+  return orientArtworkMedia({ kind, imageUrl: work.imageUrl, originalUrl: work.imageUrl, width: work.width, height: work.height,
     scale: work.displayScale ?? 1, fallback: variant === 'B' && ['object', 'special'].includes(type),
-    reason: work.displayPreference === 'original' ? '원본 사진 전시 선택' : !ready ? '승인된 누끼 이미지 없음' : !supported ? '평면 슬롯에서 원본 사진 감상' : '' };
+    reason: work.displayPreference === 'original' ? '원본 사진 전시 선택' : !ready ? '승인된 누끼 이미지 없음' : !supported ? '평면 슬롯에서 원본 사진 감상' : '' },work.displayRotation);
 }
 
 export function setDisplayPreference(state, id, preference) {

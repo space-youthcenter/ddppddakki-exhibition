@@ -1,4 +1,5 @@
-import {safeImageUrl} from './work-view.mjs';
+import {orientArtworkMedia,applyOrientationInEnvelope} from './display-orientation.mjs';
+import {safeImageUrl} from './work-view.mjs?v=20261119-rotation1';
 import {FIXTURE_SIZE,FIXTURE_TYPES,FIXTURE_BAYS,fixtureSlot,fixtureLabel} from './fixture-layout.mjs';
 import {creatorLabel,creatorCaption,artworkLabel} from './work-info.mjs';
 import {hangingPoint} from './hanging.mjs';
@@ -8,7 +9,7 @@ const fixtureNode=(tag,cls,text)=>{const e=document.createElement(tag);e.classNa
 export function fixtureImageUrl(type,skin=fixtureSkinName()){return stationImageUrl(FIXTURE_TYPES[type].asset,skin);}
 export function fixtureArtwork(work){
  const cut=work.media?.cutout;
- return ['object','special'].includes(work.displayType)&&cut?.status==='approved'&&work.displayPreference!=='original'?{url:cut.url,width:cut.width,height:cut.height,cutout:true,contact:cut.contact||{x:.5,y:1}}:{url:work.imageUrl,width:work.width,height:work.height,cutout:false};
+ return orientArtworkMedia(['object','special'].includes(work.displayType)&&cut?.status==='approved'&&work.displayPreference!=='original'?{url:cut.url,width:cut.width,height:cut.height,cutout:true,contact:cut.contact||{x:.5,y:1}}:{url:work.imageUrl,width:work.width,height:work.height,cutout:false},work.displayRotation);
 }
 /** Every coordinate is relative to the same 1200×1000 camera, in review and public. */
 export function fixtureArtworkGeometry(work,{skin=fixtureSkinName()}={}){
@@ -51,7 +52,7 @@ export function createFixtureWork(work,{onOpen,arrival=false,focusId,showCredit=
   b.classList.add('g-fixture-arrival');
   b.addEventListener('animationend',()=>b.classList.remove('g-fixture-arrival'),{once:true});
  }
- const img=fixtureNode('img');img.src=safeImageUrl(g.media.url);img.alt='';img.draggable=false;
+ const img=fixtureNode('img');img.src=safeImageUrl(g.media.url);img.alt='';img.draggable=false;applyOrientationInEnvelope(img,g.media);
  img.onerror=()=>{if(g.media.cutout){const fallback=createFixtureWork({...work,displayPreference:'original'},{onOpen,focusId,skin});b.replaceWith(fallback);}else b.classList.add('has-image-error');};
  if(g.frame){
   const relative=(node,r)=>Object.assign(node.style,{left:(r.left-g.left)/g.width*100+'%',top:(r.top-g.top)/g.height*100+'%',width:r.width/g.width*100+'%',height:r.height/g.height*100+'%'});

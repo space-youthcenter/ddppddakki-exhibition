@@ -1,7 +1,8 @@
+import {orientedImageRect} from './display-orientation.mjs';
 import {creatorLabel} from './work-info.mjs';
 import { ROOM_SIZE, slotFor } from './layout.mjs?v=higgsfield1';
 import { ASSETS } from './assets.mjs?v=higgsfield1';
-import { presentationFor, objectGeometry, flatGeometry } from './presentation.mjs?v=higgsfield1';
+import { presentationFor, objectGeometry, flatGeometry } from './presentation.mjs?v=20261119-rotation1';
 
 export function safeImageUrl(value) {
   if (typeof value === 'string' && value.length <= 16000000 && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value)) return value;
@@ -22,7 +23,7 @@ export function positionElement(el, slot) {
 }
 
 export function workRenderKey(work, variant, failed = false) {
-  return JSON.stringify([variant, work.displayType, work.displayPreference, work.media?.cutout, work.displayScale, work.title, work.creatorDisplayName, failed]);
+  return JSON.stringify([variant, work.displayType, work.displayPreference, work.media?.cutout, work.displayScale, work.displayRotation, work.title, work.creatorDisplayName, failed]);
 }
 
 export function createWorkElement(work, { variant = 'B', onOpen, onImageError, arrival = false, failed = false } = {}) {
@@ -74,6 +75,7 @@ export function createWorkElement(work, { variant = 'B', onOpen, onImageError, a
     button.dataset.aperture = JSON.stringify(flat.aperture);
     rect(artwork,flat.aperture);
   }
+  if(p.rotation){const r=orientedImageRect(p,geometry?geometry.artwork:flat.aperture);rect(artwork,r);artwork.style.transform='rotate('+p.rotation+'deg)';artwork.style.transformOrigin='50% 50%';}
   artwork.src = safeImageUrl(p.imageUrl); artwork.alt = ''; artwork.draggable = false;
   artwork.addEventListener('error', () => {
     if (sculptural) onImageError?.(work.id);
