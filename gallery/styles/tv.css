@@ -1,0 +1,27 @@
+/* TV baseline: no grid, flex, custom properties, aspect-ratio, cqw or 3D transforms. */
+html,body{margin:0;padding:0;background:#f5efdf;color:#183e30;font-family:Arial,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:20px;line-height:1.5}
+*{box-sizing:border-box}button,a,select{-webkit-tap-highlight-color:rgba(197,143,60,.3)}
+a{color:inherit}button,select{font:inherit;color:inherit;min-height:56px;border:1px solid #a18c64;border-radius:6px;background:#fff9e9;padding:9px 18px;cursor:pointer}
+button:focus,a:focus,select:focus{outline:4px solid #d69c35;outline-offset:2px}button:disabled{opacity:.45;cursor:default}
+.tv-header{padding:12px 24px;background:#fffaf0;border-bottom:1px solid #d9c79d;overflow:hidden}
+.tv-brand{display:inline-block;text-decoration:none;font-weight:bold;font-size:27px;vertical-align:middle}.tv-brand small{display:block;font-weight:normal;font-size:16px}
+.tv-header nav{float:right}.tv-header nav a,.tv-entrance-actions a{display:inline-block;min-width:126px;min-height:60px;margin:3px;padding:12px 20px;text-align:center;text-decoration:none;border:2px solid #a18c64;border-radius:7px;font-weight:bold;background:#fff9e9}
+.tv-header nav a.is-current{background:#194b36;color:#fff7da;border-color:#194b36}
+.tv-toolbar{padding:10px 24px;min-height:76px}.tv-toolbar label{margin-right:8px}.tv-toolbar select{max-width:50%}#tv-refresh{float:right}#tv-count{margin-left:20px}
+#tv-status{margin:0;padding:5px 24px 10px;min-height:40px;font-size:18px}#tv-status.is-error{color:#932b1b;background:#fff1d6}
+.tv-stage{position:relative;margin:0 auto;width:100%;padding-top:56.25%;overflow:hidden;background:#e9ddc6}
+.tv-camera{position:absolute;left:0;top:0;width:100%;height:100%}.tv-background{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
+#tv-sign{position:absolute;left:34%;top:5.7%;width:33%;height:12%;margin:0;text-align:center;color:#fff4cc;font-size:46px;line-height:1.55;overflow:hidden;text-shadow:0 1px 2px #14291c}
+#tv-fixtures{position:absolute;left:0;top:0;width:100%;height:100%}.tv-fixture,.tv-fixture-body,.tv-art,.tv-frame,.tv-fastener{position:absolute}.tv-fixture-body{left:0;top:0;width:100%;height:100%;border:0}.tv-art{border:0;z-index:2}
+.tv-hit{position:absolute;z-index:5;min-width:56px;min-height:56px;margin:0;padding:0;border:0;background:transparent;border-radius:3px;color:transparent;cursor:pointer}
+.tv-hit:focus{background:rgba(246,209,124,.13)}.tv-frame{z-index:3;pointer-events:none}.tv-fastener{overflow:hidden;z-index:4;pointer-events:none}.tv-fastener img{position:absolute;max-width:none;border:0}
+.tv-credit{position:absolute;z-index:4;background:#fff5dd;color:#173e30;border:1px solid #b99a68;padding:3px;text-align:center;line-height:1.4;overflow:hidden}.tv-credit small{display:block;font-size:65%}.tv-credit strong{display:block}
+.tv-entrance-actions{display:none;position:absolute;left:12%;bottom:7%;width:76%;text-align:center}.tv-entrance-actions a{min-width:22%;background:#194b36;color:#fff4dc}
+.tv-hint{margin:10px 24px 22px;font-size:18px}#tv-extra{padding:0 24px}.tv-extra-work{display:inline-block;vertical-align:top;margin:10px;max-width:260px;min-width:120px}.tv-extra-work img{display:block;max-width:220px;max-height:160px;margin:auto}
+.tv-detail{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;overflow:auto;background:#1a211c;background:rgba(10,20,14,.96);padding:16px}
+.tv-detail-panel{position:relative;max-width:1440px;min-height:100%;margin:auto;background:#fff8e8;padding:72px 24px 20px}
+.tv-close{position:absolute;right:18px;top:12px;background:#194b36;color:#fff;z-index:2;min-width:126px}
+.tv-detail-stage{position:relative;height:480px;width:100%;background:#eae1d0;overflow:hidden;text-align:center}.tv-detail-stage img{position:absolute;border:0}
+.tv-detail-info{padding:12px 0}.tv-detail-info h2{margin:0;font-size:27px;word-wrap:break-word}.tv-detail-info p{margin:4px 0;font-size:21px}#tv-detail-status{font-size:17px;color:#66583d}
+.tv-detail-controls{text-align:center}.tv-detail-controls button{min-width:150px;margin:0 7px}
+@media(max-width:800px){.tv-header{padding:10px}.tv-brand{font-size:21px}.tv-brand small{font-size:14px}.tv-header nav{float:none;margin-top:8px}.tv-header nav a{min-width:90px;padding:10px 12px}.tv-toolbar{padding:10px}.tv-toolbar label{display:none}.tv-toolbar select{max-width:52%;font-size:17px;padding:9px}#tv-count{display:block;margin:8px 0 0;font-size:17px}#tv-status{padding:4px 10px 10px;font-size:16px}.tv-hint{margin:10px;font-size:16px}.tv-detail{padding:5px}.tv-detail-panel{padding:75px 12px 20px}.tv-detail-controls button{min-width:110px;margin:0 3px}.tv-detail-info h2{font-size:23px}.tv-detail-info p{font-size:18px}.tv-entrance-actions a{min-width:80px;padding:10px;font-size:15px}.tv-entrance-actions{left:0;width:100%;bottom:0}}

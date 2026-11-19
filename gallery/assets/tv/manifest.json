@@ -1,0 +1,128 @@
+[
+  {
+    "source": "assets/final-design-v3/web/room-entrance.webp",
+    "file": "room-entrance.jpg",
+    "width": 1672,
+    "height": 941,
+    "bytes": 613370,
+    "alphaPreserved": false,
+    "sha256": "b181e61c80067528cfdd4c9b01f57120bb8137e8d3a16d4479efde65dd9bb15d"
+  },
+  {
+    "source": "assets/final-design-v3/web/room-make.webp",
+    "file": "room-make.jpg",
+    "width": 1672,
+    "height": 941,
+    "bytes": 332569,
+    "alphaPreserved": false,
+    "sha256": "5f833918adfa613526b37fcf56e619fa16b222667323036fae711c4fb19fcffd"
+  },
+  {
+    "source": "assets/final-design-v3/web/room-take.webp",
+    "file": "room-take.jpg",
+    "width": 1672,
+    "height": 941,
+    "bytes": 316889,
+    "alphaPreserved": false,
+    "sha256": "69046f4e75b2c08f585693c6b79152be3d9594130ae788cd60f6212ebee8fc1e"
+  },
+  {
+    "source": "assets/final-design-v3/web/room-wake.webp",
+    "file": "room-wake.jpg",
+    "width": 1672,
+    "height": 941,
+    "bytes": 321900,
+    "alphaPreserved": false,
+    "sha256": "40685b32ccecff7351c13e5d7e756388fa0524a96d8904811eb616afc2ce4ce0"
+  },
+  {
+    "source": "assets/final-design-v3/web/tag-arch.webp",
+    "file": "tag-arch.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1248955,
+    "alphaPreserved": true,
+    "sha256": "eb702e9fc3fbc619ae3744da13b844ec27523b7e723057860ae4088265d970c8"
+  },
+  {
+    "source": "assets/final-design-v3/web/sign-arch.webp",
+    "file": "sign-arch.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1264134,
+    "alphaPreserved": true,
+    "sha256": "25edd26f08ef13439bc8b0d8b87b24dcbb2f7de93ea3d9967df3217e3cc36df0"
+  },
+  {
+    "source": "assets/final-design-v3/web/photo-lines.webp",
+    "file": "photo-lines.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1825924,
+    "alphaPreserved": true,
+    "sha256": "b415430040d3e844990e7947a7d4c35288b8243b6d30e0a50875f815638de1d4"
+  },
+  {
+    "source": "assets/final-design-v3/web/table.webp",
+    "file": "table.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1432905,
+    "alphaPreserved": true,
+    "sha256": "511519ef9074c3dd1494f66eb22b7fa06d6ee4c342bab284f5193a7016ac9fe9"
+  },
+  {
+    "source": "assets/final-design-v3/web/card-rack.webp",
+    "file": "card-rack.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1358100,
+    "alphaPreserved": true,
+    "sha256": "634f4b42d71394160c5da4b7dd222dc1f1dc7e4e75c6901df34a17c73b2df330"
+  },
+  {
+    "source": "assets/final-design-v3/web/color-panel.webp",
+    "file": "color-panel.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1654338,
+    "alphaPreserved": true,
+    "sha256": "168e65c97d09a6d508be64bdac6205e924575526be35d5b3243eb99adef80e11"
+  },
+  {
+    "source": "assets/final-design-v3/web/craft-shelf.webp",
+    "file": "craft-shelf.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1709741,
+    "alphaPreserved": true,
+    "sha256": "3169ab08298847ba93457d419cee8af912c1f2e4fdad855623319855d4fd64d8"
+  },
+  {
+    "source": "assets/final-design-v3/web/record-rack.webp",
+    "file": "record-rack.png",
+    "width": 1374,
+    "height": 1145,
+    "bytes": 1618944,
+    "alphaPreserved": true,
+    "sha256": "0ad77dd66fc5b63e3b27abb7ed95b407cac88a060e7eee0438b28e8a459564e1"
+  },
+  {
+    "source": "assets/higgsfield/web/frame-landscape.webp",
+    "file": "frame-landscape.png",
+    "width": 996,
+    "height": 739,
+    "bytes": 645608,
+    "alphaPreserved": true,
+    "sha256": "9676c5611768a22b36824582f9fff0d26b830364387ac6d8fc95de1920808789"
+  },
+  {
+    "source": "assets/higgsfield/web/frame-portrait.webp",
+    "file": "frame-portrait.png",
+    "width": 778,
+    "height": 987,
+    "bytes": 314309,
+    "alphaPreserved": true,
+    "sha256": "6d705d9f70b8e92d77b172b6a1739f7dfbd5e9dadd10d72db0183c0f685d1c94"
+  }
+]

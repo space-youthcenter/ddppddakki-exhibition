@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://script.google.com https://script.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>TV 관람 · 2026 뚝딱이 온라인 전시관</title>
+<link rel="stylesheet" href="./styles/tv.css?v=20261119-1">
+</head>
+<body>
+<header class="tv-header">
+<a class="tv-brand" href="#entrance">2026 뚝딱이 전시회 <small>온라인 작품 전시관 · TV 관람</small></a>
+<nav aria-label="전시관 선택">
+<a id="tv-nav-make" href="#make-1">MAKE</a><a id="tv-nav-take" href="#take-1">TAKE</a><a id="tv-nav-wake" href="#wake-1">WAKE</a>
+</nav>
+</header>
+<main>
+<div class="tv-toolbar">
+<label for="tv-rooms">전시실</label> <select id="tv-rooms"><option value="make-1">MAKE 1관</option><option value="take-1">TAKE 1관</option><option value="wake-1">WAKE 1관</option></select>
+<span id="tv-count"></span>
+<button id="tv-refresh" type="button">새로고침</button>
+</div>
+<p id="tv-status" role="status">공개된 작품을 불러오고 있습니다. 잠시 기다려 주세요.</p>
+<div class="tv-stage" id="tv-stage">
+<div class="tv-camera">
+<img id="tv-background" class="tv-background" src="./assets/tv/room-make.jpg" alt="원목 아치와 따뜻한 조명의 전시실">
+<h1 id="tv-sign">MAKE</h1>
+<div id="tv-fixtures"></div>
+<div id="tv-entrance-actions" class="tv-entrance-actions"><a href="#make-1">MAKE 입장</a><a href="#take-1">TAKE 입장</a><a href="#wake-1">WAKE 입장</a></div>
+</div>
+</div>
+<div id="tv-extra"></div>
+<p class="tv-hint">작품을 한 번 터치하면 크게 볼 수 있습니다. 위의 MAKE · TAKE · WAKE로 다른 전시관에 입장하세요.</p>
+<noscript><p>브라우저 설정에서 JavaScript를 허용한 후 새로고침해 주세요.</p></noscript>
+</main>
+<div id="tv-detail" class="tv-detail" role="dialog" aria-modal="true" aria-labelledby="tv-detail-title" tabindex="-1">
+<div class="tv-detail-panel">
+<button id="tv-close" class="tv-close" type="button">닫기 ✕</button>
+<div id="tv-detail-stage" class="tv-detail-stage"><img id="tv-detail-image" alt=""></div>
+<div class="tv-detail-info"><h2 id="tv-detail-title"></h2><p id="tv-detail-creator"></p><p id="tv-detail-category"></p><p id="tv-detail-status" role="status"></p></div>
+<div class="tv-detail-controls"><button id="tv-prev" type="button">이전 작품</button><button id="tv-next" type="button">다음 작품</button></div>
+</div>
+</div>
+<script src="./js/tv-layout.js?v=20261119-1"></script>
+<script src="./js/tv-geometry.js?v=20261119-1"></script>
+<script src="./js/tv.js?v=20261119-1"></script>
+</body>
+</html>

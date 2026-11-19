@@ -1,0 +1,67 @@
+2026-11-19 LG TV emergency compatibility release
+
+Entry: gallery/tv.html?v=20261119-1#make-1
+The usual gallery entry detects known LG/webOS/NetCast TV browsers or missing
+required browser capabilities and sends them to the independent TV viewer.
+Modern PC/mobile gallery modules, CSS, images and placements are unchanged.
+
+Code-level failure points in the existing viewer:
+- ES modules and newer JS syntax; crypto.randomUUID in JSONP/metrics startup.
+- Unconditional ResizeObserver and MediaQueryList.addEventListener.
+- Scene sizing uses aspect-ratio, container-type and cqw.
+These are confirmed dependencies, not a device-specific diagnosis; the actual
+LG TV model/firmware and its console were not available for remote testing.
+LG official engine matrix: https://webostv.developer.lge.com/develop/specifications/web-api-and-web-engine
+
+TV viewer:
+- Classic ES5 scripts; no modules, fetch, Promise, randomUUID, ResizeObserver,
+  matchMedia, native dialog, CSS grid, CSS custom properties or 3D transforms.
+- Baseline JPG backgrounds and lossless RGBA PNG structures/frames. Original
+  WebP files are untouched. 14 converted images total 14,657,686 bytes;
+  only the chosen room's background/structures are loaded. PNG RGBA pixels
+  were compared byte-for-byte with decoded WebP sources.
+- Existing public JSONP catalog/room/artwork endpoints only. No server or
+  storage change. Omits media=display to request existing JPEG/PNG variants.
+- Existing saved fixture/slot IDs, coordinates, hole/contact alignment and
+  photographer row grouping preserved. Unknown old placements remain usable
+  in a simple fallback below the room without reallocating anything.
+- MAKE/TAKE/WAKE links are static HTML, available before script initialization.
+  Single activation opens detail with immediate preview then larger image.
+  Close/Escape restores room, scroll and focus. Enter/Space use native buttons.
+  56px minimum work targets; 60px category links. No double touch/click handler.
+- Room cache (3) and detail cache (4) are memory-only. Catalog polls every 20s;
+  revision changes clear images and details. If public validation cannot be
+  renewed for 50s, visible work images and open details are removed until
+  reconnection. Late stale responses cannot restore hidden work. No offline
+  artwork snapshot or participant image is published in the repository.
+- TV page is read-only. It neither registers works nor sends visitor metrics;
+  existing public site's metrics, intake and admin settings are unchanged.
+
+Validation:
+- ES5 parser passes all four TV scripts.
+- New tests cover 342 geometry cases, feature routing, missing modern APIs,
+  slow room response across catalog polls, detail focus return, hidden-work
+  revision invalidation, stale detail responses and validation expiry.
+- Existing geometry/security/moderation/expansion/photo tests are retained.
+- Local browser with actual approved Google images: 19 public works at
+  revision 104 (MAKE 1, TAKE 18, WAKE 0); JPEG photos, PNG nametag verified.
+- First uncached Google room reads measured here: MAKE 7.7s, TAKE 35.3s.
+  No new backend optimization is claimed by this emergency compatibility fix.
+- 1920x1080 and 1280x720 TV layouts: entire room and both structures fit;
+  no page horizontal overflow. Browser click/detail/category navigation tested.
+- Actual LG hardware touch operation still requires opening the published URL.
+
+Refresh on the television:
+1. Close the old gallery tab and open the full TV URL in a new tab.
+2. Use the on-page 새로고침 to recheck published works.
+3. If the browser retains an older page, change the URL query to
+   tv.html?v=20261119-2#make-1 and reload; if necessary clear the Internet
+   browser's cached files, then reopen. Do not reset the TV or erase site data.
+
+Rebuild (development only):
+- python gallery/tools/build-tv-assets.py (Pillow)
+- node gallery/tools/build-tv-layout.mjs
+- node --test gallery/tests/tv.test.mjs
+
+Release scope is strictly gallery/. No Google deployment, data mutation,
+OpenAI API call, original image alteration or reservation/ticket/QR edit.
